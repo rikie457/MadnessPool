@@ -9,7 +9,7 @@ import nl.saxion.playground.template.R;
 
 public class Rock extends Entity {
 
-    private float xSpeed, ySpeed, aSpeed, xVal, yVal, aVal, size;
+    float xSpeed, ySpeed, aSpeed, xVal, yVal, aVal, size;
 
     static private Bitmap bitmap;
 

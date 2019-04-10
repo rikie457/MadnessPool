@@ -16,7 +16,7 @@ public class Ship extends Entity {
     private final float height = 10f;
     private final float bounce = -0.8f; // 80% of original speed
 
-    private float xSpeed, ySpeed, xVal, yVal, aVal;
+    float xSpeed, ySpeed, xVal, yVal, aVal;
 
     static private Bitmap bitmap;
 
