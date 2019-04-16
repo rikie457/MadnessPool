@@ -16,10 +16,10 @@ public class Stars extends Entity {
 
     static private Bitmap bitmap;
 
-    private SpaceShooter game;
+    private Game game;
 
 
-    Stars(SpaceShooter game) {
+    Stars(Game game) {
         this.game = game;
     }
 
@@ -39,7 +39,7 @@ public class Stars extends Entity {
         if (bitmap==null) {
             bitmap = gv.getBitmapFromResource(R.drawable.stars2);
         }
-        float viewportSize = Math.max(game.virtualWidth, game.virtualHeight);
+        float viewportSize = Math.max(game.getWidth(), game.getHeight());
 
         // The tricks is that we'll draw the same star field bitmap at different zoom
         // levels, each continuously rotating, growing and becoming less opaque as they grow.
@@ -47,8 +47,8 @@ public class Stars extends Entity {
             float size = z * viewportSize;
             gv.drawBitmap(
                     bitmap,
-                    game.virtualWidth/2f-size/2f,
-                    game.virtualHeight/2f-size/2f,
+                    game.getWidth()/2f-size/2f,
+                    game.getHeight()/2f-size/2f,
                     size,
                     size,
                     angle+z,

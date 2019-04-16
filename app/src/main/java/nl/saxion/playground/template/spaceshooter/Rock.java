@@ -13,9 +13,9 @@ public class Rock extends Entity {
 
     static private Bitmap bitmap;
 
-    private SpaceShooter game;
+    private Game game;
 
-    Rock(SpaceShooter game) {
+    Rock(Game game) {
         this.game = game;
 
         aSpeed = (float)Math.random() * 0.3f - 0.15f;
@@ -26,23 +26,23 @@ public class Rock extends Entity {
 
         if (Math.random() > 0.5) {
             if (Math.random() > 0.5) { // right screen edge
-                xVal = game.virtualWidth + size;
+                xVal = game.getWidth() + size;
                 xSpeed = -0.1f * (float)Math.random() - 0.02f;
             } else { // left screen edge
                 xVal = -size;
                 xSpeed = 0.1f * (float)Math.random() + 0.02f;
             }
-            yVal = (float)Math.random() * game.virtualHeight;
+            yVal = (float)Math.random() * game.getHeight();
             ySpeed = 0.2f * (float)Math.random() - 0.1f;
         } else {
             if (Math.random() > 0.5) { // bottom screen edge
-                yVal = game.virtualHeight + size;
+                yVal = game.getHeight() + size;
                 ySpeed = -0.1f * (float)Math.random() - 0.02f;
             } else { // top screen edge
                 yVal = -size;
                 ySpeed = 0.1f * (float)Math.random() + 0.02f;
             }
-            xVal = (float)Math.random() * game.virtualWidth;
+            xVal = (float)Math.random() * game.getWidth();
             xSpeed = 0.2f * (float)Math.random() - 0.1f;
         }
 
@@ -55,8 +55,8 @@ public class Rock extends Entity {
         aVal += aSpeed;
 
         // Remove after exiting the screen
-        if (xSpeed < 0 ? xVal<-size : xVal>game.virtualWidth+size) game.removeEntity(this);
-        else if (ySpeed < 0 ? yVal<-size : yVal>game.virtualHeight+size) game.removeEntity(this);
+        if (xSpeed < 0 ? xVal<-size : xVal>game.getWidth()+size) game.removeEntity(this);
+        else if (ySpeed < 0 ? yVal<-size : yVal>game.getHeight()+size) game.removeEntity(this);
     }
 
     @Override

@@ -6,11 +6,11 @@ import nl.saxion.playground.template.lib.Entity;
 
 public class RockCreator extends Entity {
 
-    private SpaceShooter game;
+    private Game game;
     private Random random = new Random();
     private int tickCount;
 
-    public RockCreator(SpaceShooter game) {
+    public RockCreator(Game game) {
         this.game = game;
     }
 

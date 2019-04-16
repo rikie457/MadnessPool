@@ -8,16 +8,18 @@ import nl.saxion.playground.template.lib.GameView;
 
 public class Redness extends Entity {
 
-    private SpaceShooter game;
+    private Game game;
 
     // Set to 1 when a collision is detected. Gradually decays after that.
     private float hit = 0;
 
     // Paint used to draw the red blur.
-    Paint redPaint = new Paint();
+    // It is marked `transient` because it is not actually part of the game state
+    // and thus should not (and could in fact not) be serialized.
+    transient Paint redPaint = new Paint();
 
 
-    Redness(SpaceShooter game) {
+    Redness(Game game) {
         this.game = game;
         redPaint.setStyle(Paint.Style.FILL);
     }

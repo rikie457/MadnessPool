@@ -21,10 +21,10 @@ public class Map extends Entity {
     // When resources are first used, the decoded Bitmap is written to this array, as a cache.
     static private Bitmap[] spriteBitmaps;
 
-    private Platformer game;
+    private Game game;
 
 
-    Map(Platformer game) {
+    Map(Game game) {
         this.game = game;
         generatePlatforms(0, 3, 0);
         generatePlatforms(9, -1, 4);
@@ -67,10 +67,10 @@ public class Map extends Entity {
     @Override
     public void draw(GameView gv) {
         // Calculate which tiles are visible at the current scroll position.
-        float scrollX = game.scrollX;
+        float scrollX = game.scroller.x;
         int startX = Math.max(0, (int)Math.floor(scrollX));
-        int endX = Math.min(startX+1+(int)game.virtualWidth, width);
-        int endY = Math.min((int)Math.ceil(game.virtualHeight), height);
+        int endX = Math.min(startX+1+(int)game.getWidth(), width);
+        int endY = Math.min((int)Math.ceil(game.getHeight()), height);
 
         // Draw any visible tiles.
         for(int x = startX; x < endX; x++) {
@@ -81,7 +81,7 @@ public class Map extends Entity {
                     // Load/decode bitmaps before we first draw them.
                     spriteBitmaps[tile] = gv.getBitmapFromResource(spriteResourceIds[tile]);
                 }
-                gv.drawBitmap(spriteBitmaps[tile], (float) x - scrollX, (float) game.virtualHeight - y - 1, 1, 1);
+                gv.drawBitmap(spriteBitmaps[tile], (float) x - scrollX, (float) game.getHeight() - y - 1, 1, 1);
             }
         }
     }

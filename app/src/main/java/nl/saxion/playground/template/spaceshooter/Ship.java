@@ -20,13 +20,13 @@ public class Ship extends Entity {
 
     static private Bitmap bitmap;
 
-    private SpaceShooter game;
+    private Game game;
 
 
-    Ship(SpaceShooter game) {
+    Ship(Game game) {
         this.game = game;
-        xVal = game.virtualWidth/2;
-        yVal = game.virtualHeight/2;
+        xVal = game.getWidth()/2;
+        yVal = game.getHeight()/2;
     }
 
     @Override
@@ -37,8 +37,8 @@ public class Ship extends Entity {
         // Scan the list of current touches to see if we need to rotate or accelerate.
         boolean left=false, right=false;
         for(GameModel.Touch touch : game.touches) {
-            if (touch.x < game.virtualWidth*0.333) left = true;
-            else if (touch.x < game.virtualWidth*0.666) left = right = true; // middle
+            if (touch.x < game.getWidth()*0.333) left = true;
+            else if (touch.x < game.getWidth()*0.666) left = right = true; // middle
             else right = true;
         }
 
@@ -60,16 +60,16 @@ public class Ship extends Entity {
             xVal = 2*0 - xVal;
             xSpeed = bounce*xSpeed;
         }
-        if(xVal > game.virtualWidth) {
-            xVal = 2*game.virtualWidth - xVal;
+        if(xVal > game.getWidth()) {
+            xVal = 2*game.getWidth() - xVal;
             xSpeed = bounce*xSpeed;
         }
         if(yVal < 0) {
             yVal = 2*0 - yVal;
             ySpeed = bounce*ySpeed;
         }
-        if(yVal > game.virtualHeight) {
-            yVal = 2*game.virtualHeight - yVal;
+        if(yVal > game.getHeight()) {
+            yVal = 2*game.getHeight() - yVal;
             ySpeed = bounce*ySpeed;
         }
     }

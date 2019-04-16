@@ -50,6 +50,9 @@ public class GameView extends View implements View.OnTouchListener {
     // When set to 0, the game is paused.
     private transient double lastTickTime = 0;
 
+    // `true` after `start()` has been called.
+    private boolean started = false;
+
 
     public GameView(Context context) {
         super(context);
@@ -85,10 +88,8 @@ public class GameView extends View implements View.OnTouchListener {
     private void emitTicks() {
         if (gameModel == null || lastTickTime == 0) return; // the game is paused
 
-        double now = System.currentTimeMillis();
-        final double updateInterval = 1000f / gameModel.ticksPerSecond();
-        while(lastTickTime < now) {
-            lastTickTime += updateInterval;
+        while(lastTickTime < System.currentTimeMillis()) {
+            lastTickTime += 1000f / gameModel.ticksPerSecond();;
             for(Entity go : gameModel.entities) go.tick();
         }
     }
@@ -184,25 +185,27 @@ public class GameView extends View implements View.OnTouchListener {
         viewMatrix = null;
     }
 
-    // Calculates how to scale the virtual viewport (as defined in Platformer), such that it
+    // Calculates how to scale the virtual viewport (as defined in Game), such that it
     // fits nicely in the center of the actual screen.
     private void calculateMatrices() {
         viewMatrix = new Matrix();
         clipRect = null;
 
-        float actualWidth = getWidth();
-        float actualHeight = getHeight();
+        float actualWidth = gameModel.actualWidth = getWidth();
+        float actualHeight = gameModel.actualHeight = getHeight();
+        float virtualWidth = gameModel.getWidth();
+        float virtualHeight = gameModel.getHeight();
 
-        float scale = Math.max(gameModel.virtualWidth / actualWidth, gameModel.virtualHeight / actualHeight);
+        float scale = Math.max(virtualWidth / actualWidth, virtualHeight / actualHeight);
         if (scale < 0.99 || scale > 1.01) {
             viewMatrix.postScale(1f/scale,1f/scale);
 
-            float extraW = actualWidth*scale - gameModel.virtualWidth;
-            float extraH = actualHeight*scale - gameModel.virtualHeight;
+            float extraW = actualWidth*scale - virtualWidth;
+            float extraH = actualHeight*scale - virtualHeight;
 
             if (extraW > 1f || extraH > 1f) {
                 viewMatrix.postTranslate(extraW/scale / 2f, extraH/scale / 2f);
-                clipRect = new RectF(0, 0, gameModel.virtualWidth, gameModel.virtualHeight);
+                clipRect = new RectF(0, 0, virtualWidth, virtualHeight);
             }
         }
 
@@ -236,20 +239,27 @@ public class GameView extends View implements View.OnTouchListener {
         // The first draw (after orientation changes) we need to calculate the viewMatrix and clipRect.
         if (viewMatrix == null) calculateMatrices();
 
-        // Allow draw methods to access our canvas
-        this.canvas = canvas;
+        // Call `start()` once, before the first draw but after widths/heights have been calculated.
+        if (!started) {
+            started = true;
+            gameModel.start();
+        }
+
+        // Paint the whole of the canvas (including black bars) black
+        canvas.drawPaint(blackPaint);
 
         // Based on these calculations, we can configure the canvas.
         canvas.setMatrix(viewMatrix);
         if (clipRect != null) {
-            // Paint the black bars black
-            canvas.drawPaint(blackPaint);
             // Make sure nobody can draw over the black bars
             canvas.clipRect(clipRect);
         }
 
         // Make sure the game state is up-to-date with the system time.
         emitTicks();
+
+        // Allow draw methods to access our canvas
+        this.canvas = canvas;
 
         // We'll iterate using first/higher, as it will allow the TreeSet
         // to be modified while iterating it.

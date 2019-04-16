@@ -10,10 +10,10 @@ public class Background extends Entity {
 
     private static Bitmap bitmap;
 
-    private Platformer game;
+    private Game game;
 
 
-    Background(Platformer game) {
+    Background(Game game) {
         this.game = game;
     }
 
@@ -23,11 +23,11 @@ public class Background extends Entity {
         if (bitmap==null) {
             bitmap = gv.getBitmapFromResource(R.drawable.background);
         }
-        float bgWidth = (float)bitmap.getWidth() / (float)bitmap.getHeight() * game.virtualHeight;
-        float offset = (game.scrollX / 3f) % bgWidth; // one-third speed relative to foreground
+        float bgWidth = (float)bitmap.getWidth() / (float)bitmap.getHeight() * game.getHeight();
+        float offset = (game.scroller.x / 3f) % bgWidth; // one-third speed relative to foreground
 
-        for(int x = 0; x <= Math.ceil(game.virtualWidth/bgWidth); x++) {
-            gv.drawBitmap(bitmap, (float) x * bgWidth - offset, 0, bgWidth, game.virtualHeight);
+        for(int x = 0; x <= Math.ceil(game.getWidth()/bgWidth); x++) {
+            gv.drawBitmap(bitmap, (float) x * bgWidth - offset, 0, bgWidth, game.getHeight());
         }
     }
 }

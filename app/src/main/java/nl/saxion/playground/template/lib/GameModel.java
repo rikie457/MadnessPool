@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class GameModel implements Serializable {
 
     /**
-     * Width and height of the virtual view. This allows for some relatively easy resolution
-     * independence.
+     * Actual width of the current GameView in pixels. These might change during the game,
+     * for instance when changing orientation.
+     * These should only be used by your `getWidth()` and `getHeight()` implementations,
+     * to derive a virtual resolution that matches the screen aspect ratio.
      */
-    public float virtualWidth, virtualHeight;
+    protected float actualWidth, actualHeight;
 
     // The ordered list of active game entities.
     SafeTreeSet<Entity> entities = new SafeTreeSet<>();
@@ -24,17 +26,6 @@ public class GameModel implements Serializable {
     public transient ArrayList<Touch> touches = new ArrayList<>();
 
     /**
-     * @param virtualWidth The GameView will scale, translate and crop to make the specified
-     *                     virtual width fit on the actual screen.
-     * @param virtualHeight The GameView will scale, translate and crop to make the specified
-     *                      virtual height fit on the actual screen.
-     */
-    public GameModel(float virtualWidth, float virtualHeight) {
-        this.virtualWidth = virtualWidth;
-        this.virtualHeight = virtualHeight;
-    }
-
-    /**
      * Override to set ticks per second.
      * @return Number of times per second the `tick` methods should be called.
      * This can be zero (for instance when updates made directly from event handlers,
@@ -42,6 +33,32 @@ public class GameModel implements Serializable {
      * `GameModel.event("updated")` should be called when appropriate.
      */
     public int ticksPerSecond() { return 180; }
+
+    /**
+     * Override this to make use of virtual screen sizes.
+     * @return The desired virtual width for the game. The `GameView` will scale,
+     * translate and crop `draw()` output to make the virtual screen fit exactly
+     * within the actual view.
+     */
+    public float getWidth() {
+        return actualWidth;
+    }
+
+    /**
+     * Override this to make use of virtual screen sizes.
+     * @return The desired virtual height for the game. The `GameView` will scale,
+     * translate and crop `draw()` output to make the virtual screen fit exactly
+     * within the actual view.
+     */
+    public float getHeight() {
+        return actualHeight;
+    }
+
+    /**
+     * Called just before the first `draw()`. At this point, canvas widths are known, so
+     * this may be a good time to create initial `Entity`s.
+     */
+    public void start() {}
 
     /**
      * Add a game entity to the list.

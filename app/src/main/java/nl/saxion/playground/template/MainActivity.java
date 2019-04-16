@@ -7,8 +7,8 @@ import android.view.View;
 
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.lib.GameModel;
-import nl.saxion.playground.template.platformer.Platformer;
-import nl.saxion.playground.template.spaceshooter.SpaceShooter;
+import nl.saxion.playground.template.spaceshooter.Game;
+import nl.saxion.playground.template.spaceshooter.Activity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,22 +21,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         spaceShooterCanvas = findViewById(R.id.spaceShooter);
-        spaceShooter = new SpaceShooter(320f/200f);
+        spaceShooter = new Game();
 
         findViewById(R.id.spaceShooterText).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SpaceShooterActivity.class));
+                startActivity(new Intent(MainActivity.this, Activity.class));
             }
         });
 
         platformerCanvas = findViewById(R.id.platformer);
-        platformer = new Platformer(320f/200f);
+        platformer = new nl.saxion.playground.template.platformer.Game();
 
         findViewById(R.id.platformerText).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, PlatformerActivity.class));
+                startActivity(new Intent(MainActivity.this, nl.saxion.playground.template.platformer.Activity.class));
             }
         });
     }
