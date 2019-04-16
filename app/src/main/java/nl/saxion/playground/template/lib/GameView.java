@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -42,33 +43,67 @@ public class GameView extends View implements View.OnTouchListener {
     // Used by `drawBitmap` to paint translucent images.
     private Paint alphaPaint = new Paint();
 
+    // A canvas `Paint` to fill the black bars outside the virtual screen with.
+    private Paint blackPaint = new Paint();
+
+    // The time in ms at which the tick() methods were last invoked.
+    // When set to 0, the game is paused.
+    private transient double lastTickTime = 0;
+
 
     public GameView(Context context) {
         super(context);
-        setOnTouchListener(this);
+        init();
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setOnTouchListener(this);
+        init();
     }
 
     public GameView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
         setOnTouchListener(this);
+        blackPaint.setColor(Color.BLACK);
+        blackPaint.setStyle(Paint.Style.FILL);
     }
 
     /**
-     * Trigger drawing the given `gameModel` in this View. The actual drawing will happen
-     * asynchronously, when Android decides to call our `onDraw` method.
-     * This also cause future touch events on this GameView to be dispatched to `gameModel`.
-     * @param gameModel The `GameModel` to show.
+     * Pause or unpause the game. This happens automatically from `setListener`.
+     * @param paused When true, stop ticks. When false, enable ticks.
      */
-    public void show(GameModel gameModel) {
-        if (this.gameModel != gameModel) {
-            this.gameModel = gameModel;
-            viewMatrix = null; // needs to be recalculated
+    public void setPaused(boolean paused) {
+        lastTickTime = paused ? 0 : System.currentTimeMillis();
+    }
+
+    // Based on the current system time, call the tick() methods an appropriate
+    // number of times.
+    private void emitTicks() {
+        if (gameModel == null || lastTickTime == 0) return; // the game is paused
+
+        double now = System.currentTimeMillis();
+        final double updateInterval = 1000f / gameModel.ticksPerSecond();
+        while(lastTickTime < now) {
+            lastTickTime += updateInterval;
+            for(Entity go : gameModel.entities) go.tick();
         }
+    }
+
+
+    /**
+     * Configure which GameModel to show. Also unpaused (or pauses, in case of `null`) the game.
+     * @param gameModel The `GameModel` to show. Can be `null`. A `GameModel` should not have
+     *                  more than one `GameView` attached simultaneously, as each `GameView`
+     *                  would be calling `tick()`s, causing the game to speed up.
+     */
+    public void setGame(GameModel gameModel) {
+        this.gameModel = gameModel;
+        viewMatrix = null; // needs to be recalculated
+        setPaused(gameModel == null);
         invalidate();
     }
 
@@ -97,12 +132,17 @@ public class GameView extends View implements View.OnTouchListener {
 
     /**
      * Draw a bitmap to the GameCanvas canvas.
+     * @param bitmap The Bitmap to draw. Can be loaded through `getBitmapFromResource()`, for instance.
      * @param left Distance from the left of the canvas in virtual pixels.
      * @param top Distance from the top of the canvas in virtual pixels.
      * @param width Width in virtual pixels. When -1, the width is derived from the height, or from the natural size of the bitmap.
      * @param height Height in virtual pixels. When -1, the height is derived from the width.
      * @param angle Angle in degrees (0-360).
      * @param alpha Opacity to draw with (0 is fully transparent, 255 is fully visible).
+     *
+     * In case you only want to draw a part of the Bitmap (for instance when using sprite sheets),
+     * you can create a new Bitmap containing only the intended part using Bitmap.createBitmap(..)
+     * https://developer.android.com/reference/android/graphics/Bitmap.html#createBitmap(android.graphics.Bitmap,%20int,%20int,%20int,%20int)
      */
     public void drawBitmap(Bitmap bitmap, float left, float top, float width, float height, float angle, int alpha) {
 
@@ -176,8 +216,14 @@ public class GameView extends View implements View.OnTouchListener {
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (gameModel == null) return false;
+
+        // First fire any outstanding ticks, to make sure objects are in their current place before
+        // using their coordinates.
+        emitTicks();
+
         // Translate actual coordinates to virtual coordinates:
         event.transform(touchMatrix);
+
         gameModel.handleTouch(event);
         return true;
     }
@@ -195,14 +241,26 @@ public class GameView extends View implements View.OnTouchListener {
 
         // Based on these calculations, we can configure the canvas.
         canvas.setMatrix(viewMatrix);
-        gameModel.drawBeforeClip(this);
-        if (clipRect != null) canvas.clipRect(clipRect);
+        if (clipRect != null) {
+            // Paint the black bars black
+            canvas.drawPaint(blackPaint);
+            // Make sure nobody can draw over the black bars
+            canvas.clipRect(clipRect);
+        }
 
-        // Draw a frame!
-        gameModel.draw(this);
+        // Make sure the game state is up-to-date with the system time.
+        emitTicks();
+
+        // We'll iterate using first/higher, as it will allow the TreeSet
+        // to be modified while iterating it.
+        for(Entity go : gameModel.entities) go.draw(this);
 
         // After this, nobody should be drawing to the canvas anymore.
         this.canvas = null;
+
+        // If the game is not paused, schedule the next redraw immediately.
+        // Android will limit redraws to 60 times per second.
+        if (lastTickTime!=0) invalidate();
 
         // Log FPS counter and hardware acceleration status.
         frameCount++;

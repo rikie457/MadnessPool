@@ -44,7 +44,7 @@ public class PlatformerActivity extends AppCompatActivity implements GameModel.L
                     game = new Platformer((float) gameView.getWidth() / (float) gameView.getHeight());
                     // If we're RESUMED at this point (we probably are) we should start the game immediately.
                     if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                        game.setListener(PlatformerActivity.this);
+                        gameView.setGame(game);
                     }
                 }
             });
@@ -62,13 +62,13 @@ public class PlatformerActivity extends AppCompatActivity implements GameModel.L
     @Override
     protected void onResume() {
         super.onResume();
-        if (game!=null) game.setListener(this);
+        if (game!=null) gameView.setGame(game);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (game!=null) game.setListener(null);
+        if (game!=null) gameView.setGame(null);
     }
 
     @Override

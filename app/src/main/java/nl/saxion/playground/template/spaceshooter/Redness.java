@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
-public class HitChecker extends Entity {
+public class Redness extends Entity {
 
     private SpaceShooter game;
 
@@ -17,7 +17,7 @@ public class HitChecker extends Entity {
     Paint redPaint = new Paint();
 
 
-    HitChecker(SpaceShooter game) {
+    Redness(SpaceShooter game) {
         this.game = game;
         redPaint.setStyle(Paint.Style.FILL);
     }

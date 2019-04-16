@@ -44,29 +44,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        spaceShooter.setListener(new GameModel.Listener() {
-            @Override
-            public void onGameEvent(String name) {
-                // we're ignoring different event types; just refresh the canvas!
-                spaceShooterCanvas.show(spaceShooter);
-            }
-        });
-
-        platformer.setListener(new GameModel.Listener() {
-            @Override
-            public void onGameEvent(String name) {
-                // we're ignoring different event types; just refresh the canvas!
-                platformerCanvas.show(platformer);
-            }
-        });
+        spaceShooterCanvas.setGame(spaceShooter);
+        platformerCanvas.setGame(platformer);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        platformer.setListener(null);
-        spaceShooter.setListener(null);
+        spaceShooterCanvas.setGame(null);
+        platformerCanvas.setGame(null);
     }
 }
