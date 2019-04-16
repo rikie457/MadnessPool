@@ -1,13 +1,13 @@
-# Technical Documentation
-
-This document is written in Markdown using PlantUML for diagrams. To view and edit it from within Android Studio, install the 'Markdown Navigator' plugin.
-
-
 ## Rendering library
 
-To allow students to get games up-and-running quickly, and to provide solutions for some aspects that are especially difficult when starting out with Android game programming, a small library and some example uses have been provided. They can be used as a base for your work. You're very much encouraged to make changes to the library to fit your needs! Or at least, make sure you have a basic understanding of what is happening.  
+To allow students to get games up-and-running quickly, and to provide solutions for some aspects that are especially unintuitive when starting out with Android game programming, a small library and some example uses have been provided. They can be used as a base for your work. You're very much encouraged to make changes to the library to fit your needs! Or at least, make sure you have a basic understanding of what is happening.  
 
-This section describes the technical design of this library. 
+This document describes how to use this library.
+
+
+### About this document
+
+This document is written in Markdown using PlantUML for diagrams. To view and edit it from within Android Studio, install the 'Markdown Navigator' plugin.
 
 
 ### Features
@@ -126,7 +126,7 @@ android.View <|-- DrawView
 ```
 
 
-### Library classes
+### Class reference
 
 #### Entity
 

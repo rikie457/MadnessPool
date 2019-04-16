@@ -60,19 +60,18 @@
         <option name="SIM_TOC_BLANK_LINE_SPACER" value="false" />
       </ParserOptions>
     </ParserSettings>
-    <HtmlSettings headerTopEnabled="false" headerBottomEnabled="true" bodyTopEnabled="false" bodyBottomEnabled="true" embedUrlContent="false" addPageHeader="true" embedImages="false" embedHttpImages="false" imageUriSerials="false" addDocTypeHtml="true" noParaTags="false" plantUmlConversion="0" mathConversion="-1">
+    <HtmlSettings headerTopEnabled="false" headerBottomEnabled="false" bodyTopEnabled="false" bodyBottomEnabled="false" embedUrlContent="false" addPageHeader="true" embedImages="false" embedHttpImages="false" imageUriSerials="false" addDocTypeHtml="true" noParaTags="false" plantUmlConversion="0" mathConversion="-1">
       <GeneratorProvider>
         <provider providerId="com.vladsch.idea.multimarkdown.editor.swing.html.generator" providerName="Default Swing HTML Generator" />
       </GeneratorProvider>
       <headerTop />
-      <headerBottom>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css&quot;&gt;</headerBottom>
+      <headerBottom />
       <bodyTop />
-      <bodyBottom>&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js&quot;&gt;&lt;/script&gt;
-&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;</bodyBottom>
+      <bodyBottom />
     </HtmlSettings>
-    <CssSettings previewScheme="LIGHT_SCHEME" cssUri="" isCssUriEnabled="false" isCssUriSerial="true" isCssTextEnabled="false" isDynamicPageWidth="false">
+    <CssSettings previewScheme="LIGHT_SCHEME" cssUri="" isCssUriEnabled="false" isCssUriSerial="true" isCssTextEnabled="false" isDynamicPageWidth="true">
       <StylesheetProvider>
-        <provider providerId="com.vladsch.idea.multimarkdown.editor.javafx.html.css" providerName="Default JavaFx Stylesheet" />
+        <provider providerId="com.vladsch.idea.multimarkdown.editor.swing.html.css" providerName="Default Swing Stylesheet" />
       </StylesheetProvider>
       <ScriptProviders />
       <cssText />
