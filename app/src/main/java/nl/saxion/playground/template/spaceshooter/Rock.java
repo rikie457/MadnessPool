@@ -3,7 +3,7 @@ package nl.saxion.playground.template.spaceshooter;
 import android.graphics.Bitmap;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.lib.DrawView;
+import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.R;
 
 
@@ -60,7 +60,7 @@ public class Rock extends Entity {
     }
 
     @Override
-    public void draw(DrawView gv) {
+    public void draw(GameView gv) {
         if (bitmap==null) {
             bitmap = gv.getBitmapFromResource(R.drawable.rock);
         }

@@ -24,11 +24,11 @@ The provided library and examples demonstrate how to:
 
 ### Overview
 
-The state of a game is represented by a `GameModel` object, that contains a list of objects extending `Entity`. Each `Entity` represents a visible entity or actor in the game. It can handle events like a time tick passing or user input. Also, it can output a visual representation of itself to a `DrawView`
+The state of a game is represented by a `GameModel` object, that contains a list of objects extending `Entity`. Each `Entity` represents a visible entity or actor in the game. It can handle events like a time tick passing or user input. Also, it can output a visual representation of itself to a `GameView`
 
-A `DrawView` is an Android custom view. It collaborates with `GameModel` (and its `Entity`s) to render the graphical representation of the game state. `DrawView`s offer methods for easily drawing scaled, rotated and semi-transparent bitmaps, and makes it easy to work in a resolution independent way.
+A `GameView` is an Android custom view. It collaborates with `GameModel` (and its `Entity`s) to render the graphical representation of the game state. `GameView`s offer methods for easily drawing scaled, rotated and semi-transparent bitmaps, and makes it easy to work in a resolution independent way.
 
-It's also possible to manually reflect the `GameModel` state through regular Android Views (such as `TextView`s and `CheckBox`es). If you're planning to do this exclusively (and thus not use the `DrawView`) this library probably won't be of much use.
+It's also possible to manually reflect the `GameModel` state through regular Android Views (such as `TextView`s and `CheckBox`es). If you're planning to do this exclusively (and thus not use the `GameView`) this library probably won't be of much use.
 
 
 ### Class diagram
@@ -55,18 +55,18 @@ note left of MainActivity
 end note
 
 class Hero {
-    + draw(DrawView)
+    + draw(GameView)
     + tick()
     + handleTouch(Touch)
 }
 
 class Bullet {
-    + draw(DrawView)
+    + draw(GameView)
     + tick()
 }
 
 class Entity<<lib>> {
-    + draw(DrawView)
+    + draw(GameView)
     + tick()
     + handleTouch(Touch)
     + getLayer(): int
@@ -85,7 +85,7 @@ class GameModel<<lib>> {
     + getEntities(X.class): List<X>
 }
 
-class DrawView<<lib>> {
+class GameView<<lib>> {
     + show(GameModel)
     + drawBitmap(...)
     + getCanvas(): Canvas
@@ -109,7 +109,7 @@ Entity <|-- Hero
 Entity <|-- Bullet
 
 MainActivity --> MyGameModel
-MainActivity -> DrawView
+MainActivity -> GameView
 
 
 class android.View {
@@ -121,7 +121,7 @@ class android.Activity {
     + onPause()
 }
 android.Activity <|-- MainActivity 
-android.View <|-- DrawView
+android.View <|-- GameView
 
 ```
 
@@ -135,7 +135,7 @@ Although Model View Control (MVC) is often a good idea, it's use is not really c
 You can create a new kind of game object by extending from `Entity`. `Entity`s need to be added to the `GameModel` by calling `GameMode.addEntity(entity)`. Similarly, entities can be removed using `GameModel.removeEntity(entity)`.
 
 There are four methods on `Entity` that you may want to override:
-- `draw(DrawView)`. Called each time the screen is refreshed (usually up to 60 times per second). If the entity wants to display something, it will need to do that here onto the given DrawView (discussed later).
+- `draw(GameView)`. Called each time the screen is refreshed (usually up to 60 times per second). If the entity wants to display something, it will need to do that here onto the given GameView (discussed later).
 - `tick()`. Called on every game object 180 times per second (configurable by overriding `GameLoop.ticksPerSecond()`). This method is to update the game state one step. So a bullet may want to move forward and check if it is hitting something. The reason the tick rate is (by default) higher than the maximum frame rate, is that this makes things like collision detection more accurate. Also, when the full frame rate cannot be met, smaller tick steps make for a more fluent experience.
 - `getLayer()`. Returns the layer this entity is on. The draw and tick methods are usually called in the order the entities were created. In case this is not desirable, you can put game objects on a different layer. Let's say you want to create a new cloud, but that cloud should be drawn underneath (thus before) the hero, you can give clouds a lower layer number. The default layer number is 0, so the clouds could be put on layer -1.
 - `handleTouch(Game.Touch, MotionEvent)`. Used to act on touch events such as `ACTION_UP`, `ACTION_DOWN` or `ACTION_MOVE`. The `Touch` object provides coordinates (translated to the virtual screen), movement, time, etc.
@@ -147,11 +147,11 @@ The `GameModel` class is meant to be subclassed by your own class that contains 
 
 A `GameModel` object represents the state of a single game, by way of a list of `Entity`s.
 
-When creating a `GameModel`, you need to specify the width and height of the virtual screen. Any `DrawView` displaying this game, will have to scale proportionally to make this fit exactly on the actual device. To prevent black bars on the sides or on the top and bottom, you should make sure the virtual screen size you specify matches the aspect ratio (the width/height ratio) of the actual screen.
+When creating a `GameModel`, you need to specify the width and height of the virtual screen. Any `GameView` displaying this game, will have to scale proportionally to make this fit exactly on the actual device. To prevent black bars on the sides or on the top and bottom, you should make sure the virtual screen size you specify matches the aspect ratio (the width/height ratio) of the actual screen.
 
 The `GameModel` can have an associated `GameModel.Listener`, to which it can send 'events' that consist of just a string indicating what kind of change was made to the model. The `Listener`, which may well just be an `Activity`, is responsible for updating the appropriate views when this happens.
 
-In the simplest case, there is just one View, which is a `DrawView`. In this case the `Listener.onGameEvent()` should just a `DrawView.show(gameModel)` to display the changed model. In more complicated cases, your `GameModel` or `Entities` may fire more specific events (using `GameModel.event(String)`, causing specific `View`s to be updated. For instance a `"score"` event can be sent when the `scoreTextView` should be updated. Events may also be used to trigger other behaviour, such as sound effects or vibrations. It is up to the Listener to implement these behaviours (or to delegate to objects implementing these behaviours).
+In the simplest case, there is just one View, which is a `GameView`. In this case the `Listener.onGameEvent()` should just a `GameView.show(gameModel)` to display the changed model. In more complicated cases, your `GameModel` or `Entities` may fire more specific events (using `GameModel.event(String)`, causing specific `View`s to be updated. For instance a `"score"` event can be sent when the `scoreTextView` should be updated. Events may also be used to trigger other behaviour, such as sound effects or vibrations. It is up to the Listener to implement these behaviours (or to delegate to objects implementing these behaviours).
 
 `GameModel`s are `serializable`, meaning the entire game state can easily be converted to and from a `String`. This can be used in the Android Activity to, for instance, resume a game after it has been moved to the background and stopped by the operating system. 
 
@@ -170,16 +170,16 @@ Methods on `Game` you may want to call:
 Methods you may want to override:
 
 - `ticksPerSecond()`, which returns the number of `tick()` call that are performed per second. If your game doesn't use ticks (for instance when it only changes immediately based on touch events), you can set this to 0. It defaults to 180.
-- `continousRedraw()`, which returns a boolean indicating if you want `event("updated")` to fire continuously, causing 60 DrawView updates per second. Defaults to `true`. If your game doesn't use fluent animation but only updates immediately based on touch events, you should set this to `false` and manually call `event("updated")` to save device battery. 
+- `continousRedraw()`, which returns a boolean indicating if you want `event("updated")` to fire continuously, causing 60 GameView updates per second. Defaults to `true`. If your game doesn't use fluent animation but only updates immediately based on touch events, you should set this to `false` and manually call `event("updated")` to save device battery. 
 
 
-#### DrawView
+#### GameView
 
-This Android custom View uses the canvas to display graphics. This is done by passing it a reference to this class to the `draw(DrawView)` method of all `Entity`s in the `GameModel`. 
+This Android custom View uses the canvas to display graphics. This is done by passing it a reference to this class to the `draw(GameView)` method of all `Entity`s in the `GameModel`. 
 
 From there the entity can...
-- Call `DrawView.getCanvas()` to get access to the Android Canvas object, on which the usual methods like `drawRect(..)` are available.
-- Use the helper method `DrawView.drawBitmap(...)`, to easily copy a `Bitmap` image to a specific position on the canvas, while optionally rotating and scaling it, and adding translucency. A `Bitmap` can be created from an Android resource using the `DrawView.getBitmapFromResource(int resourceId)` helper method.
+- Call `GameView.getCanvas()` to get access to the Android Canvas object, on which the usual methods like `drawRect(..)` are available.
+- Use the helper method `GameView.drawBitmap(...)`, to easily copy a `Bitmap` image to a specific position on the canvas, while optionally rotating and scaling it, and adding translucency. A `Bitmap` can be created from an Android resource using the `GameView.getBitmapFromResource(int resourceId)` helper method.
 
-In aby cases, the `DrawView` will arrange for the `Canvas` to be in such a state that it is `GameModel.virtualWidth` wide and `GameModel.virtualHeight` high.
+In aby cases, the `GameView` will arrange for the `Canvas` to be in such a state that it is `GameModel.virtualWidth` wide and `GameModel.virtualHeight` high.
 

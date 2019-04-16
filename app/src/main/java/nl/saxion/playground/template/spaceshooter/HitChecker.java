@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.lib.DrawView;
+import nl.saxion.playground.template.lib.GameView;
 
 public class HitChecker extends Entity {
 
@@ -48,7 +48,7 @@ public class HitChecker extends Entity {
     }
 
     @Override
-    public void draw(DrawView gv) {
+    public void draw(GameView gv) {
         if (hit>0.01) {
             redPaint.setColor(Color.argb(Math.round(hit*150), 255, 0, 0));
             gv.getCanvas().drawPaint(redPaint);

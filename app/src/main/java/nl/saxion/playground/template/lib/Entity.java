@@ -5,9 +5,7 @@ import android.view.MotionEvent;
 
 import java.io.Serializable;
 
-/**
- *
- */
+
 abstract public class Entity implements Comparable<Entity>, Serializable {
 
     // Used to sort objects on the same layer in the entities tree.
@@ -41,12 +39,12 @@ abstract public class Entity implements Comparable<Entity>, Serializable {
 
     /**
      * Called up to 60 times per second, system performance allowing.
-     * The method is to draw the Entity to the DrawView. Entities
+     * The method is to draw the Entity to the GameView. Entities
      * can be more abstract in nature (CollisionChecker, ObjectSpawner, ..),
      * in which case this method does not need to be overridden.
-     * @param gv The `DrawView` to draw to.
+     * @param gv The `GameView` to draw to.
      */
-    public void draw(DrawView gv) { }
+    public void draw(GameView gv) { }
 
     /**
      * Can be overridden if the entity wants to act on touch events.

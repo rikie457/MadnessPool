@@ -10,23 +10,6 @@ import java.util.ArrayList;
 public class GameModel implements Serializable {
 
     /**
-     * Override to set ticks per second.
-     * @return Number of times per second the `tick` methods should be called.
-     * This can be zero (for instance when updates made directly from event handlers,
-     * such as may be the case for non-animated board games), in which case
-     * `GameModel.event("updated")` should be called when appropriate.
-     */
-    public int ticksPerSecond() { return 180; }
-
-    /**
-     * Override to disable continous redraws.
-     * @return When true, the canvas will be redrawn 60 times per second, or as fast as the
-     * device can manage. If not, `event("updated")`` should be called manually. This is more
-     * appropriate for games without (fluent) animations that respond mostly on touch events.
-     */
-     public boolean continuousRedraw() { return true; }
-
-    /**
      * Width and height of the virtual view. This allows for some relatively easy resolution
      * independence.
      */
@@ -50,6 +33,23 @@ public class GameModel implements Serializable {
 
     // A canvas `Paint` to fill the black bars outside the virtual screen with.
     private Paint blackPaint = new Paint();
+
+    /**
+     * Override to set ticks per second.
+     * @return Number of times per second the `tick` methods should be called.
+     * This can be zero (for instance when updates made directly from event handlers,
+     * such as may be the case for non-animated board games), in which case
+     * `GameModel.event("updated")` should be called when appropriate.
+     */
+    public int ticksPerSecond() { return 180; }
+
+    /**
+     * Override to disable continous redraws.
+     * @return When true, the canvas will be redrawn 60 times per second, or as fast as the
+     * device can manage. If not, `event("updated")`` should be called manually. This is more
+     * appropriate for games without (fluent) animations that respond mostly on touch events.
+     */
+    public boolean continuousRedraw() { return true; }
 
     /**
      * Set the game event `Listener`. Setting a listener unpauses the game and immediately
@@ -78,9 +78,9 @@ public class GameModel implements Serializable {
     }
 
     /**
-     * @param virtualWidth The DrawView will scale, translate and crop to make the specified
+     * @param virtualWidth The GameView will scale, translate and crop to make the specified
      *                     virtual width fit on the actual screen.
-     * @param virtualHeight The DrawView will scale, translate and crop to make the specified
+     * @param virtualHeight The GameView will scale, translate and crop to make the specified
      *                      virtual height fit on the actual screen.
      */
     public GameModel(float virtualWidth, float virtualHeight) {
@@ -159,7 +159,7 @@ public class GameModel implements Serializable {
     }
 
     // Used by the GameCanvas to draw the current game state.
-    void draw(DrawView gv) {
+    void draw(GameView gv) {
         // Make sure the game state is up-to-date with the system time.
         emitTicks();
 
@@ -182,10 +182,10 @@ public class GameModel implements Serializable {
      * Override this to draw something other than black bars in case the aspect ratio of the
      * virtual screen differs from the actual screen.
      *
-     * @param dv The `DrawView` to paint to.
+     * @param gv The `GameView` to paint to.
      */
-    void drawBeforeClip(DrawView dv) {
-        dv.getCanvas().drawPaint(blackPaint);
+    void drawBeforeClip(GameView gv) {
+        gv.getCanvas().drawPaint(blackPaint);
     }
 
     public void handleTouch(MotionEvent me) {

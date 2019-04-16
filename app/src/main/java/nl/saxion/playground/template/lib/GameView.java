@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class DrawView extends View implements View.OnTouchListener {
+public class GameView extends View implements View.OnTouchListener {
 
     // While in an `onDraw` method, this references the `Canvas` to be painted to.
     private Canvas canvas;
@@ -43,17 +43,17 @@ public class DrawView extends View implements View.OnTouchListener {
     private Paint alphaPaint = new Paint();
 
 
-    public DrawView(Context context) {
+    public GameView(Context context) {
         super(context);
         setOnTouchListener(this);
     }
 
-    public DrawView(Context context, @Nullable AttributeSet attrs) {
+    public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         setOnTouchListener(this);
     }
 
-    public DrawView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public GameView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setOnTouchListener(this);
     }
@@ -61,7 +61,7 @@ public class DrawView extends View implements View.OnTouchListener {
     /**
      * Trigger drawing the given `gameModel` in this View. The actual drawing will happen
      * asynchronously, when Android decides to call our `onDraw` method.
-     * This also cause future touch events on this DrawView to be dispatched to `gameModel`.
+     * This also cause future touch events on this GameView to be dispatched to `gameModel`.
      * @param gameModel The `GameModel` to show.
      */
     public void show(GameModel gameModel) {

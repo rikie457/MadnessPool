@@ -5,14 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import nl.saxion.playground.template.lib.DrawView;
+import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.platformer.Platformer;
 import nl.saxion.playground.template.spaceshooter.SpaceShooter;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawView spaceShooterCanvas, platformerCanvas;
+    GameView spaceShooterCanvas, platformerCanvas;
     GameModel spaceShooter, platformer;
 
     @Override

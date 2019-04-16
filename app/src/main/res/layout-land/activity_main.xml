@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="@+id/platformer"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <nl.saxion.playground.template.lib.DrawView
+    <nl.saxion.playground.template.lib.GameView
         android:id="@+id/spaceShooter"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -49,7 +49,7 @@
         app:layout_constraintStart_toStartOf="@+id/spaceShooter"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <nl.saxion.playground.template.lib.DrawView
+    <nl.saxion.playground.template.lib.GameView
         android:id="@+id/platformer"
         android:layout_width="0dp"
         android:layout_height="0dp"

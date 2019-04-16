@@ -3,7 +3,7 @@ package nl.saxion.playground.template.platformer;
 import android.graphics.Bitmap;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.lib.DrawView;
+import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.R;
 
 public class Map extends Entity {
@@ -65,7 +65,7 @@ public class Map extends Entity {
     }
 
     @Override
-    public void draw(DrawView gv) {
+    public void draw(GameView gv) {
         // Calculate which tiles are visible at the current scroll position.
         float scrollX = game.scrollX;
         int startX = Math.max(0, (int)Math.floor(scrollX));

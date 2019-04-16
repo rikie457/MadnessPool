@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewTreeObserver;
 
-import nl.saxion.playground.template.lib.DrawView;
+import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.spaceshooter.SpaceShooter;
 
@@ -13,7 +13,7 @@ import nl.saxion.playground.template.spaceshooter.SpaceShooter;
 public class SpaceShooterActivity extends AppCompatActivity implements GameModel.Listener {
 
     SpaceShooter game;
-    DrawView drawView;
+    GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +21,8 @@ public class SpaceShooterActivity extends AppCompatActivity implements GameModel
 
         // In this example, we don't require a Layout or any other Android Views than
         // are custom GameCanvas.
-        drawView = new DrawView(this);
-        setContentView(drawView);
+        gameView = new GameView(this);
+        setContentView(gameView);
 
         // If a running game has been serialized (because it has been paused for
         // a long time, or because of an orientation change), recreate the Platformer
@@ -33,13 +33,13 @@ public class SpaceShooterActivity extends AppCompatActivity implements GameModel
             // Delay creating the SpaceShooter until we know the width and height of the
             // view. The game uses these dimensions to create a playing field that matches
             // the size of the actual screen.
-            ViewTreeObserver viewTreeObserver = drawView.getViewTreeObserver();
+            ViewTreeObserver viewTreeObserver = gameView.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    drawView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    gameView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                    game = new SpaceShooter((float)drawView.getWidth() / drawView.getHeight());
+                    game = new SpaceShooter((float) gameView.getWidth() / gameView.getHeight());
 
                     // If we're RESUMED at this point (we probably are) we should start the game immediately.
                     if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
@@ -73,7 +73,7 @@ public class SpaceShooterActivity extends AppCompatActivity implements GameModel
     @Override
     public void onGameEvent(String name) {
         // We're only expecting "new" and "update" events, so we'll invalidate
-        // the DrawView regardless...
-        drawView.show(game);
+        // the GameView regardless...
+        gameView.show(game);
     }
 }
