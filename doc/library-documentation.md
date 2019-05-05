@@ -173,7 +173,7 @@ This Android custom View uses the canvas to display graphics. This is done by as
 
 Drawing happens by asking each `Entity`, in order, to `draw(GameView)` itself. The `Entity` can:
 - Call `GameView.getCanvas()` to get access to the Android Canvas object, on which the usual methods like `drawRect(..)` are available.
-- Use the helper method `GameView.drawBitmap(...)`, to easily copy a `Bitmap` image to a specific position on the canvas, while optionally rotating and scaling it, and adding translucency. A `Bitmap` can be created from an Android resource using the `GameView.getBitmapFromResource(int resourceId)` helper method.
+- Use the helper method `GameView.drawBitmap(...)`, to easily copy a `Bitmap` image to a specific position on the canvas, while optionally rotating and scaling it, and adding translucency. A `Bitmap` can be created from an Android resource using the `GameView.getBitmapFromResource(int resourceId)` helper method. In case you only want to draw a part of the Bitmap (for instance when using sprite sheets), you can create a new Bitmap containing only the intended part using `Bitmap.createBitmap(..)`.
 
-In any cases, the `GameView` will arrange for the `Canvas` to be in such a state that it is `GameModel.getWidth()` wide and `GameModel.getHeight()` high.
+In both cases, the `GameView` will arrange for the `Canvas` to be in such a state that it is `GameModel.getWidth()` wide and `GameModel.getHeight()` high.
 
