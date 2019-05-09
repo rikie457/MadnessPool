@@ -1,17 +1,17 @@
-package nl.saxion.playground.template.platformer;
+package nl.saxion.playground.template.pool;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.platformer.Game;
 
 public class Activity extends AppCompatActivity implements Game.Listener {
 
     Game game;
     GameView gameView;
-    TextView scrollText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,9 @@ public class Activity extends AppCompatActivity implements Game.Listener {
 
         // In this example, we're overlaying a TextView over our canvas. We could add
         // any Android Views this way.
-        //setContentView(R.layout.activity_platformer);
+      //  setContentView(R.layout.activity_platformer);
 
         gameView = findViewById(R.id.gameView);
-        scrollText = findViewById(R.id.scrollText);
 
         // If a running game has been serialized (because it has been paused for
         // a long time, or because of an orientation change), recreate the Game
@@ -56,6 +55,6 @@ public class Activity extends AppCompatActivity implements Game.Listener {
 
     @Override
     public void scrollChanged() {
-        scrollText.setText(String.format("%.2f", game.scroller.x));
+
     }
 }
