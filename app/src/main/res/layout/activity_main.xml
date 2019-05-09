@@ -7,35 +7,15 @@
     android:background="@android:color/black"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/poolGameText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Pool Game"
-        android:textAlignment="viewStart"
-        android:textColor="#4CAF50"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/poolGame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <nl.saxion.playground.template.lib.GameView
         android:id="@+id/poolGame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_green_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/poolGameText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

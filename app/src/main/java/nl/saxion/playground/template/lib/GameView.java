@@ -71,7 +71,7 @@ public class GameView extends View implements View.OnTouchListener {
 
     private void init() {
         setOnTouchListener(this);
-        blackPaint.setColor(Color.BLACK);
+        blackPaint.setColor(Color.rgb(12, 110,63));
         blackPaint.setStyle(Paint.Style.FILL);
     }
 

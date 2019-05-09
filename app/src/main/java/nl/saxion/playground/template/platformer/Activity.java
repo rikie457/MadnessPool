@@ -7,11 +7,11 @@ import android.widget.TextView;
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
 
-public class Activity extends AppCompatActivity implements Game.Listener {
+public class Activity extends AppCompatActivity {
 
     Game game;
     GameView gameView;
-    TextView scrollText;
+;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,6 @@ public class Activity extends AppCompatActivity implements Game.Listener {
         //setContentView(R.layout.activity_platformer);
 
         gameView = findViewById(R.id.gameView);
-        scrollText = findViewById(R.id.scrollText);
 
         // If a running game has been serialized (because it has been paused for
         // a long time, or because of an orientation change), recreate the Game
@@ -44,7 +43,6 @@ public class Activity extends AppCompatActivity implements Game.Listener {
     protected void onResume() {
         super.onResume();
         gameView.setGame(game);
-        game.listeners.add(this);
     }
 
     @Override
@@ -52,10 +50,5 @@ public class Activity extends AppCompatActivity implements Game.Listener {
         super.onPause();
         gameView.setGame(null);
         game.listeners.remove(this);
-    }
-
-    @Override
-    public void scrollChanged() {
-        scrollText.setText(String.format("%.2f", game.scroller.x));
     }
 }

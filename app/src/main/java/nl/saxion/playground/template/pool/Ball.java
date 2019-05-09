@@ -2,14 +2,16 @@ package nl.saxion.playground.template.pool;
 
 
 import android.graphics.Paint;
+
 import java.util.ArrayList;
+
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 public class Ball extends Entity {
 
     public double speedX, speedY;
-    private double mass, x, y, width, height, radius, bx, by;
+    private double mass, x, y, width, height, radius, bx, by, friction;
     private int color;
     private ArrayList<Ball> balls;
     private Game game;
@@ -22,35 +24,21 @@ public class Ball extends Entity {
         this.width = width;
         this.height = height;
         this.radius = width / 2;
-        this.speedY = 0.2;
-        this.speedX = 0.3;
+        this.speedY = 125;
+        this.speedX = 125;
         this.bx = game.getWidth();
         this.by = game.getHeight();
         this.color = color;
-
+        this.mass = 10;
+        this.friction = .9;
     }
-
-//    public Ball(double x, double y, double width, double height, Color color, double bx, double by, double speedY, double speedX, double mass, ArrayList<Ball> balls, String type) {
-//        this.x = x;
-//        this.y = y;
-//        this.width = width;
-//        this.height = height;
-//        this.color = color;
-//        this.radius = width / 2;
-//        this.speedY = speedY;
-//        this.speedX = speedX;
-//        this.bx = bx;
-//        this.by = by;
-//        this.mass = mass;
-//        this.balls = balls;
-//        this.type = type;
-//    }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
         for (int i = 0; i < balls.size(); i++) {
             double distSqr = Utility.getDistance(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
             double xd = Utility.getXDistance(this.getX(), balls.get(i).getX());
             double yd = Utility.getYDistance(this.getY(), balls.get(i).getY());
+
             if (this == balls.get(i)) {
                 continue;
             }
@@ -105,7 +93,7 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
-        //checkCollisionBall(this.balls);
+        checkCollisionBall(this.balls);
         checkCollisionWall();
     }
 

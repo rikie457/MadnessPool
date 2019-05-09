@@ -22,14 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         poolGameCanvas = findViewById(R.id.poolGame);
         poolGame = new Game();
-
-        findViewById(R.id.poolGameText).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Activity.class));
-            }
-        });
-
     }
 
     @Override
