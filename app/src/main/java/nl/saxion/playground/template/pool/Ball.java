@@ -1,11 +1,8 @@
 package nl.saxion.playground.template.pool;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
+
 import android.graphics.Paint;
-
 import java.util.ArrayList;
-
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
@@ -13,7 +10,6 @@ public class Ball extends Entity {
 
     public double speedX, speedY;
     private double mass, x, y, width, height, radius, bx, by;
-    private String type;
     private int color;
     private ArrayList<Ball> balls;
     private Game game;
@@ -109,18 +105,15 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
-        checkCollisionBall(balls);
+        //checkCollisionBall(this.balls);
         checkCollisionWall();
     }
 
     @Override
     public void draw(GameView gv) {
-        super.draw(gv);
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(this.color);
-
         gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, paint);
     }
 

@@ -43,7 +43,7 @@ public class Game extends GameModel {
     public void start() {
         for(int i = 0; i < 16; i++){
             Ball ball = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 10, 10, Color.GREEN);
-            balls.add(ball);
+            this.balls.add(ball);
             addEntity(ball);
         }
 
