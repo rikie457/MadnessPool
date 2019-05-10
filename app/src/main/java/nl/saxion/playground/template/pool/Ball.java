@@ -11,7 +11,7 @@ import nl.saxion.playground.template.lib.GameView;
 public class Ball extends Entity {
 
     public double speedX, speedY;
-    private double mass, x, y, width, height, radius, bx, by, friction;
+    private double mass, x, y, width, height, radius, bx, by, friction, energyloss;
     private int color;
     private ArrayList<Ball> balls;
     private Game game;
@@ -31,6 +31,7 @@ public class Ball extends Entity {
         this.color = color;
         this.mass = 10;
         this.friction = .9;
+        this.energyloss = .65;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
@@ -66,28 +67,39 @@ public class Ball extends Entity {
     }
 
     private void checkCollisionWall() {
-        this.x = x + speedX;
-        this.y = y + speedY;
-
-        if (this.x - this.radius < 0) {
+        System.out.println("SpeedX " + this.speedX + "SpeedY " + this.speedY);
+        if (this.x + this.speedX - this.radius < 0) {
             Info.addToWallCollisionCounter();
-            this.speedX = -this.speedX;
             this.x = this.radius;
-        } else if (this.x + this.radius > this.bx) {
+            this.speedX = -this.speedX;
+        } else if (this.x + this.speedX > this.bx - this.radius - 1) {
             Info.addToWallCollisionCounter();
             this.speedX = -this.speedX;
             this.x = this.bx - this.radius;
+            this.speedX *= this.energyloss;
         }
+//        else {
+//            this.x += this.speedX;
+//            this.speedX *= this.friction;
+//            if (Math.abs(this.speedX) < .8) {
+//                this.speedX = 0;
 
-        if (this.y - this.radius < 0) {
+        if (this.y + this.speedY - this.radius < 0) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
             this.y = this.radius;
-        } else if (this.y + this.radius > this.by) {
+        } else if (this.y + this.speedY > this.by - this.radius - 1) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
             this.y = this.by - this.radius;
+            this.speedY *= this.energyloss;
         }
+//        else {
+//            this.y += this.speedY;
+//            this.speedY *= this.friction;
+//            if (Math.abs(this.speedY) < .8) {
+//                this.speedY = 0;
+//            }
     }
 
 
