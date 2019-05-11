@@ -1,22 +1,29 @@
 package nl.saxion.playground.template.pool;
 
 
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.lib.Entity;
+import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 
 public class Ball extends Entity {
 
+    public static int lastisertedid = 1;
     public double speedX, speedY;
     private double mass, x, y, width, height, radius, bx, by, friction, energyloss;
-    private int color;
+    private int color, id;
     private ArrayList<Ball> balls;
     private Game game;
 
     public Ball(Game game, ArrayList<Ball> balls, double x, double y, double width, double height, int color) {
+        this.id = lastisertedid;
+        lastisertedid++;
         this.game = game;
         this.balls = balls;
         this.x = x;
@@ -30,11 +37,12 @@ public class Ball extends Entity {
         this.by = game.getHeight();
         this.color = color;
         this.mass = 10;
-        this.friction = .9;
+        this.friction = .9999;
         this.energyloss = .65;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
+
         for (int i = 0; i < balls.size(); i++) {
             double distSqr = Utility.getDistance(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
             double xd = Utility.getXDistance(this.getX(), balls.get(i).getX());
@@ -67,39 +75,42 @@ public class Ball extends Entity {
     }
 
     private void checkCollisionWall() {
-        System.out.println("SpeedX " + this.speedX + "SpeedY " + this.speedY);
-        if (this.x + this.speedX - this.radius < 0) {
+        this.x = x + speedX;
+        this.y = y + speedY;
+
+        if (this.x - this.radius < 0) {
             Info.addToWallCollisionCounter();
             this.x = this.radius;
             this.speedX = -this.speedX;
-        } else if (this.x + this.speedX > this.bx - this.radius - 1) {
+        } else if (this.x + this.radius > this.bx) {
             Info.addToWallCollisionCounter();
             this.speedX = -this.speedX;
             this.x = this.bx - this.radius;
             this.speedX *= this.energyloss;
+        } else {
+            this.x += this.speedX;
+            this.speedX *= this.friction;
+            if (Math.abs(this.speedX) < .8) {
+                this.speedX = 0;
+            }
         }
-//        else {
-//            this.x += this.speedX;
-//            this.speedX *= this.friction;
-//            if (Math.abs(this.speedX) < .8) {
-//                this.speedX = 0;
 
-        if (this.y + this.speedY - this.radius < 0) {
+        if (this.y - this.radius < 0) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
             this.y = this.radius;
-        } else if (this.y + this.speedY > this.by - this.radius - 1) {
+        } else if (this.y + this.radius > this.by) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
             this.y = this.by - this.radius;
             this.speedY *= this.energyloss;
+        } else {
+            this.y += this.speedY;
+            this.speedY *= this.friction;
+            if (Math.abs(this.speedY) < .8) {
+                this.speedY = 0;
+            }
         }
-//        else {
-//            this.y += this.speedY;
-//            this.speedY *= this.friction;
-//            if (Math.abs(this.speedY) < .8) {
-//                this.speedY = 0;
-//            }
     }
 
 
@@ -110,11 +121,95 @@ public class Ball extends Entity {
     }
 
     @Override
+    public void handleTouch(GameModel.Touch touch, MotionEvent event) {
+        double oldX = 0, oldY = 0, newX = 0, newY = 0;
+        long timerTime = 0, startTime = 0;
+
+
+        if (this.id == 16) {
+            this.x = touch.x;
+            this.y = touch.y;
+
+//            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//
+//                oldX = event.getX();
+//                oldY = event.getY();
+//                //start timer
+//                startTime = event.getEventTime();
+//
+//            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+//
+//                //long timerTime = getTime between two event down to Up
+//                newX = event.getX();
+//                newY = event.getY();
+//                timerTime = event.getEventTime() - startTime;
+//
+//                float distance = (float) Math.sqrt((newX - oldX) * (newX - oldX) + (newY - oldY) * (newY - oldY));
+//                float speed = distance / timerTime;
+//
+//                this.speedY = speed;
+//                this.speedX = speed;
+//
+//
+//            }
+        }
+    }
+
+    @Override
     public void draw(GameView gv) {
+        //Draw ball
         Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
         paint.setColor(this.color);
         gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, paint);
+
+        //Draw number of ball
+        if (id != -1) {
+            Rect bounds = new Rect();
+            String text = Integer.toString(this.id);
+            paint.setTextSize(24f);
+            paint.setFakeBoldText(true);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setAntiAlias(true);
+            paint.setColor(Color.WHITE);
+            paint.getTextBounds(text, 0, text.length(), bounds);
+            gv.getCanvas().drawText(text, (float) this.x, (float) this.y, paint);
+        }
+
+
+        // drawing the stripes
+//        double stripeWidth = 2 * (int) (Math.sqrt(radius * radius - (radius / 2) * (radius / 2)));
+//        double offset = radius - stripeWidth / 2;
+
+
+//        final RectF ovaltop = new RectF();
+//        final RectF ovalbottom = new RectF();
+//        float center_x, center_y;
+//        center_x = (float) this.x;
+//        center_y = (float) this.y;
+//
+//        paint.setColor(Color.WHITE);
+//        ovalbottom.set((float) (center_x - radius),
+//                (float) (center_y - radius),
+//                (float) (center_x + radius),
+//                (float) (center_y + radius));
+//
+//        ovaltop.set((float) (center_x - radius),
+//                (float) (center_y - radius),
+//                (float) (center_x + radius),
+//                (float) (center_y + radius));
+//
+//        gv.getCanvas().drawArc(ovalbottom, 0, 180, false, paint);
+//        gv.getCanvas().drawArc(ovaltop, 180, 180, false, paint);
+        // gv.getCanvas().fillArc((int) (this.x - radius + offset), (int) (this.y - radius), (int) (stripeWidth), (int) (radius), 0, 180);
+        // gv.getCanvas().fillArc((int) (this.x - radius + offset), (int) (this.y), (int) (stripeWidth), (int) (radius), 0, -180);
+//
+        // drawing the outline
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        gv.getCanvas().drawCircle((float) (this.x), (float) (this.y), (float) (this.radius), paint);
+
+
     }
 
 

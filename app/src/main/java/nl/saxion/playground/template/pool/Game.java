@@ -39,22 +39,22 @@ public class Game extends GameModel {
     @Override
     public void start() {
 
-        Ball ball1 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.YELLOW);
-        Ball ball2 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.BLUE);
-        Ball ball3 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.RED);
-        Ball ball4 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.MAGENTA);
-        Ball ball5 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.rgb(255, 102, 0));
-        Ball ball6 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.GREEN);
-        Ball ball7 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.rgb(143, 66, 0));
-        Ball ball8 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.BLACK);
-        Ball ball9 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.YELLOW);
-        Ball ball10 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.BLUE);
-        Ball ball11 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.RED);
-        Ball ball12 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.MAGENTA);
-        Ball ball13 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.rgb(255, 102, 0));
-        Ball ball14 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.GREEN);
-        Ball ball15 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.rgb(143, 66, 0));
-        Ball ball16 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 50, 50, Color.WHITE);
+        Ball ball1 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.YELLOW);
+        Ball ball2 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.BLUE);
+        Ball ball3 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.RED);
+        Ball ball4 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.MAGENTA);
+        Ball ball5 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.rgb(255, 102, 0));
+        Ball ball6 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.GREEN);
+        Ball ball7 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.rgb(143, 66, 0));
+        Ball ball8 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.BLACK);
+        Ball ball9 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.YELLOW);
+        Ball ball10 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.BLUE);
+        Ball ball11 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.RED);
+        Ball ball12 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.MAGENTA);
+        Ball ball13 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.rgb(255, 102, 0));
+        Ball ball14 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.GREEN);
+        Ball ball15 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.rgb(143, 66, 0));
+        Ball ball16 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, this.getHeight()), 75, 75, Color.WHITE);
 
         this.balls.add(ball1);
         this.balls.add(ball2);
