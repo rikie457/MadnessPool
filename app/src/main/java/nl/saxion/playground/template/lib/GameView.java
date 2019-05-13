@@ -14,6 +14,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.math.BigInteger;
+
+import nl.saxion.playground.template.pool.Info;
+
 
 public class GameView extends View implements View.OnTouchListener {
 
@@ -45,6 +49,8 @@ public class GameView extends View implements View.OnTouchListener {
 
     // A canvas `Paint` to fill the black bars outside the virtual screen with.
     private Paint blackPaint = new Paint();
+
+    private Paint textPaint = new Paint();
 
     // The time in ms at which the tick() methods were last invoked.
     // When set to 0, the game is paused.
@@ -109,10 +115,6 @@ public class GameView extends View implements View.OnTouchListener {
         this.gameModel = gameModel;
         viewMatrix = null; // needs to be recalculated
         setPaused(gameModel == null);
-        if (getCanvas() != null) {
-            getCanvas().translate(getWidth() / 2, getHeight() / 2);
-            getCanvas().scale(1, -1);
-        }
         invalidate();
     }
 
@@ -256,6 +258,12 @@ public class GameView extends View implements View.OnTouchListener {
 
         // Paint the whole of the canvas (including black bars) black
         canvas.drawPaint(blackPaint);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(28);
+        BigInteger colissions = Info.ballcollisionCounter;
+        canvas.drawText(colissions.toString(), getWidth() / 2, getHeight() / 2, textPaint);
+        canvas.drawText("Tycho Engberink 464544", getWidth() / 2 - 120, getHeight() / 2 + 30, textPaint);
+
 
         // Based on these calculations, we can configure the canvas.
         canvas.setMatrix(viewMatrix);

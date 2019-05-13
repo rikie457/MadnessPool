@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
-import nl.saxion.playground.template.platformer.Game;
 
 public class Activity extends AppCompatActivity {
 

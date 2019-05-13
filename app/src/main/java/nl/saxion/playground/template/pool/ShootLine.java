@@ -16,14 +16,10 @@ public class ShootLine extends Entity {
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
     public void draw(GameView gv) {
         if (visible) {
             Paint paint = new Paint();
+            paint.setStrokeWidth(4);
             paint.setColor(Color.WHITE);
             gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, paint);
         }
