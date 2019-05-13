@@ -20,6 +20,7 @@ public class Ball extends Entity {
     private int color, id;
     private ArrayList<Ball> balls;
     private Game game;
+    private ShootLine line;
 
     public Ball(Game game, ArrayList<Ball> balls, double x, double y, double width, double height, int color) {
         this.id = lastisertedid;
@@ -31,14 +32,35 @@ public class Ball extends Entity {
         this.width = width;
         this.height = height;
         this.radius = width / 2;
-        this.speedY = 125;
-        this.speedX = 125;
+        this.speedY = 0;
+        this.speedX = 0;
         this.bx = game.getWidth();
         this.by = game.getHeight();
         this.color = color;
         this.mass = 10;
-        this.friction = .9999;
-        this.energyloss = .65;
+        this.friction = .9975;
+        this.energyloss = .900;
+    }
+
+    public Ball(Game game, ArrayList<Ball> balls, double x, double y, double width, double height, int color, ShootLine line) {
+        this.id = lastisertedid;
+        lastisertedid++;
+        this.game = game;
+        this.balls = balls;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.radius = width / 2;
+        this.speedY = 0;
+        this.speedX = 0;
+        this.bx = game.getWidth();
+        this.by = game.getHeight();
+        this.color = color;
+        this.mass = 10;
+        this.friction = .9975;
+        this.energyloss = .900;
+        this.line = line;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
@@ -90,7 +112,7 @@ public class Ball extends Entity {
         } else {
             this.x += this.speedX;
             this.speedX *= this.friction;
-            if (Math.abs(this.speedX) < .8) {
+            if (Math.abs(this.speedX) < .2) {
                 this.speedX = 0;
             }
         }
@@ -107,7 +129,7 @@ public class Ball extends Entity {
         } else {
             this.y += this.speedY;
             this.speedY *= this.friction;
-            if (Math.abs(this.speedY) < .8) {
+            if (Math.abs(this.speedY) < .2) {
                 this.speedY = 0;
             }
         }
@@ -122,36 +144,41 @@ public class Ball extends Entity {
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        double oldX = 0, oldY = 0, newX = 0, newY = 0;
-        long timerTime = 0, startTime = 0;
+        if (this.id == 16 && this.line != null) {
+
+            float oldX = 0, oldY = 0, newX = 0, newY = 0;
+
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE);
 
 
-        if (this.id == 16) {
-            this.x = touch.x;
-            this.y = touch.y;
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-//            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//
-//                oldX = event.getX();
-//                oldY = event.getY();
-//                //start timer
-//                startTime = event.getEventTime();
-//
-//            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//
-//                //long timerTime = getTime between two event down to Up
-//                newX = event.getX();
-//                newY = event.getY();
-//                timerTime = event.getEventTime() - startTime;
-//
-//                float distance = (float) Math.sqrt((newX - oldX) * (newX - oldX) + (newY - oldY) * (newY - oldY));
-//                float speed = distance / timerTime;
-//
-//                this.speedY = speed;
-//                this.speedX = speed;
-//
-//
-//            }
+                oldX = touch.x;
+                oldY = touch.y;
+
+                System.out.println("X " + touch.x);
+                System.out.println("Y " + touch.y);
+
+
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+
+                newX = touch.x;
+                newY = touch.y;
+
+                System.out.println("X " + touch.x);
+                System.out.println("Y " + touch.y);
+
+
+
+
+
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                newX = touch.x;
+                newY = touch.y;
+
+            }
         }
     }
 
