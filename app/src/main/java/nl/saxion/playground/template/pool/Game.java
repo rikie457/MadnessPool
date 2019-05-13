@@ -39,7 +39,7 @@ public class Game extends GameModel {
     @Override
     public void start() {
 
-        ShootLine line = new ShootLine();
+        ShootLine line = new ShootLine(false);
         Ball ball1 = new Ball(this, this.balls, 517, Utility.randomDoubleFromRange(0 , getHeight()), 75, 75, Color.YELLOW);
         Ball ball2 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0 , getHeight()), 75, 75, Color.BLUE);
         Ball ball3 = new Ball(this, this.balls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0 , getHeight()), 75, 75, Color.RED);

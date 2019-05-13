@@ -12,11 +12,14 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 
+import static java.lang.Math.PI;
+
 public class Ball extends Entity {
 
     public static int lastisertedid = 1;
     public double speedX, speedY;
-    private double mass, x, y, width, height, radius, bx, by, friction, energyloss;
+    private boolean moving;
+    private double mass, x, y, width, height, radius, bx, by, friction, energyloss, oldX, oldY, newX, newY;
     private int color, id;
     private ArrayList<Ball> balls;
     private Game game;
@@ -138,13 +141,19 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
+        if (this.speedX > 0 && this.speedY > 0) {
+            this.moving = true;
+        } else {
+            this.moving = false;
+        }
         checkCollisionBall(this.balls);
         checkCollisionWall();
+
     }
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.id == 16 && this.line != null) {
+        if (this.id == 16 && this.line != null && !this.moving) {
 
             float oldX = 0, oldY = 0, newX = 0, newY = 0;
 
@@ -153,31 +162,27 @@ public class Ball extends Entity {
 
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-                oldX = touch.x;
-                oldY = touch.y;
-
-                System.out.println("X " + touch.x);
-                System.out.println("Y " + touch.y);
-
-
+                this.oldX = (float) this.x;
+                this.oldY = (float) this.y;
+                this.line.setX((float) this.oldX);
+                this.line.setY((float) this.oldY);
+                this.line.setNewX((float) this.newX);
+                this.line.setNewY((float) this.newY);
+                this.line.setVisible(true);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 
-                newX = touch.x;
-                newY = touch.y;
+                this.newX = touch.x;
+                this.newY = touch.y;
 
-                System.out.println("X " + touch.x);
-                System.out.println("Y " + touch.y);
-
-
-
-
+                this.line.setNewX((float) this.newX);
+                this.line.setNewY((float) this.newY);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                double mag = Math.abs(Utility.getDistance(this.x * .001, this.y * .001, touch.x * .001, touch.y * .001));
+                this.line.setVisible(false);
 
-                newX = touch.x;
-                newY = touch.y;
-
+                this.speedX = (this.x * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)) * mag * .01);
+                this.speedY = (this.y * Math.sin(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)) * mag * .01);
             }
         }
     }

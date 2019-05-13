@@ -71,12 +71,14 @@ public class GameView extends View implements View.OnTouchListener {
 
     private void init() {
         setOnTouchListener(this);
-        blackPaint.setColor(Color.rgb(12, 110,63));
+        blackPaint.setColor(Color.rgb(12, 110, 63));
         blackPaint.setStyle(Paint.Style.FILL);
+
     }
 
     /**
      * Pause or unpause the game. This happens automatically from `setListener`.
+     *
      * @param paused When true, stop ticks. When false, enable ticks.
      */
     public void setPaused(boolean paused) {
@@ -88,15 +90,17 @@ public class GameView extends View implements View.OnTouchListener {
     private void emitTicks() {
         if (gameModel == null || lastTickTime == 0) return; // the game is paused
 
-        while(lastTickTime < System.currentTimeMillis()) {
-            lastTickTime += 1000f / gameModel.ticksPerSecond();;
-            for(Entity go : gameModel.entities) go.tick();
+        while (lastTickTime < System.currentTimeMillis()) {
+            lastTickTime += 1000f / gameModel.ticksPerSecond();
+            ;
+            for (Entity go : gameModel.entities) go.tick();
         }
     }
 
 
     /**
      * Configure which GameModel to show. Also unpaused (or pauses, in case of `null`) the game.
+     *
      * @param gameModel The `GameModel` to show. Can be `null`. A `GameModel` should not have
      *                  more than one `GameView` attached simultaneously, as each `GameView`
      *                  would be calling `tick()`s, causing the game to speed up.
@@ -105,6 +109,10 @@ public class GameView extends View implements View.OnTouchListener {
         this.gameModel = gameModel;
         viewMatrix = null; // needs to be recalculated
         setPaused(gameModel == null);
+        if (getCanvas() != null) {
+            getCanvas().translate(getWidth() / 2, getHeight() / 2);
+            getCanvas().scale(1, -1);
+        }
         invalidate();
     }
 
@@ -133,17 +141,18 @@ public class GameView extends View implements View.OnTouchListener {
 
     /**
      * Draw a bitmap to the GameCanvas canvas.
-     * @param bitmap The Bitmap to draw. Can be loaded through `getBitmapFromResource()`, for instance.
-     * @param left Distance from the left of the canvas in virtual pixels.
-     * @param top Distance from the top of the canvas in virtual pixels.
-     * @param width Width in virtual pixels. When -1, the width is derived from the height, or from the natural size of the bitmap.
-     * @param height Height in virtual pixels. When -1, the height is derived from the width.
-     * @param angle Angle in degrees (0-360).
-     * @param alpha Opacity to draw with (0 is fully transparent, 255 is fully visible).
      *
-     * In case you only want to draw a part of the Bitmap (for instance when using sprite sheets),
-     * you can create a new Bitmap containing only the intended part using Bitmap.createBitmap(..)
-     * https://developer.android.com/reference/android/graphics/Bitmap.html#createBitmap(android.graphics.Bitmap,%20int,%20int,%20int,%20int)
+     * @param bitmap The Bitmap to draw. Can be loaded through `getBitmapFromResource()`, for instance.
+     * @param left   Distance from the left of the canvas in virtual pixels.
+     * @param top    Distance from the top of the canvas in virtual pixels.
+     * @param width  Width in virtual pixels. When -1, the width is derived from the height, or from the natural size of the bitmap.
+     * @param height Height in virtual pixels. When -1, the height is derived from the width.
+     * @param angle  Angle in degrees (0-360).
+     * @param alpha  Opacity to draw with (0 is fully transparent, 255 is fully visible).
+     *               <p>
+     *               In case you only want to draw a part of the Bitmap (for instance when using sprite sheets),
+     *               you can create a new Bitmap containing only the intended part using Bitmap.createBitmap(..)
+     *               https://developer.android.com/reference/android/graphics/Bitmap.html#createBitmap(android.graphics.Bitmap,%20int,%20int,%20int,%20int)
      */
     public void drawBitmap(Bitmap bitmap, float left, float top, float width, float height, float angle, int alpha) {
 
@@ -152,18 +161,18 @@ public class GameView extends View implements View.OnTouchListener {
 
         canvas.save();
 
-        if (angle!=0) {
-            canvas.rotate(angle, left+width/2, top+height/2);
+        if (angle != 0) {
+            canvas.rotate(angle, left + width / 2, top + height / 2);
         }
 
         canvas.translate(left, top);
 
         canvas.scale(width / bitmap.getWidth(), height / bitmap.getHeight());
 
-        if (alpha<255) {
+        if (alpha < 255) {
             alphaPaint.setAlpha(alpha);
         }
-        canvas.drawBitmap(bitmap, 0, 0, alpha<255 ? alphaPaint : null);
+        canvas.drawBitmap(bitmap, 0, 0, alpha < 255 ? alphaPaint : null);
 
         canvas.restore();
     }
@@ -198,13 +207,13 @@ public class GameView extends View implements View.OnTouchListener {
 
         float scale = Math.max(virtualWidth / actualWidth, virtualHeight / actualHeight);
         if (scale < 0.99 || scale > 1.01) {
-            viewMatrix.postScale(1f/scale,1f/scale);
+            viewMatrix.postScale(1f / scale, 1f / scale);
 
-            float extraW = actualWidth*scale - virtualWidth;
-            float extraH = actualHeight*scale - virtualHeight;
+            float extraW = actualWidth * scale - virtualWidth;
+            float extraH = actualHeight * scale - virtualHeight;
 
             if (extraW > 1f || extraH > 1f) {
-                viewMatrix.postTranslate(extraW/scale / 2f, extraH/scale / 2f);
+                viewMatrix.postTranslate(extraW / scale / 2f, extraH / scale / 2f);
                 clipRect = new RectF(0, 0, virtualWidth, virtualHeight);
             }
         }
@@ -263,23 +272,23 @@ public class GameView extends View implements View.OnTouchListener {
 
         // We'll iterate using first/higher, as it will allow the TreeSet
         // to be modified while iterating it.
-        for(Entity go : gameModel.entities) go.draw(this);
+        for (Entity go : gameModel.entities) go.draw(this);
 
         // After this, nobody should be drawing to the canvas anymore.
         this.canvas = null;
 
         // If the game is not paused, schedule the next redraw immediately.
         // Android will limit redraws to 60 times per second.
-        if (lastTickTime!=0) invalidate();
+        if (lastTickTime != 0) invalidate();
 
         // Log FPS counter and hardware acceleration status.
         frameCount++;
         double now = System.currentTimeMillis();
-        if (lastFpsLogTime==0d) {
+        if (lastFpsLogTime == 0d) {
             lastFpsLogTime = now;
-            Log.i("GameCanvas", "hardware acceleration: "+(canvas.isHardwareAccelerated() ? "enabled" : "*DISABLED*"));
+            Log.i("GameCanvas", "hardware acceleration: " + (canvas.isHardwareAccelerated() ? "enabled" : "*DISABLED*"));
         }
-        double delta = (now-lastFpsLogTime) / 1000d;
+        double delta = (now - lastFpsLogTime) / 1000d;
         if (delta >= 3) {
             Log.i("GameCanvas", String.format("%.1f fps", frameCount / delta));
             frameCount = 0;
