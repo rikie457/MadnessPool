@@ -24,17 +24,19 @@ public class Ball extends Entity {
     private int color, id;
     private ArrayList<Ball> balls;
     private ArrayList<Hole> holes;
+    private ArrayList<Ball> sunkenBalls;
     private Game game;
     private ShootLine line;
     private Bitmap bitmap;
     private int image;
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
         this.balls = balls;
         this.holes = holes;
+        this.sunkenBalls = sunkenBalls;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -42,20 +44,21 @@ public class Ball extends Entity {
         this.radius = width / 2;
         this.speedY = 0;
         this.speedX = 0;
-        this.bx = game.getWidth();
-        this.by = game.getHeight();
+        this.bx = game.getPlayWidth();
+        this.by = game.getPlayHeight();
         this.mass = 10;
         this.friction = .9975;
         this.energyloss = .900;
         this.image = image;
     }
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image, ShootLine line) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, ShootLine line) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
         this.balls = balls;
         this.holes = holes;
+        this.sunkenBalls = sunkenBalls;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -63,8 +66,8 @@ public class Ball extends Entity {
         this.radius = width / 2;
         this.speedY = 0;
         this.speedX = 0;
-        this.bx = game.getWidth();
-        this.by = game.getHeight();
+        this.bx = game.getPlayWidth();
+        this.by = game.getPlayHeight();
         this.mass = 10;
         this.friction = .9975;
         this.energyloss = .900;
@@ -111,8 +114,8 @@ public class Ball extends Entity {
     }
 
     private void checkCollisionWall() {
-        this.x = x + speedX;
-        this.y = y + speedY;
+        this.x += this.speedX;
+        this.y += this.speedY;
 
         if (this.x - this.radius < 0) {
             Info.addToWallCollisionCounter();
@@ -126,7 +129,7 @@ public class Ball extends Entity {
         } else {
             this.x += this.speedX;
             this.speedX *= this.friction;
-            if (Math.abs(this.speedX) < .2) {
+            if (Math.abs(this.speedX) < .2 && Math.abs(this.speedY) < .2) {
                 this.speedX = 0;
             }
         }
@@ -143,7 +146,7 @@ public class Ball extends Entity {
         } else {
             this.y += this.speedY;
             this.speedY *= this.friction;
-            if (Math.abs(this.speedY) < .2) {
+            if (Math.abs(this.speedY) < .2 && Math.abs(this.speedX) < .2) {
                 this.speedY = 0;
             }
         }
@@ -154,6 +157,7 @@ public class Ball extends Entity {
             if (this.id != 16) {
                 if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX() + this.holes.get(i).getRadius(), this.holes.get(i).getY() + this.holes.get(i).getRadius())) - (this.radius + this.holes.get(i).getRadius()) <= 0) {
                     this.game.removeEntity(this);
+                    this.sunkenBalls.add(this);
                     this.balls.remove(this);
                 }
             }
@@ -180,7 +184,7 @@ public class Ball extends Entity {
                 this.oldX = (float) this.x;
                 this.oldY = (float) this.y;
                 this.line.setX((float) this.oldX + (float) this.radius);
-                this.line.setY((float) this.oldY  + (float) this.radius);
+                this.line.setY((float) this.oldY + (float) this.radius);
                 this.line.setNewX((float) this.newX);
                 this.line.setNewY((float) this.newY);
                 this.line.setVisible(true);
@@ -319,5 +323,15 @@ public class Ball extends Entity {
         return this.radius;
     }
 
+    public double getWidth() {
+        return width;
+    }
 
+    public double getHeight() {
+        return height;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }
