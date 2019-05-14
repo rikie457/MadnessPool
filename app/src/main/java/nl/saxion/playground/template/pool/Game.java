@@ -28,7 +28,7 @@ public class Game extends GameModel {
     @Override
     public void start() {
         ShootLine line = new ShootLine(false);
-        Hole hole = new Hole(this, this.getWidth() / 2, this.getHeight() / 2);
+        Hole hole = new Hole(this, 200, 200);
         Ball ball1 = new Ball(this, this.balls, this.holes, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1);
         Ball ball2 = new Ball(this, this.balls, this.holes, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2);
         Ball ball3 = new Ball(this, this.balls, this.holes, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball3);

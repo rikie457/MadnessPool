@@ -151,8 +151,8 @@ public class Ball extends Entity {
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
-            if(this.id != 16) {
-                if (Utility.getXDistance(this.x, this.holes.get(i).getX()) - this.radius <= 0 && Utility.getYDistance(this.y, this.holes.get(i).getY()) - this.radius <= 0) {
+            if (this.id != 16) {
+                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX() + this.holes.get(i).getRadius(), this.holes.get(i).getY() + this.holes.get(i).getRadius())) - (this.radius + this.holes.get(i).getRadius()) <= 0) {
                     this.game.removeEntity(this);
                     this.balls.remove(this);
                 }
@@ -164,9 +164,8 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
-        checkCollisionBall(this.balls);
-        checkCollisionHole();
         checkCollisionWall();
+        checkCollisionBall(this.balls);
         checkCollisionHole();
     }
 
@@ -180,8 +179,8 @@ public class Ball extends Entity {
 
                 this.oldX = (float) this.x;
                 this.oldY = (float) this.y;
-                this.line.setX((float) this.oldX);
-                this.line.setY((float) this.oldY);
+                this.line.setX((float) this.oldX + (float) this.radius);
+                this.line.setY((float) this.oldY  + (float) this.radius);
                 this.line.setNewX((float) this.newX);
                 this.line.setNewY((float) this.newY);
                 this.line.setVisible(true);
