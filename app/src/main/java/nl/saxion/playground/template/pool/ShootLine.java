@@ -37,6 +37,10 @@ public class ShootLine extends Entity {
         this.visible = visible;
     }
 
+    public boolean getVisible(){
+        return this.visible;
+    }
+
     public void setNewX(float newX) {
         this.newX = newX;
     }

@@ -65,7 +65,22 @@ public class Game extends GameModel {
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15);
         Ball ball16 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, line);
 
+//        double cx = getPlayWidth() / 2, cy = getPlayHeight() / 2, drawn = 0, rowLen = 1;
+//        for (int i = 0; i < this.balls.size(); i++) {
+//            this.balls.get(i).setX(cx);
+//            this.balls.get(i).setY(cy);
+//            drawn++;
+//            if (drawn == rowLen) {
+//                cx = this.balls.get(i).getX() + (this.balls.get(i).getRadius() * 2 * Math.cos(-60 / 180 * Math.PI)) * rowLen;
+//                cy = this.balls.get(i).getY() + (this.balls.get(i).getRadius() * 2 * Math.sin(-60 / 180 * Math.PI)) * rowLen;
+//                drawn = 0;
+//                rowLen++;
+//            }
+//        }
+
+
         this.holes.add(hole);
+
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
@@ -82,6 +97,23 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
+
+//        this.sunkeBalls.add(ball1);
+//        this.sunkeBalls.add(ball2);
+//        this.sunkeBalls.add(ball3);
+//        this.sunkeBalls.add(ball4);
+//        this.sunkeBalls.add(ball5);
+//        this.sunkeBalls.add(ball6);
+//        this.sunkeBalls.add(ball7);
+//        this.sunkeBalls.add(ball8);
+//        this.sunkeBalls.add(ball9);
+//        this.sunkeBalls.add(ball10);
+//        this.sunkeBalls.add(ball11);
+//        this.sunkeBalls.add(ball12);
+//        this.sunkeBalls.add(ball13);
+//        this.sunkeBalls.add(ball14);
+//        this.sunkeBalls.add(ball15);
+//        this.sunkeBalls.add(ball16);
 
         addEntity(gui);
         addEntity(hole);

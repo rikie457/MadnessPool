@@ -50,10 +50,10 @@ public class Gui extends Entity {
         if (this.bitmap == null) {
             this.bitmap = gv.getBitmapFromResource(R.drawable.shelf);
         }
-        gv.drawBitmap(bitmap, (float) this.x + gv.getWidth() / 2 - 500, (float) this.y, 1000, 160);
+        gv.drawBitmap(bitmap, (float) this.x + gv.getWidth() / 2 - 600, (float) this.y, 1200, 160);
         if (this.scoredBalls.size() != 0) {
             for (int i = 0; i < this.scoredBalls.size(); i++) {
-                gv.drawBitmap(this.scoredBalls.get(i).getBitmap(), (float) this.x + gv.getWidth() / 2 - 500 + this.scoredBalls.size() * (float) this.scoredBalls.get(i).getWidth() + 10, (float) this.y - (float) this.scoredBalls.get(i).getRadius(), (float) this.scoredBalls.get(i).getWidth(), (float) this.scoredBalls.get(i).getHeight());
+                gv.drawBitmap(this.scoredBalls.get(i).getBitmap(), (float) this.x + gv.getWidth() / 2 - 650 + this.scoredBalls.get(i).getId() * (float) this.scoredBalls.get(i).getWidth() + 10, (float) this.y + (float) this.scoredBalls.get(i).getRadius(), (float) this.scoredBalls.get(i).getWidth() - 500, (float) this.scoredBalls.get(i).getHeight());
             }
         }
     }

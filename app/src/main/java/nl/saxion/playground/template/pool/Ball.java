@@ -47,7 +47,7 @@ public class Ball extends Entity {
         this.bx = game.getPlayWidth();
         this.by = game.getPlayHeight();
         this.mass = 10;
-        this.friction = .9975;
+        this.friction = .9965;
         this.energyloss = .900;
         this.image = image;
     }
@@ -69,7 +69,7 @@ public class Ball extends Entity {
         this.bx = game.getPlayWidth();
         this.by = game.getPlayHeight();
         this.mass = 10;
-        this.friction = .9975;
+        this.friction = .9965;
         this.energyloss = .900;
         this.image = image;
         this.line = line;
@@ -113,6 +113,13 @@ public class Ball extends Entity {
 
     }
 
+    private boolean checkMovement() {
+        if (this.speedX == 0 && this.speedY == 0) {
+            return false;
+        }
+        return true;
+    }
+
     private void checkCollisionWall() {
         this.x += this.speedX;
         this.y += this.speedY;
@@ -129,7 +136,7 @@ public class Ball extends Entity {
         } else {
             this.x += this.speedX;
             this.speedX *= this.friction;
-            if (Math.abs(this.speedX) < .2 && Math.abs(this.speedY) < .2) {
+            if (Math.abs(this.speedX) < .1 && Math.abs(this.speedY) < .1) {
                 this.speedX = 0;
             }
         }
@@ -146,7 +153,7 @@ public class Ball extends Entity {
         } else {
             this.y += this.speedY;
             this.speedY *= this.friction;
-            if (Math.abs(this.speedY) < .2 && Math.abs(this.speedX) < .2) {
+            if (Math.abs(this.speedY) < .1 && Math.abs(this.speedX) < .1) {
                 this.speedY = 0;
             }
         }
@@ -168,6 +175,7 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
+        this.moving = checkMovement();
         checkCollisionWall();
         checkCollisionBall(this.balls);
         checkCollisionHole();
@@ -180,16 +188,23 @@ public class Ball extends Entity {
             paint.setColor(Color.WHITE);
 
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
+                this.line.setVisible(true);
                 this.oldX = (float) this.x;
                 this.oldY = (float) this.y;
                 this.line.setX((float) this.oldX + (float) this.radius);
                 this.line.setY((float) this.oldY + (float) this.radius);
                 this.line.setNewX((float) this.newX);
                 this.line.setNewY((float) this.newY);
-                this.line.setVisible(true);
 
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (!this.line.getVisible()) {
+                    this.line.setVisible(true);
+                    this.line.setVisible(true);
+                    this.oldX = (float) this.x;
+                    this.oldY = (float) this.y;
+                    this.line.setX((float) this.oldX + (float) this.radius);
+                    this.line.setY((float) this.oldY + (float) this.radius);
+                }
 
                 this.newX = touch.x;
                 this.newY = touch.y;
@@ -197,13 +212,11 @@ public class Ball extends Entity {
                 this.line.setNewY((float) this.newY);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-
                 double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y));
                 this.line.setVisible(false);
 
                 this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
                 this.speedY = 0.00001 * (this.y + mag * Math.sin(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
-
             }
         }
     }
@@ -214,68 +227,6 @@ public class Ball extends Entity {
             this.bitmap = gv.getBitmapFromResource(this.image);
         }
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
-//        Paint paint = new Paint();
-//
-//        //Draw ball
-//        if (this.id > 8 && this.id != 16) {
-//            Rect rectangle = new Rect((int) this.x , (int) this.y , (int) this.y + 32,(int) this.y + 32);
-//            paint.setColor(Color.WHITE);
-//            gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, paint);
-//            paint.setColor(this.color);
-//            gv.getCanvas().drawRect(rectangle, paint);
-//        } else {
-//            paint.setColor(this.color);
-//            gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, paint);
-//        }
-//
-//        //Draw number of ball
-//        if (id != -1) {
-//            Rect bounds = new Rect();
-//            String text = Integer.toString(this.id);
-//            paint.setTextSize(24f);
-//            paint.setFakeBoldText(true);
-//            paint.setTextAlign(Paint.Align.CENTER);
-//            paint.setAntiAlias(true);
-//            paint.setColor(Color.WHITE);
-//            paint.getTextBounds(text, 0, text.length(), bounds);
-//            gv.getCanvas().drawText(text, (float) this.x, (float) this.y, paint);
-//        }
-
-
-        // drawing the stripes
-//        double stripeWidth = 2 * (int) (Math.sqrt(radius * radius - (radius / 2) * (radius / 2)));
-//        double offset = radius - stripeWidth / 2;
-
-
-//        final RectF ovaltop = new RectF();
-//        final RectF ovalbottom = new RectF();
-//        float center_x, center_y;
-//        center_x = (float) this.x;
-//        center_y = (float) this.y;
-//
-//        paint.setColor(Color.WHITE);
-//        ovalbottom.set((float) (center_x - radius),
-//                (float) (center_y - radius),
-//                (float) (center_x + radius),
-//                (float) (center_y + radius));
-//
-//        ovaltop.set((float) (center_x - radius),
-//                (float) (center_y - radius),
-//                (float) (center_x + radius),
-//                (float) (center_y + radius));
-//
-//        gv.getCanvas().drawArc(ovalbottom, 0, 180, false, paint);
-//        gv.getCanvas().drawArc(ovaltop, 180, 180, false, paint);
-        // gv.getCanvas().fillArc((int) (this.x - radius + offset), (int) (this.y - radius), (int) (stripeWidth), (int) (radius), 0, 180);
-        // gv.getCanvas().fillArc((int) (this.x - radius + offset), (int) (this.y), (int) (stripeWidth), (int) (radius), 0, -180);
-//
-        // drawing the outline
-//        paint.setColor(Color.BLACK);
-//        paint.setStyle(Paint.Style.STROKE);
-//        paint.setStrokeWidth(2);
-//        gv.getCanvas().drawCircle((float) (this.x), (float) (this.y), (float) (this.radius), paint);
-//
-
     }
 
 
@@ -333,5 +284,9 @@ public class Ball extends Entity {
 
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public int getId() {
+        return id;
     }
 }
