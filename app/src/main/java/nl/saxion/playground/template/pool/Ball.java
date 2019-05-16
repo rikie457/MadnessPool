@@ -212,7 +212,7 @@ public class Ball extends Entity {
                 this.line.setNewY((float) this.newY);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y));
+                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) *2;
                 this.line.setVisible(false);
 
                 this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
@@ -288,5 +288,9 @@ public class Ball extends Entity {
 
     public int getId() {
         return id;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }

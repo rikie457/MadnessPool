@@ -27,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        poolGameCanvas.setPaused(false);
         poolGameCanvas.setGame(poolGame);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        poolGameCanvas.setPaused(true);
         poolGameCanvas.setGame(null);
     }
 }

@@ -65,17 +65,4 @@ public class Info {
     public void getBallCount(ArrayList<Ball> balllist) {
         this.ballcount = balllist.size();
     }
-
-//    public void draw(Graphics g) {
-//        g.setColor(Color.GREEN);
-//        g.drawString("Frame: " + refreshCounter.toString(), 10, 10);
-//        g.drawString("Wall Collisions: " + wallcollisionCounter.toString(), 10, 25);
-//        g.drawString("Ball Collisions: " + ballcollisionCounter.toString(), 10, 40);
-//        g.drawString("Amount of Balls: " + ballcount, 10, 55);
-//        g.drawString("Lowest mass: " + minmass, 10, 70);
-//        g.drawString("Highest mass: " + maxmass, 10, 85);
-//        g.drawString("Highest speed X: " + highestspeedx, 10, 100);
-//        g.drawString("Highest speed Y: " + highestspeedy, 10, 115);
-//        g.drawString("\u00a9 Tycho Engberink 2018-" + LocalDate.now().getYear(), (int) Main.width - 180, (int) Main.height - 10);
-//    }
 }

@@ -14,18 +14,6 @@ public class Game extends GameModel {
     ArrayList<Ball> sunkeBalls = new ArrayList<>();
     ArrayList<Hole> holes = new ArrayList<>();
 
-    // The listener receives calls when some game state is changed that should be
-    // shown in Android Views other than the `GameView`. In this case, we're only
-    // calling a method when scrollX changes.
-    // The default implementation does nothing.
-    // This variable is marked `transient` as it is not actually part of the model,
-    // and should (and could) therefore not be serialized when the game is
-    // suspended by Android.
-    public interface Listener {
-        void scrollChanged();
-    }
-
-    public transient ArrayList<Listener> listeners = new ArrayList<>();
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -48,6 +36,7 @@ public class Game extends GameModel {
         Gui gui = new Gui(this, sunkeBalls, left, top, right, bottom);
         ShootLine line = new ShootLine(false);
         Hole hole = new Hole(this, 200, 200);
+
         Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1);
         Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2);
         Ball ball3 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball3);
@@ -80,7 +69,6 @@ public class Game extends GameModel {
 
 
         this.holes.add(hole);
-
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
@@ -97,23 +85,6 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
-
-//        this.sunkeBalls.add(ball1);
-//        this.sunkeBalls.add(ball2);
-//        this.sunkeBalls.add(ball3);
-//        this.sunkeBalls.add(ball4);
-//        this.sunkeBalls.add(ball5);
-//        this.sunkeBalls.add(ball6);
-//        this.sunkeBalls.add(ball7);
-//        this.sunkeBalls.add(ball8);
-//        this.sunkeBalls.add(ball9);
-//        this.sunkeBalls.add(ball10);
-//        this.sunkeBalls.add(ball11);
-//        this.sunkeBalls.add(ball12);
-//        this.sunkeBalls.add(ball13);
-//        this.sunkeBalls.add(ball14);
-//        this.sunkeBalls.add(ball15);
-//        this.sunkeBalls.add(ball16);
 
         addEntity(gui);
         addEntity(hole);
@@ -134,11 +105,5 @@ public class Game extends GameModel {
         addEntity(ball15);
         addEntity(ball16);
         addEntity(line);
-
-
-        // Fire event to set initial value in scroll view
-        for (Listener listener : listeners) {
-            listener.scrollChanged();
-        }
     }
 }
