@@ -4,11 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import nl.saxion.playground.template.R;
+import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 
 public class Activity extends AppCompatActivity {
 
-    Game game;
+    GameModel game;
     GameView gameView;
 
     @Override
@@ -18,8 +19,8 @@ public class Activity extends AppCompatActivity {
         // In this example, we're overlaying a TextView over our canvas. We could add
         // any Android Views this way.
         //  setContentView(R.layout.activity_platformer);
-
-        gameView = findViewById(R.id.gameView);
+        setContentView(R.layout.activity_main);
+        gameView = findViewById(R.id.poolGame);
 
         // If a running game has been serialized (because it has been paused for
         // a long time, or because of an orientation change), recreate the Game
@@ -29,6 +30,7 @@ public class Activity extends AppCompatActivity {
         } else {
             game = new Game();
         }
+
     }
 
     @Override

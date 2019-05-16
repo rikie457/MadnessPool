@@ -14,11 +14,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.math.BigInteger;
-
-import nl.saxion.playground.template.pool.Info;
-
-
 public class GameView extends View implements View.OnTouchListener {
 
     // While in an `onDraw` method, this references the `Canvas` to be painted to.
@@ -55,9 +50,6 @@ public class GameView extends View implements View.OnTouchListener {
     // The time in ms at which the tick() methods were last invoked.
     // When set to 0, the game is paused.
     private transient double lastTickTime = 0;
-
-    // `true` after `start()` has been called.
-    private boolean started = false;
 
 
     public GameView(Context context) {
@@ -250,8 +242,9 @@ public class GameView extends View implements View.OnTouchListener {
         if (viewMatrix == null) calculateMatrices();
 
         // Call `start()` once, before the first draw but after widths/heights have been calculated.
-        if (!started) {
-            started = true;
+        // With fix for state restart.
+        if (!gameModel.started) {
+            gameModel.started = true;
             gameModel.start();
         }
 
@@ -259,9 +252,7 @@ public class GameView extends View implements View.OnTouchListener {
         canvas.drawPaint(blackPaint);
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(28);
-        BigInteger colissions = Info.ballcollisionCounter;
-        canvas.drawText(colissions.toString(), getWidth() / 2, getHeight() / 2, textPaint);
-        canvas.drawText("Tycho Engberink 464544", getWidth() / 2 - 120, getHeight() / 2 + 30, textPaint);
+      canvas.drawText("Tycho Engberink 464544", getWidth() / 2 - 120, getHeight() / 2 + 30, textPaint);
 
 
         // Based on these calculations, we can configure the canvas.
