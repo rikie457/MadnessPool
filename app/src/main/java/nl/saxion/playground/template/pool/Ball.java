@@ -199,7 +199,6 @@ public class Ball extends Entity {
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 if (!this.line.getVisible()) {
                     this.line.setVisible(true);
-                    this.line.setVisible(true);
                     this.oldX = (float) this.x;
                     this.oldY = (float) this.y;
                     this.line.setX((float) this.oldX + (float) this.radius);
