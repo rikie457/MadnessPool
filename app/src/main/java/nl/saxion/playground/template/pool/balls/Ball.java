@@ -1,36 +1,31 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.balls;
 
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Gui;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Info;
+import nl.saxion.playground.template.pool.Utility;
 
-import static java.lang.Math.PI;
-
-public class Ball extends Entity {
+public abstract class Ball extends Entity {
 
     public static int lastisertedid = 1;
-
     public double speedX, speedY;
-    private boolean moving, sunk;
-    private double mass, x, y, width, height, radius, bx, by, friction, energyloss, oldX, oldY, newX, newY;
-    private int color, id;
-    private ArrayList<Ball> balls;
-    private ArrayList<Hole> holes;
-    private ArrayList<Ball> sunkenBalls;
-    private Game game;
-    private ShootLine line;
-    private Bitmap bitmap;
-    private int image;
+    protected double mass, x, y, width, height, radius, bx, by, friction, energyloss;
+    protected int color, id, image, type;
+    protected ArrayList<Ball> balls;
+    protected ArrayList<Hole> holes;
+    protected ArrayList<Ball> sunkenBalls;
+    protected Game game;
+    protected Bitmap bitmap;
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -50,29 +45,7 @@ public class Ball extends Entity {
         this.friction = .9965;
         this.energyloss = .900;
         this.image = image;
-    }
-
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, ShootLine line) {
-        this.id = lastisertedid;
-        lastisertedid++;
-        this.game = game;
-        this.balls = balls;
-        this.holes = holes;
-        this.sunkenBalls = sunkenBalls;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.radius = width / 2;
-        this.speedY = 0;
-        this.speedX = 0;
-        this.bx = game.getPlayWidth();
-        this.by = game.getPlayHeight();
-        this.mass = 10;
-        this.friction = .9965;
-        this.energyloss = .900;
-        this.image = image;
-        this.line = line;
+        this.type = type;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
@@ -113,12 +86,6 @@ public class Ball extends Entity {
 
     }
 
-    private boolean checkMovement() {
-        if (this.speedX == 0 && this.speedY == 0) {
-            return false;
-        }
-        return true;
-    }
 
     private void checkCollisionWall() {
         this.x += this.speedX;
@@ -162,63 +129,28 @@ public class Ball extends Entity {
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
             if (this.id != 16) {
-                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX() + this.holes.get(i).getRadius(), this.holes.get(i).getY() + this.holes.get(i).getRadius())) - (this.radius + this.holes.get(i).getRadius()) <= 0) {
-                    this.game.removeEntity(this);
-                    this.sunkenBalls.add(this);
-                    this.balls.remove(this);
+                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY() )) - (this.radius) <= 0) {
+                    if (this.id != 8) {
+                        this.game.removeEntity(this);
+                        this.sunkenBalls.add(this);
+                        this.balls.remove(this);
+                    } else {
+                        //Is 8 Ball
+
+                    }
                 }
             }
         }
 
     }
 
-
     @Override
     public void tick() {
-        this.moving = checkMovement();
         checkCollisionWall();
         checkCollisionBall(this.balls);
         checkCollisionHole();
     }
 
-    @Override
-    public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.id == 16 && this.line != null && !this.moving) {
-            Paint paint = new Paint();
-            paint.setColor(Color.WHITE);
-
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                this.line.setVisible(true);
-                this.oldX = (float) this.x;
-                this.oldY = (float) this.y;
-                this.line.setX((float) this.oldX + (float) this.radius);
-                this.line.setY((float) this.oldY + (float) this.radius);
-                this.line.setNewX((float) this.newX);
-                this.line.setNewY((float) this.newY);
-
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (!this.line.getVisible()) {
-                    this.line.setVisible(true);
-                    this.oldX = (float) this.x;
-                    this.oldY = (float) this.y;
-                    this.line.setX((float) this.oldX + (float) this.radius);
-                    this.line.setY((float) this.oldY + (float) this.radius);
-                }
-
-                this.newX = touch.x;
-                this.newY = touch.y;
-                this.line.setNewX((float) this.newX);
-                this.line.setNewY((float) this.newY);
-
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) *2;
-                this.line.setVisible(false);
-
-                this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
-                this.speedY = 0.00001 * (this.y + mag * Math.sin(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
-            }
-        }
-    }
 
     @Override
     public void draw(GameView gv) {
@@ -227,7 +159,6 @@ public class Ball extends Entity {
         }
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
     }
-
 
     public void setColor(int color) {
         this.color = color;
@@ -241,32 +172,16 @@ public class Ball extends Entity {
         return this.x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return this.y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 
     public double getSpeedX() {
         return this.speedX;
     }
 
-    public void setSpeedX(double speedX) {
-        this.speedX = speedX;
-    }
-
     public double getSpeedY() {
         return this.speedY;
-    }
-
-    public void setSpeedY(double speedY) {
-        this.speedY = speedY;
     }
 
     public double getRadius() {
@@ -287,9 +202,5 @@ public class Ball extends Entity {
 
     public int getId() {
         return id;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 }

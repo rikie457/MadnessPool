@@ -3,6 +3,8 @@ package nl.saxion.playground.template.pool;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.pool.balls.Ball;
+
 public class Info {
 
     public static BigInteger wallcollisionCounter = BigInteger.valueOf(0);
