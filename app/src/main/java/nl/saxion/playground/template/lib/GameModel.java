@@ -14,8 +14,7 @@ public class GameModel implements Serializable {
      * to derive a virtual resolution that matches the screen aspect ratio.
      */
     protected float actualWidth, actualHeight;
-
-    //Fix for restarting the paused game if started of course;
+    //Fix for restarting the paused game if started ofcourse;
     protected boolean started = false;
 
     // The ordered list of active game entities.

@@ -10,19 +10,18 @@ public class ShootLine extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint whitePaint;
 
     public ShootLine(boolean visible) {
         this.visible = visible;
-        whitePaint = new Paint();
-        whitePaint.setStrokeWidth(4);
-        whitePaint.setColor(Color.WHITE);
     }
 
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, whitePaint);
+            Paint paint = new Paint();
+            paint.setStrokeWidth(4);
+            paint.setColor(Color.WHITE);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, paint);
         }
     }
 
@@ -38,7 +37,7 @@ public class ShootLine extends Entity {
         this.visible = visible;
     }
 
-    public boolean getVisible() {
+    public boolean getVisible(){
         return this.visible;
     }
 
