@@ -1,0 +1,165 @@
+@startuml
+
+skinparam class {
+    BackgroundColor<< lib >> white
+}
+
+
+
+class Activity {
+    + game: Gamemodel
+    + gameview: GameView
+    + onCreate(): void
++ onSaveInstanceState(Bundle): void
++ onResume(): void
++ onPause(): void
+
+
+}
+
+class Game {
++ guiHeight: float
++ balls: List<Ball>
++ sunkeBalls: <Ball>
++ holes: <Hole>
++ getPlayHeight(): float
++ getPlayWidth(): float
++ start(): void
+}
+
+class Gui {
++ x: double
++ y: double
++ width: double
++ height: double
++ bitmap: BitMap
++ sunkeBalls: <Ball>
++ game: Game
++ Gui(): 
++ getWidth(): double
++ getHeight(): double
++ setX(): void
++ getY(): double
++ draw(): void
+}
+
+class Hole {
++ x: double
++ y: double
++ radius: double
++ game: Game
++ Hole(game Game, x double,y double): 
++ getX(): double
++ getY(): double
++ getRadius(): void
++ draw(): void
+}
+
+class Wall {
+
+}
+
+class Info {
++ wallcollisionCounter: BigInteger
++ ballcollisionCounter: BigInteger
++ refreshCounter: BigInteger
++ highestspeedx: double
++ highestspeedy: double
++ minmass: double
++ maxmass: double
++ ballcount: double
++ addToWallCollisionCounter(): void
++ addToBallCollisionCounter(): void
++ addToRefreshCounter(): void
++ updateHighestSpeedX(): void
+}
+
+class ShootLine {
++ newX: float
++ newY: float
++ x: float
++ c: float
++ visible: float
++ ShootLine(): 
++ draw(): void
++ setX(): void
++ setY(): void
++ setVisible(): void
++ getVisible(): boolean
++ setNewX(): void
++ setNewY(): void
+}
+
+class Ball {
++ lastisertedid: int
++ speedX: double
++ speedY: double
++ sunk: boolean
++ mass: double
++ x: double
++ y: double
++ width: double
++ height: double
++ radius: double
++ bx: double
++ by: double
++ friction: double
++ energyloss: double
++ oldX: double
++ oldY: double
++ newX: double
++ newY: double
++ color: int
++ id: int
++ balls: <Ball>
++ holes: <Hole>
++ sunkenBalls: <Ball>
++ game: Game
++ line: shootLine
++ bitmap: Bitmap
++ image: int
++ Ball(): 
++ checkCollisionBall(): void
++ checkMovement(): boolean
++ checkCollisionWall(): void
++ checkCollisionHole(): void
++ tick(): void
++ handleTouch(): void
++ draw(): void
++ setColor(): void
++ getMass(): double
++ getX(): double
++ setX(): void
++ getY(): double
++ setY(): void
++ getSpeedX(): double
++ setSpeedX(): void
++ getSpeedY(): double
++ setSpeedY(): void
++ getRadius(): double
++ setSpeedY(): void
++ getWidth(): double
++ getHeight(): double
++ getBitmap(): bitmap
++ getId(): int
++ setImage(): int
+}
+
+class PowerUps {
++ game: GameModel
++ x: double
++ y: double
++ setX(): void
++ getY(): double
+}
+
+Game <-- Activity
+Hole "6" <|-- Game
+Wall "*" <|-- Game
+Info <-- Game
+Ball "16" <|-- Game
+ShootLine <|-- Ball
+Ball <|-- "*" PowerUps
+Gui <-- Game
+
+@enduml
