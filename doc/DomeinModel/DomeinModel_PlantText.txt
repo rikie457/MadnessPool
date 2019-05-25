@@ -1,0 +1,106 @@
+@startuml
+
+skinparam class {
+    BackgroundColor lib  white
+}
+
+
+
+class Activity {
+    + game Gamemodel
+    + gameview GameView
+}
+
+class Game {
++ guiHeight float
++ balls ListBall
++ sunkeBalls Ball
++ holes Hole
+}
+
+class Gui {
++ x double
++ y double
++ width double
++ height double
++ bitmap BitMap
++ sunkeBalls Ball
++ game Game
+}
+
+class Hole {
++ x double
++ y double
++ radius double
++ game Game
+}
+
+class Wall {
+
+}
+
+class Info {
++ wallcollisionCounter BigInteger
++ ballcollisionCounter BigInteger
++ refreshCounter BigInteger
++ highestspeedx double
++ highestspeedy double
++ minmass double
++ maxmass double
++ ballcount double
+}
+
+class ShootLine {
++ newX float
++ newY float
++ x float
++ c float
++ visible float
+}
+
+class Ball {
++ lastisertedid int
++ speedX double
++ speedY double
++ sunk boolean
++ mass double
++ x double
++ y double
++ width double
++ height double
++ radius double
++ bx double
++ by double
++ friction double
++ energyloss double
++ oldX double
++ oldY double
++ newX double
++ newY double
++ color int
++ id int
++ balls Ball
++ holes Hole
++ sunkenBalls Ball
++ game Game
++ line shootLine
++ bitmap Bitmap
++ image int
+}
+
+class PowerUps {
++ game GameModel
++ x double
++ y double
+}
+
+Game -- Activity
+Hole -- Game
+Wall -- Game
+Info -- Game
+Ball -- Game
+ShootLine -- Ball
+Ball -- PowerUps
+Gui -- Game
+
+@enduml
