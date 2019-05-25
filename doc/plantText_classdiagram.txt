@@ -4,7 +4,7 @@ skinparam class {
     BackgroundColor<< lib >> white
 }
 
-class MyGame {
+class Game {
     + score: int
     + getWidth()
     + getHeight()
@@ -14,15 +14,24 @@ class MyGame {
 class MainActivity {
 }
 
-class Ball {
-    + draw(GameView)
-    + tick()
-    + handleTouch(Touch)
+class pool.Ball {
+
 }
 
-class Hole {
-    + draw(GameView)
-    + tick()
+class pool.Hole {
+
+}
+
+class pool.Wall {
+
+}
+
+class pool.ShootLine {
+
+}
+
+class pool.PowerUps {
+
 }
 
 class Entity<<lib>> {
@@ -55,19 +64,23 @@ GameModel o-> "*" Entity
 
 GameView --> GameModel
 
-MyGame -|> GameModel
-MyGame -- Ball
+Game -|> GameModel
+Game -- pool.Ball
 note on link
-Als jij de interactie tussen de klasse wilt zien, 
+Als je de interactie tussen de klasse wilt zien, 
 dan moet jij even kijken op het PoolGame klasse diagram
 end note
 
-Ball -> "*" Hole
+pool.Ball -> "*" pool.Hole
 
-Entity <|-- Ball
-Entity <|-- Hole
+Entity <|-- pool.Ball
+Entity <|-- pool.Hole
+Entity <|-- pool.Wall
+Entity <|-- pool.ShootLine
+Entity <|-- pool.PowerUps
 
-MainActivity --> MyGame
+
+MainActivity --> Game
 MainActivity -> GameView
 
 
@@ -81,3 +94,6 @@ class android.Activity {
 }
 android.Activity <|-- MainActivity 
 android.View <|-- GameView
+
+
+@enduml
