@@ -71,6 +71,7 @@ Zodra de gebruiker op de Normal mode heeft geklikt zal deze versie van de game o
 
 ## Madness 8 ball pool
 Zodra de gebruiker op de Madness mode heeft geklikt zal deze versie van de game opstarten.
+
 ![Madness sketch](pictures/Madness-Sketch.jpg)
 - A. Een pocket hier scoren de spelers.
 - B. Een bal. De witte wordt gebruikt om mee te spelen. De 8Ball mag pas als laatst en de solid en de striped worden weggespeeld.
@@ -88,6 +89,7 @@ Zodra de gebruiker op de Madness mode heeft geklikt zal deze versie van de game 
 
 ## Gewonnen of verloren
 Als 1 van de gebruikers alle ballen en de 8 ball heeft weggespeeld dan heeft hij/zij gewonnen.
+
 ![Win/Loss sketch](pictures/Win-Loss-Sketch.jpg)
 - A. De aanduiding welke speler gewonnen heeft. Dit kan 1 of 2 zijn
 - B. De taal waarin het apparaat staat maakt uit. Hier staat dan wint in de betreffende taal.
