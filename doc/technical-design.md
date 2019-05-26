@@ -1,5 +1,5 @@
-## Technisch ontwerp / Technical design
-## klasse diagrammen:
+# Technisch ontwerp / Technical design
+## Klasse diagrammen:
 ![class diagram PlantText](Class diagram/class_diagram_PlantText.PNG)  
 Dit klasse diagram beschrijft de interactie met de library. 
 
@@ -10,24 +10,22 @@ Dit klasse diagram beschrijft de onderlinge interactie tussen de Pool Game class
 ![Domein model](DomeinModel/Domein_Model_PlantText_.png)  
 Dit domein model beschrijft de onderlinge interactie tussen de pool game classes.
 
-Hierbij is **Activity** verantwoordelijk voor het aanmaken van de Game instantie en hoe je game reageert op status veranderingen.
-**Game** verantwoordelijk voor het aanmaken van alle entiteiten en het beheren van het spel. 
-**Gui** is verantwoordelijk voor het beheren van de user interface.
-**Hole** verantwoordelijk voor het beheren van de de gaten in de pooltafel. 
-**Wall** verantwoordelijk voor het beheren van de muren die de user kan plaatsen op de pooltafel. 
-De **Info** class die gebruikt voor het debuggen. 
-De **Ball** class beheert de ballen die op de pooltafel liggen.
-**PowerUps** is verantwoordelijk voor de extra powers die de gebruiker kan gebruiken. Verder kan de word de ShootLine class gebruikt voor het beheren van de pool que waarmee de pool ballen in beweging brengt.
+- Hierbij is **Activity** verantwoordelijk voor het aanmaken van de Game instantie en hoe je game reageert op status veranderingen.
+- **Game** verantwoordelijk voor het aanmaken van alle entiteiten en het beheren van het spel. 
+- **Gui** is verantwoordelijk voor het beheren van de user interface.
+- **Hole** verantwoordelijk voor het beheren van de de gaten in de pooltafel. 
+- **Wall** verantwoordelijk voor het beheren van de muren die de user kan plaatsen op de pooltafel. 
+- De **Info** class die gebruikt voor het debuggen. 
+- De **Ball** class beheert de ballen die op de pooltafel liggen.
+- **PowerUps** is verantwoordelijk voor de extra powers die de gebruiker kan gebruiken.
+- Verder word de **ShootLine** class gebruikt voor het beheren van de pool que waarmee de gebruiker de pool ballen in beweging brengt.
 
-
-Realisatie:
+## Realisatie:
 De pool game zal gemaakt/geschreven worden met android studio hiervoor gebruiken wij de taal JAVA. 
 
+## Beschrijving classes:
 
-
-Beschrijving classes:
-
-1 Activity:
+### 1 Activity:
 
 1.1 OnCreate:
 Geeft aan wat de gameview (canvas) is een maakt een nieuwe “Game” instance aan.
@@ -42,7 +40,7 @@ Start(resumed) de game als de methoden aangeroepen wordt.
 Stop de game als de methoden word aangeroepen.
 
 
-2 Ball:
+### 2 Ball:
 
 2.1 checkCollisionBall:
 Controleert op collision tussen de poolballenen handeld verder af hoe de poolballen op deze collision reageren.
@@ -65,7 +63,7 @@ Deze methoden is verantwoordelijk voor het afhandelen van alle input. En het “
 2.7 draw
 Word elke keer als het scherm refresht aangeroepen (60 keer per seconden) en plaatst alle pool ball entities met bijbehorende foto.
 
-3 Game:
+### 3 Game:
 
 3.1  getPlayHeight:
 Returned de hoogte van het huidige scherm.
@@ -76,7 +74,7 @@ Returned de breedte van huidige scherm:
 Start:
 Creëert een nieuwe Gui, ShootLine en Hole entities en 16 verschillende ball entities.
 
-4 Gui:
+### 4 Gui:
 
 4.1 getX:
 Returned de huidige X waarde (coordinaat).
@@ -94,17 +92,7 @@ Returned de hoogte van het huidige scherm.
 Word elke keer als het scherm refresht aangeroepen (60 keer per seconden) 
 ……..?
 
-
-
-
-
-
-
-
-
-
-
-5 Hole:
+### 5 Hole:
 
 De hole class extends de Entity class, en Overrides de public void draw(GameView) methode hiervan, verder bevat hij de overige functies:
 
@@ -124,7 +112,7 @@ Geeft de straal van de bal terug als een double.
 5.5 draw(GameView gv):
 Tekent de Hole op het scherm.
 
-6 Info:
+### 6 Info:
 
 De Info class beschrijft een aantal properties van de Ball objecten, houdt bij hoe vaak de balls gebotst zijn tegen andere ballen (in totaal), en hoe vaak ze tegen de muren zijn gebotst (de randen van het pool veld).
 
@@ -152,7 +140,7 @@ Berekent de massa van de zwaarste bal en slaat deze in public static double maxm
 6.8 getBallCount(ArrayList<Ball> balllist):
 Geeft het aantal ballen terug in de meegegeven ArrayList<Ball> genaamd ‘balllist’.
 
-7 ShootLine:
+### 7 ShootLine:
 
 De ShootLine class extends de Entity class en beschrijft de lijn die voor de witte bal getekend wordt.
 Hij bevat een vector waarin de kracht en richting worden beschreven waarmee de witte bal weg zal worden geschoten wanneer de gebruiker zijn vinger van het scherm verwijderd. 
@@ -182,7 +170,7 @@ Sets de private newX float, wordt gebruikt wanneer de user het scherm aanraakt, 
 7.8 setNewY(float newY):
 Sets de private newY float, wordt gebruikt wanneer de user het scherm aanraakt, of zijn vinger verplaatst.
 
-8 Utility:
+### 8 Utility:
 
 Class met methodes voor het berekenen van bepaalde afstanden en het genereren van willekeurige waarden.
 
