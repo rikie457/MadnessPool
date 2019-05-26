@@ -4,7 +4,7 @@ skinparam class {
     BackgroundColor<< lib >> white
 }
 
-class Game {
+class pool.Game {
     + score: int
     + getWidth()
     + getHeight()
@@ -64,8 +64,8 @@ GameModel o-> "*" Entity
 
 GameView --> GameModel
 
-Game -|> GameModel
-Game -- pool.Ball
+pool.Game -|> GameModel
+pool.Game -- pool.Ball
 note on link
 Als je de interactie tussen de klasse wilt zien, 
 dan moet jij even kijken op het PoolGame klasse diagram
@@ -80,19 +80,19 @@ Entity <|-- pool.ShootLine
 Entity <|-- pool.PowerUps
 
 
-MainActivity --> Game
+MainActivity --> pool.Game
 MainActivity -> GameView
 
 
 class android.View {
     + onDraw()
 }
-class android.Activity {
+class pool.Activity {
     + onCreate()
     + onResume()
     + onPause()
 }
-android.Activity <|-- MainActivity 
+pool.Activity <|-- MainActivity 
 android.View <|-- GameView
 
 
