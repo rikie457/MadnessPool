@@ -1,15 +1,16 @@
 # Technisch ontwerp / Technical design
-## Klasse diagrammen:
-![class diagram PlantText](Class diagram/class_diagram_PlantText.PNG)  
+## Klasse diagrammen
+![class diagram PlantText](Class-Diagram/class_diagram_PlantText.PNG)  
 Dit klasse diagram beschrijft de interactie met de library. 
 
 
-![class diagram](Class diagram/class_diagram_PlantText_PoolGame.PNG)  
+![class diagram](Class-Diagram/class_diagram_PlantText_PoolGame.PNG)  
 Dit klasse diagram beschrijft de onderlinge interactie tussen de Pool Game classes.
-## Domein Model:
-![Domein model](DomeinModel/Domein_Model_PlantText_.png)  
+## Domein Model
+![Domein model](Domain-Model/Domein_Model_PlantText_.png)  
 Dit domein model beschrijft de onderlinge interactie tussen de pool game classes.
 
+## Overview
 - Hierbij is **Activity** verantwoordelijk voor het aanmaken van de Game instantie en hoe je game reageert op status veranderingen.
 - **Game** verantwoordelijk voor het aanmaken van alle entiteiten en het beheren van het spel. 
 - **Gui** is verantwoordelijk voor het beheren van de user interface.
@@ -21,29 +22,26 @@ Dit domein model beschrijft de onderlinge interactie tussen de pool game classes
 - Verder word de **ShootLine** class gebruikt voor het beheren van de pool que waarmee de gebruiker de pool ballen in beweging brengt.
 
 ## Sequence diagram 
-![Sequence diagram](Sequence diagram/sequence_diagram.PNG)  
+![Sequence diagram](Sequence-Diagram/sequence_diagram.PNG)  
 Dit sequence diagram beschrijft hoe de de interactie tussen de gebruiker en de classes.  
-## Realisatie:
-De pool game zal gemaakt/geschreven worden met android studio hiervoor gebruiken wij de taal JAVA. 
+## Realisatie
+De pool game zal gemaakt/geschreven worden met Android Studio hiervoor gebruiken wij de taal Java in combinatie met het Android Framework. 
 
-## Beschrijving classes:
+## Beschrijving classes
 
-### 1 Activity:
+### 1 Activity
 
-1.1 OnCreate:
+ 1.1 OnCreate:
 Geeft aan wat de gameview (canvas) is een maakt een nieuwe “Game” instance aan.
 
-1.2 OnSaveInstanceState:
-…..?
-
-1.3 onResume:
+1.2 onResume:
 Start(resumed) de game als de methoden aangeroepen wordt.
 
-1.4 onPause:
+1.3 onPause:
 Stop de game als de methoden word aangeroepen.
 
 
-### 2 Ball:
+### 2 Ball
 
 2.1 checkCollisionBall:
 Controleert op collision tussen de poolballenen handeld verder af hoe de poolballen op deze collision reageren.
@@ -66,7 +64,7 @@ Deze methoden is verantwoordelijk voor het afhandelen van alle input. En het “
 2.7 draw
 Word elke keer als het scherm refresht aangeroepen (60 keer per seconden) en plaatst alle pool ball entities met bijbehorende foto.
 
-### 3 Game:
+### 3 Game
 
 3.1  getPlayHeight:
 Returned de hoogte van het huidige scherm.
@@ -77,7 +75,7 @@ Returned de breedte van huidige scherm:
 Start:
 Creëert een nieuwe Gui, ShootLine en Hole entities en 16 verschillende ball entities.
 
-### 4 Gui:
+### 4 Gui
 
 4.1 getX:
 Returned de huidige X waarde (coordinaat).
@@ -93,9 +91,9 @@ Returned de hoogte van het huidige scherm.
 
 4.5 draw:
 Word elke keer als het scherm refresht aangeroepen (60 keer per seconden) 
-……..?
 
-### 5 Hole:
+
+### 5 Hole
 
 De hole class extends de Entity class, en Overrides de public void draw(GameView) methode hiervan, verder bevat hij de overige functies:
 
@@ -115,7 +113,7 @@ Geeft de straal van de bal terug als een double.
 5.5 draw(GameView gv):
 Tekent de Hole op het scherm.
 
-### 6 Info:
+### 6 Info
 
 De Info class beschrijft een aantal properties van de Ball objecten, houdt bij hoe vaak de balls gebotst zijn tegen andere ballen (in totaal), en hoe vaak ze tegen de muren zijn gebotst (de randen van het pool veld).
 
@@ -143,7 +141,7 @@ Berekent de massa van de zwaarste bal en slaat deze in public static double maxm
 6.8 getBallCount(ArrayList<Ball> balllist):
 Geeft het aantal ballen terug in de meegegeven ArrayList<Ball> genaamd ‘balllist’.
 
-### 7 ShootLine:
+### 7 ShootLine
 
 De ShootLine class extends de Entity class en beschrijft de lijn die voor de witte bal getekend wordt.
 Hij bevat een vector waarin de kracht en richting worden beschreven waarmee de witte bal weg zal worden geschoten wanneer de gebruiker zijn vinger van het scherm verwijderd. 
@@ -173,7 +171,7 @@ Sets de private newX float, wordt gebruikt wanneer de user het scherm aanraakt, 
 7.8 setNewY(float newY):
 Sets de private newY float, wordt gebruikt wanneer de user het scherm aanraakt, of zijn vinger verplaatst.
 
-### 8 Utility:
+### 8 Utility
 
 Class met methodes voor het berekenen van bepaalde afstanden en het genereren van willekeurige waarden.
 
