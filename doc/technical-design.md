@@ -20,6 +20,9 @@ Dit domein model beschrijft de onderlinge interactie tussen de pool game classes
 - **PowerUps** is verantwoordelijk voor de extra powers die de gebruiker kan gebruiken.
 - Verder word de **ShootLine** class gebruikt voor het beheren van de pool que waarmee de gebruiker de pool ballen in beweging brengt.
 
+## Sequence diagram 
+![Sequence diagram](Sequence diagram/sequence_diagram.PNG)  
+Dit sequence diagram beschrijft hoe de de interactie tussen de gebruiker en de classes.  
 ## Realisatie:
 De pool game zal gemaakt/geschreven worden met android studio hiervoor gebruiken wij de taal JAVA. 
 
