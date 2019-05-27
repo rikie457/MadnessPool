@@ -30,7 +30,9 @@ Je kan ze gebruiken om de andere speler te blokeren maar
 je kan ze ook gebruiken om een bal te kaatsen in een richting waarin je normaal de bal niet kan krijgen.
 Als de andere speler een bal scoort krijg jij een muur.
 Je hebt dan 30 seconden om die muur te plaatsen voordat de andere speler weer mag schieten.
-Muren kunnen niet te dicht op de pockets geplaatst worden.
+Als de andere speler dan meteen nog een keer scoort blijft de muur staan en krijg jij nog een muur om te plaatsen tot een maximum van drie muren.
+Als de andere speler schiet en niet scoort dan verdwijnen de muren van de pool table.
+Muren kunnen niet te dicht op de pockets geplaatst worden omdat er anders pockets volledig geblokkeerd kunnen worden.
 
 #### Positieve powerups
 + **Ball remove,** deze powerup haalt een bal van jou weg zodat je er één minder hoeft weg te spelen.
