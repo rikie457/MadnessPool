@@ -6,7 +6,7 @@
 In de app wordt het turn based gespeeld door twee players.
 In het spel zijn er 16 ballen. Deze ballen bestaan uit de witte cue bal, de 8 ball,
 solids en stripes. Speler 1 moet alle solids wegspelen en speler 2 moet alle stripes wegspelen.
-Je speelt ballen weg als je ze in één van de 6 pockets schiet van de pool table.
+Je speelt ballen weg als je ze in één van de 6 pockets schiet van de pool table. Als je een bal weg speelt blijft de beurt bij jou.
 Er is maar één 8 ball.
 De 8 ball mag pas weg gespeeld worden als je al jouw ballen hebt weggespeeld, bijvoorbeeld alle solids. De speler die de 8 bal wegspeeld heeft het spel gewonnen.
 De speler die te vroeg de 8 ball wegspeeld verliest de game.
@@ -19,17 +19,21 @@ Madness mode is 8 Ball pool (Normal mode) met powerups. Deze powerups kunnen neu
 De positieve powerups zullen je helpen om het spel te winnen.
 De negatieve kunnen je het spel moeilijker maken door jou in de weg te zitten of door de andere speler een voordeel te geven.
 De neutrale powerups kunnen je tegenwerken, maar als je ze goed gebruikt kunnen ze je ook helpen het spel te winnen.
+Powerup pickups spawnen op de pool table. Als je met de cue ball over die pickup gaat dan zal de powerup meteen activeren.
+Powerups die op de pool table spawnen zullen op een random plek spawnen op de pool table.
+Powerups blijven voor de komende twee rondes actief.
 
 #### Muren
 
 In madness kan je muren krijgen. Deze muren kan je plaatsen op de pool table.
 Je kan ze gebruiken om de andere speler te blokeren maar
 je kan ze ook gebruiken om een bal te kaatsen in een richting waarin je normaal de bal niet kan krijgen.
-De spelers krijgen een bepaalde hoeveelheid tijd om die muren te plaatsen.
+Als de andere speler een bal scoort krijg jij een muur.
+Je hebt dan 30 seconden om die muur te plaatsen voordat de andere speler weer mag schieten.
 Muren kunnen niet te dicht op de pockets geplaatst worden.
 
 #### Positieve powerups
-+ **Ball remove,** Deze powerup haalt een bal van jou weg zodat je er één minder hoeft weg te spelen.
++ **Ball remove,** deze powerup haalt een bal van jou weg zodat je er één minder hoeft weg te spelen.
 + **Gravity aan ball,** als de bal in de buurt van een pocket komt wordt de bal erin getrokken.
 + **No drag,** Voor een bepaalde hoeveelheid tijd zullen de ballen niet afremmen. 
 
