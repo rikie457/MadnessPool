@@ -154,12 +154,12 @@ class PowerUps {
 }
 
 Game <-- Activity
-Hole "6" <|-- Game
-Wall "*" <|-- Game
+Hole "6" <--o Game
+Wall "*" <--o Game
 Info <-- Game
-Ball "16" <|-- Game
-ShootLine <|-- Ball
-Ball <|-- "*" PowerUps
+Ball "16" <--o Game
+ShootLine <-- Ball
+Ball --> "*" PowerUps
 Gui <-- Game
 
 @enduml
