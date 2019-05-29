@@ -22,6 +22,7 @@ class Game {
 + balls: List<Ball>
 + sunkeBalls: <Ball>
 + holes: <Hole>
++ Walls: <Wall>
 + getPlayHeight(): float
 + getPlayWidth(): float
 + start(): void
@@ -153,13 +154,27 @@ class PowerUps {
 + getY(): double
 }
 
+class Arraylists {
++ balls: <Ball>
++ holes: <Hole>
++ Walls: <Wall>
++ sunkenBalls: <Ball>
++ PowerUps: <Powerups>
+}
+
 Game <-- Activity
 Hole "6" <--o Game
 Wall "*" <--o Game
 Info <-- Game
 Ball "16" <--o Game
-ShootLine <-- Ball
-Ball --> "*" PowerUps
+ShootLine "1" <-- Game
+Game --> "*" PowerUps
 Gui <-- Game
+Ball o--- Arraylists
+
+note "Alle ballen, powerups en holes worden aangemaakt in Game\nen worden hier ook in een arraylist gestopt\ndeze arrylists worden meegegeven aan bal." as N2
+Ball .. N2
+
+
 
 @enduml
