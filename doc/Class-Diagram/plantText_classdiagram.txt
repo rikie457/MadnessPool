@@ -15,7 +15,9 @@ class MainActivity {
 }
 
 class pool.Ball {
-
++ balls: <Ball>
++ holes: <Hole>
++ sunkenBalls: <Ball>
 }
 
 class pool.Hole {
@@ -64,20 +66,23 @@ GameModel o-> "*" Entity
 
 GameView --> GameModel
 
-pool.Game -|> GameModel
-pool.Game -- pool.Ball
+pool.Game -> GameModel
+pool.Game o---> "16" pool.Ball
 note on link
 Als je de interactie tussen de klasse wilt zien, 
 dan moet jij even kijken op het PoolGame klasse diagram
 end note
 
-pool.Ball -> "*" pool.Hole
+pool.Ball ---> "6" pool.Hole
+pool.Ball ---> pool.PowerUps
+pool.Ball ---> "*" pool.Wall
+pool.Ball ---> pool.ShootLine
 
-Entity <|-- pool.Ball
-Entity <|-- pool.Hole
-Entity <|-- pool.Wall
-Entity <|-- pool.ShootLine
-Entity <|-- pool.PowerUps
+Entity <-- pool.Ball
+Entity <-- pool.Hole
+Entity <-- pool.Wall
+Entity <-- pool.ShootLine
+Entity <-- pool.PowerUps
 
 
 MainActivity --> pool.Game
@@ -92,8 +97,8 @@ class pool.Activity {
     + onResume()
     + onPause()
 }
-pool.Activity <|-- MainActivity 
-android.View <|-- GameView
+pool.Activity <-- MainActivity 
+android.View <-- GameView
 
 
 @enduml
