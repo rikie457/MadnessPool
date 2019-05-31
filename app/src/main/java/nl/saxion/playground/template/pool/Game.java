@@ -36,6 +36,7 @@ public class Game extends GameModel {
         Gui gui = new Gui(this, sunkeBalls, left, top, right, bottom);
         ShootLine line = new ShootLine(false);
         Hole hole = new Hole(this, 200, 200);
+        MenuBackground menuBackground = new MenuBackground(this);
 
         Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1);
         Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2);
@@ -105,5 +106,6 @@ public class Game extends GameModel {
         addEntity(ball15);
         addEntity(ball16);
         addEntity(line);
+        addEntity(menuBackground);
     }
 }
