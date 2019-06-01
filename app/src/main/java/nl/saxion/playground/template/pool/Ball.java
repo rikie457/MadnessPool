@@ -24,7 +24,7 @@ public class Ball extends Entity {
     private ArrayList<Ball> sunkenBalls;
     private Game game;
     private ShootLine line;
-    private Bitmap bitmap ;
+    private Bitmap bitmap;
     private boolean moving;
     private boolean shot;
     private double oldX, oldY, newX, newY;
@@ -136,26 +136,20 @@ public class Ball extends Entity {
             if (this.id != 16) {
                 if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
                     if (this.id != 8) {
-                        System.out.println("id: " + this.id +  "type: " + this.type);
+                        System.out.println("id: " + this.id + "type: " + this.type);
                         switch (game.getCurrentplayer()) {
                             case 1:
                                 switch (game.getPlayer1type()) {
                                     case -1:
-                                        if (game.getPlayer2type() == 1) {
-                                            game.setPlayer1type(2);
                                             if (this.type == 1) {
-                                                game.getPlayer2scoredballs().add(this);
-                                            } else if (type == 2) {
+                                                game.setPlayer1type(1);
+                                                game.setPlayer2type(2);
+                                                game.getPlayer1scoredballs().add(this);
+                                            } else if (this.type == 2) {
+                                                game.setPlayer1type(2);
+                                                game.setPlayer2type(1);
                                                 game.getPlayer1scoredballs().add(this);
                                             }
-                                        } else {
-                                            game.setPlayer1type(1);
-                                            if (this.type == 1) {
-                                                game.getPlayer1scoredballs().add(this);
-                                            } else if (type == 2) {
-                                                game.getPlayer2scoredballs().add(this);
-                                            }
-                                        }
                                         break;
 
                                     case 1:
@@ -178,21 +172,15 @@ public class Ball extends Entity {
                             case 2:
                                 switch (game.getPlayer2type()) {
                                     case -1:
-                                        if (game.getPlayer1type() == 1) {
-                                            game.setPlayer2type(2);
                                             if (this.type == 1) {
-                                                game.getPlayer1scoredballs().add(this);
-                                            } else if (type == 2) {
+                                                game.setPlayer2type(1);
+                                                game.setPlayer1type(2);
+                                                game.getPlayer2scoredballs().add(this);
+                                            } else if (this.type == 2) {
+                                                game.setPlayer2type(2);
+                                                game.setPlayer1type(1);
                                                 game.getPlayer2scoredballs().add(this);
                                             }
-                                        } else {
-                                            game.setPlayer2type(1);
-                                            if (this.type == 1) {
-                                                game.getPlayer2scoredballs().add(this);
-                                            } else if (type == 2) {
-                                                game.getPlayer1scoredballs().add(this);
-                                            }
-                                        }
 
                                         break;
 

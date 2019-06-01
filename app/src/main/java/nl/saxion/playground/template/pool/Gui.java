@@ -38,8 +38,6 @@ public class Gui extends Entity {
 
     @Override
     public void draw(GameView gv) {
-//        System.out.println("Player 1 " + this.player1scoredballs.size());
-//        System.out.println("Player 2 " + this.player2scoredballs.size());
         //THIS IS NOT HOW TO SCALE THE GUI I KNOW!
         gv.getCanvas().drawRect((float) this.x, (float) this.y, (float) this.width, (float) this.height, this.blackPaint);
         if (this.bitmap == null) {
@@ -65,7 +63,7 @@ public class Gui extends Entity {
                     }
                 } else {
                     for (int j = 0; j < this.player1scoredballs.size(); j++) {
-                        gv.drawBitmap(this.player1scoredballs.get(j).getBitmap(), (float) this.x + gv.getWidth() / 2 + 240 + this.player1scoredballs.get(j).getId() * (float) this.player1scoredballs.get(j).getWidth() + 10, (float) this.y + (float) this.player1scoredballs.get(j).getRadius(), (float) this.player1scoredballs.get(j).getWidth() - 500, (float) this.player1scoredballs.get(j).getHeight());
+                        gv.drawBitmap(this.player1scoredballs.get(j).getBitmap(), (float) this.x + gv.getWidth() / 2 - 1500 + this.player1scoredballs.get(j).getId() * (float) this.player1scoredballs.get(j).getWidth() + 10, (float) this.y + (float) this.player1scoredballs.get(j).getRadius(), (float) this.player1scoredballs.get(j).getWidth() - 500, (float) this.player1scoredballs.get(j).getHeight());
                     }
                 }
             }
@@ -79,7 +77,7 @@ public class Gui extends Entity {
                     }
                 } else {
                     for (int j = 0; j < this.player2scoredballs.size(); j++) {
-                        gv.drawBitmap(this.player2scoredballs.get(j).getBitmap(), (float) this.x + gv.getWidth() / 2 - 180 + this.player2scoredballs.get(j).getId() * (float) this.player2scoredballs.get(j).getWidth() + 10, (float) this.y + (float) this.player2scoredballs.get(j).getRadius(), (float) this.player2scoredballs.get(j).getWidth() - 500, (float) this.player2scoredballs.get(j).getHeight());
+                        gv.drawBitmap(this.player2scoredballs.get(j).getBitmap(), (float) this.x + gv.getWidth() / 2 + 180 + this.player2scoredballs.get(j).getId() * (float) this.player2scoredballs.get(j).getWidth() + 10, (float) this.y + (float) this.player2scoredballs.get(j).getRadius(), (float) this.player2scoredballs.get(j).getWidth() - 500, (float) this.player2scoredballs.get(j).getHeight());
                     }
                 }
             }
