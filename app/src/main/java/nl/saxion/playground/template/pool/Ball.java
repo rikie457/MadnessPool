@@ -1,6 +1,5 @@
 package nl.saxion.playground.template.pool;
 
-
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,43 +15,21 @@ import static java.lang.Math.PI;
 
 public class Ball extends Entity {
 
-    public static int lastisertedid = 1;
-
-    public double speedX, speedY;
-    private boolean moving, sunk;
-    private double mass, x, y, width, height, radius, bx, by, friction, energyloss, oldX, oldY, newX, newY;
-    private int color, id;
+    private static int lastisertedid = 1;
+    private double speedX, speedY;
+    private double mass, x, y, width, height, radius, bx, by, friction, energyloss;
+    private int color, id, image, type;
     private ArrayList<Ball> balls;
     private ArrayList<Hole> holes;
     private ArrayList<Ball> sunkenBalls;
     private Game game;
     private ShootLine line;
-    private Bitmap bitmap;
-    private int image;
+    private Bitmap bitmap ;
+    private boolean moving;
+    private boolean shot;
+    private double oldX, oldY, newX, newY;
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image) {
-        this.id = lastisertedid;
-        lastisertedid++;
-        this.game = game;
-        this.balls = balls;
-        this.holes = holes;
-        this.sunkenBalls = sunkenBalls;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.radius = width / 2;
-        this.speedY = 0;
-        this.speedX = 0;
-        this.bx = game.getPlayWidth();
-        this.by = game.getPlayHeight();
-        this.mass = 10;
-        this.friction = .9965;
-        this.energyloss = .900;
-        this.image = image;
-    }
-
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, ShootLine line) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type, ShootLine line) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -73,6 +50,7 @@ public class Ball extends Entity {
         this.energyloss = .900;
         this.image = image;
         this.line = line;
+        this.type = type;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
@@ -113,12 +91,6 @@ public class Ball extends Entity {
 
     }
 
-    private boolean checkMovement() {
-        if (this.speedX == 0 && this.speedY == 0) {
-            return false;
-        }
-        return true;
-    }
 
     private void checkCollisionWall() {
         this.x += this.speedX;
@@ -162,16 +134,105 @@ public class Ball extends Entity {
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
             if (this.id != 16) {
-                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX() + this.holes.get(i).getRadius(), this.holes.get(i).getY() + this.holes.get(i).getRadius())) - (this.radius + this.holes.get(i).getRadius()) <= 0) {
-                    this.game.removeEntity(this);
-                    this.sunkenBalls.add(this);
-                    this.balls.remove(this);
+                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
+                    if (this.id != 8) {
+                        System.out.println("id: " + this.id +  "type: " + this.type);
+                        switch (game.getCurrentplayer()) {
+                            case 1:
+                                switch (game.getPlayer1type()) {
+                                    case -1:
+                                        if (game.getPlayer2type() == 1) {
+                                            game.setPlayer1type(2);
+                                            if (this.type == 1) {
+                                                game.getPlayer2scoredballs().add(this);
+                                            } else if (type == 2) {
+                                                game.getPlayer1scoredballs().add(this);
+                                            }
+                                        } else {
+                                            game.setPlayer1type(1);
+                                            if (this.type == 1) {
+                                                game.getPlayer1scoredballs().add(this);
+                                            } else if (type == 2) {
+                                                game.getPlayer2scoredballs().add(this);
+                                            }
+                                        }
+                                        break;
+
+                                    case 1:
+                                        if (this.type == 1) {
+                                            game.getPlayer1scoredballs().add(this);
+                                        } else if (type == 2) {
+                                            game.getPlayer2scoredballs().add(this);
+                                        }
+                                        break;
+
+                                    case 2:
+                                        if (this.type == 2) {
+                                            game.getPlayer1scoredballs().add(this);
+                                        } else if (type == 1) {
+                                            game.getPlayer2scoredballs().add(this);
+                                        }
+                                        break;
+                                }
+
+                            case 2:
+                                switch (game.getPlayer2type()) {
+                                    case -1:
+                                        if (game.getPlayer1type() == 1) {
+                                            game.setPlayer2type(2);
+                                            if (this.type == 1) {
+                                                game.getPlayer1scoredballs().add(this);
+                                            } else if (type == 2) {
+                                                game.getPlayer2scoredballs().add(this);
+                                            }
+                                        } else {
+                                            game.setPlayer2type(1);
+                                            if (this.type == 1) {
+                                                game.getPlayer2scoredballs().add(this);
+                                            } else if (type == 2) {
+                                                game.getPlayer1scoredballs().add(this);
+                                            }
+                                        }
+
+                                        break;
+
+                                    case 1:
+                                        if (this.type == 1) {
+                                            game.getPlayer2scoredballs().add(this);
+                                        } else if (this.type == 2) {
+                                            game.getPlayer1scoredballs().add(this);
+                                        }
+                                        break;
+
+                                    case 2:
+                                        if (this.type == 2) {
+                                            game.getPlayer2scoredballs().add(this);
+                                        } else if (type == 1) {
+                                            game.getPlayer1scoredballs().add(this);
+                                        }
+                                        break;
+                                }
+                        }
+                        this.game.removeEntity(this);
+                        this.sunkenBalls.add(this);
+                        if (game.movingballs.contains(this)) {
+                            game.movingballs.remove(this);
+                        }
+                        this.balls.remove(this);
+                    } else {
+                        //Is 8 Ball
+                    }
                 }
             }
         }
-
     }
 
+    private boolean checkMovement() {
+        if (this.speedX == 0 && this.speedY == 0) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public void tick() {
@@ -179,11 +240,16 @@ public class Ball extends Entity {
         checkCollisionWall();
         checkCollisionBall(this.balls);
         checkCollisionHole();
+        if (this.getId() == 16) {
+            if (this.isShot()) {
+                game.roundChecker();
+            }
+        }
     }
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.id == 16 && this.line != null && !this.moving) {
+        if (this.id == 16 && this.line != null && !game.checkMovementForAllBalls()) {
             Paint paint = new Paint();
             paint.setColor(Color.WHITE);
 
@@ -211,14 +277,16 @@ public class Ball extends Entity {
                 this.line.setNewY((float) this.newY);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) *2;
+                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) * 2;
                 this.line.setVisible(false);
 
                 this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
                 this.speedY = 0.00001 * (this.y + mag * Math.sin(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
+                this.shot = true;
             }
         }
     }
+
 
     @Override
     public void draw(GameView gv) {
@@ -226,11 +294,6 @@ public class Ball extends Entity {
             this.bitmap = gv.getBitmapFromResource(this.image);
         }
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
-    }
-
-
-    public void setColor(int color) {
-        this.color = color;
     }
 
     public double getMass() {
@@ -241,32 +304,16 @@ public class Ball extends Entity {
         return this.x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return this.y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 
     public double getSpeedX() {
         return this.speedX;
     }
 
-    public void setSpeedX(double speedX) {
-        this.speedX = speedX;
-    }
-
     public double getSpeedY() {
         return this.speedY;
-    }
-
-    public void setSpeedY(double speedY) {
-        this.speedY = speedY;
     }
 
     public double getRadius() {
@@ -289,7 +336,15 @@ public class Ball extends Entity {
         return id;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public boolean isShot() {
+        return shot;
+    }
+
+    public void setShot(boolean shot) {
+        this.shot = shot;
+    }
+
+    public boolean isMoving() {
+        return moving;
     }
 }
