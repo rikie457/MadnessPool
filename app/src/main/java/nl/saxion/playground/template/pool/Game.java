@@ -1,5 +1,7 @@
 package nl.saxion.playground.template.pool;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
@@ -8,12 +10,26 @@ import nl.saxion.playground.template.lib.GameModel;
 public class Game extends GameModel {
     //Settings
     private float guiHeight = 150;
+    private int currentplayer = 1;
+    private int player1type = -1;
+    private int player2type = -1;
+    private int inactiveplayer = 2;
+
+    //Context
+    private Context context;
 
     // ArrayLists
-    ArrayList<Ball> balls = new ArrayList<>();
-    ArrayList<Ball> sunkeBalls = new ArrayList<>();
-    ArrayList<Hole> holes = new ArrayList<>();
+    private ArrayList<Ball> balls = new ArrayList<>();
+    private ArrayList<Ball> sunkeBalls = new ArrayList<>();
+    private ArrayList<Hole> holes = new ArrayList<>();
+    private ArrayList<Ball> player1scoredballs = new ArrayList<>();
+    private ArrayList<Ball> player2scoredballs = new ArrayList<>();
+    ArrayList<Ball> movingballs = new ArrayList<>();
 
+
+    public Game(Context context) {
+        this.context = context;
+    }
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -33,40 +49,26 @@ public class Game extends GameModel {
         right = left + getPlayWidth();
         bottom = top + guiHeight;
 
-        Gui gui = new Gui(this, sunkeBalls, left, top, right, bottom);
+        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
         ShootLine line = new ShootLine(false);
         Hole hole = new Hole(this, 200, 200);
 
-        Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1);
-        Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2);
-        Ball ball3 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball3);
-        Ball ball4 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball4);
-        Ball ball5 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball5);
-        Ball ball6 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball6);
-        Ball ball7 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball7);
-        Ball ball8 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball8);
-        Ball ball9 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball9);
-        Ball ball10 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball10);
-        Ball ball11 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball11);
-        Ball ball12 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball12);
-        Ball ball13 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball13);
-        Ball ball14 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball14);
-        Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15);
-        Ball ball16 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, line);
-
-//        double cx = getPlayWidth() / 2, cy = getPlayHeight() / 2, drawn = 0, rowLen = 1;
-//        for (int i = 0; i < this.balls.size(); i++) {
-//            this.balls.get(i).setX(cx);
-//            this.balls.get(i).setY(cy);
-//            drawn++;
-//            if (drawn == rowLen) {
-//                cx = this.balls.get(i).getX() + (this.balls.get(i).getRadius() * 2 * Math.cos(-60 / 180 * Math.PI)) * rowLen;
-//                cy = this.balls.get(i).getY() + (this.balls.get(i).getRadius() * 2 * Math.sin(-60 / 180 * Math.PI)) * rowLen;
-//                drawn = 0;
-//                rowLen++;
-//            }
-//        }
-
+        Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1, 1, null);
+        Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2, 1, null);
+        Ball ball3 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball3, 1, null);
+        Ball ball4 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball4, 1, null);
+        Ball ball5 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball5, 1, null);
+        Ball ball6 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball6, 1, null);
+        Ball ball7 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball7, 1, null);
+        Ball ball8 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball8, 3, null);
+        Ball ball9 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball9, 2, null);
+        Ball ball10 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball10, 2, null);
+        Ball ball11 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball11, 2, null);
+        Ball ball12 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball12, 2, null);
+        Ball ball13 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball13, 2, null);
+        Ball ball14 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball14, 2, null);
+        Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15, 2, null);
+        Ball ball16 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
 
         this.holes.add(hole);
         this.balls.add(ball1);
@@ -105,5 +107,84 @@ public class Game extends GameModel {
         addEntity(ball15);
         addEntity(ball16);
         addEntity(line);
+
+
+    }
+
+    public void setCurrentPlayer(int player) {
+        if (player == 1) {
+            this.currentplayer = 1;
+            this.inactiveplayer = 2;
+        } else if (player == 2) {
+            this.currentplayer = 2;
+            this.inactiveplayer = 1;
+        }
+    }
+
+    public int getCurrentplayer() {
+        return this.currentplayer;
+    }
+
+    public int getInactiveplayer() {
+        return this.inactiveplayer;
+    }
+
+    public Boolean checkMovementForAllBalls() {
+        for (int i = 0; i < this.balls.size(); i++) {
+            if (this.balls.get(i).isMoving()) {
+                if (!this.movingballs.contains(this.balls.get(i))) {
+                    this.movingballs.add(this.balls.get(i));
+                }
+            } else {
+                if (this.movingballs.contains(this.balls.get(i))) {
+                    this.movingballs.remove(this.balls.get(i));
+                }
+            }
+        }
+        if (this.movingballs.size() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    public void roundChecker() {
+        for (int i = 0; i < this.balls.size(); i++) {
+            if (this.balls.get(i).getId() == 16) {
+                Ball ball = this.balls.get(i);
+                if (!this.checkMovementForAllBalls()) {
+                    if (this.currentplayer == 1) {
+                        setCurrentPlayer(2);
+                    } else {
+                        setCurrentPlayer(1);
+                    }
+                    this.movingballs.clear();
+                    ball.setShot(false);
+                }
+            }
+        }
+    }
+
+    public int getPlayer1type() {
+        return player1type;
+    }
+
+    public void setPlayer1type(int player1type) {
+        this.player1type = player1type;
+    }
+
+    public void setPlayer2type(int player2type) {
+        this.player2type = player2type;
+    }
+
+    public int getPlayer2type() {
+        return player2type;
+    }
+
+    public ArrayList<Ball> getPlayer1scoredballs() {
+        return player1scoredballs;
+    }
+
+    public ArrayList<Ball> getPlayer2scoredballs() {
+        return player2scoredballs;
     }
 }
