@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.balls.Ball;
 
 public class Gui extends Entity {
     private double x, y, width, height;

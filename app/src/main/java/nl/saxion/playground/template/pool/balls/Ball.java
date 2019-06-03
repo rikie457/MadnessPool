@@ -1,4 +1,4 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -8,28 +8,29 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Info;
+import nl.saxion.playground.template.pool.Utility;
 
-import static java.lang.Math.PI;
 
 public class Ball extends Entity {
 
-    private static int lastisertedid = 1;
-    private double speedX, speedY;
-    private double mass, x, y, width, height, radius, bx, by, friction, energyloss;
-    private int color, id, image, type;
-    private ArrayList<Ball> balls;
-    private ArrayList<Hole> holes;
-    private ArrayList<Ball> sunkenBalls;
-    private Game game;
-    private ShootLine line;
-    private Bitmap bitmap;
-    private boolean moving;
-    private boolean shot;
-    private double oldX, oldY, newX, newY;
+    protected static int lastisertedid = 1;
+    protected double speedX, speedY;
+    protected double mass, x, y, width, height, radius, bx, by, friction, energyloss;
+    protected int color, id, image, type;
+    protected ArrayList<Ball> balls;
+    protected ArrayList<Hole> holes;
+    protected ArrayList<Ball> sunkenBalls;
+    protected Game game;
+    protected Bitmap bitmap;
+    protected boolean moving;
+    protected boolean shot;
+    protected double oldX, oldY, newX, newY;
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type, ShootLine line) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -48,9 +49,8 @@ public class Ball extends Entity {
         this.mass = 10;
         this.friction = .9965;
         this.energyloss = .900;
-        this.image = image;
-        this.line = line;
         this.type = type;
+        this.image = image;
     }
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
@@ -234,47 +234,6 @@ public class Ball extends Entity {
             }
         }
     }
-
-    @Override
-    public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.id == 16 && this.line != null && !game.checkMovementForAllBalls()) {
-            Paint paint = new Paint();
-            paint.setColor(Color.WHITE);
-
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                this.line.setVisible(true);
-                this.oldX = (float) this.x;
-                this.oldY = (float) this.y;
-                this.line.setX((float) this.oldX + (float) this.radius);
-                this.line.setY((float) this.oldY + (float) this.radius);
-                this.line.setNewX((float) this.newX);
-                this.line.setNewY((float) this.newY);
-
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (!this.line.getVisible()) {
-                    this.line.setVisible(true);
-                    this.oldX = (float) this.x;
-                    this.oldY = (float) this.y;
-                    this.line.setX((float) this.oldX + (float) this.radius);
-                    this.line.setY((float) this.oldY + (float) this.radius);
-                }
-
-                this.newX = touch.x;
-                this.newY = touch.y;
-                this.line.setNewX((float) this.newX);
-                this.line.setNewY((float) this.newY);
-
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) * 2;
-                this.line.setVisible(false);
-
-                this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
-                this.speedY = 0.00001 * (this.y + mag * Math.sin(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
-                this.shot = true;
-            }
-        }
-    }
-
 
     @Override
     public void draw(GameView gv) {
