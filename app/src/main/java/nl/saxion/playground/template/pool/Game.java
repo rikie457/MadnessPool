@@ -1,7 +1,6 @@
 package nl.saxion.playground.template.pool;
 
 
-import android.widget.Button;
 import android.content.Context;
 import java.util.ArrayList;
 
@@ -9,14 +8,17 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
+import nl.saxion.playground.template.pool.buttons.EightBallButton;
+import nl.saxion.playground.template.pool.buttons.MadnessButton;
 
 public class Game extends GameModel {
     //Settings
-    private float guiHeight = 150;
     private int currentplayer = 1;
     private int player1type = -1;
     private int player2type = -1;
     private int inactiveplayer = 2;
+    private  float guiHeight = 150;
+    private float left, top, right, bottom;
 
     //Context
     private Context context;
@@ -48,14 +50,11 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
-
-        float left, top, right, bottom;
-        left = 0;
-        top = getPlayHeight();
-        right = left + getPlayWidth();
-        bottom = top + guiHeight;
-
-        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
+        this.left = 0;
+        this.right = left + getPlayWidth();
+        this.top = getPlayHeight();
+        this.bottom = top + guiHeight;
+        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, this.left, this.top, this.right, this.bottom);
         Hole hole = new Hole(this, 200, 200);
 
 
@@ -69,20 +68,11 @@ public class Game extends GameModel {
     }
 
     public void startEightBall() {
-
-        float left, top, right, bottom;
-        left = 0;
-        top = getPlayHeight();
-        right = left + getPlayWidth();
-        bottom = top + guiHeight;
-
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
         ShootLine line = new ShootLine(false);
-        Hole hole = new Hole(this, 200, 200);
 
         Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1, 1);
         Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2, 1);
@@ -101,7 +91,6 @@ public class Game extends GameModel {
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15, 2);
         WhiteBall ball16 = new WhiteBall(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
 
-        this.holes.add(hole);
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
