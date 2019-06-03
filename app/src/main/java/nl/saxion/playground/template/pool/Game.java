@@ -1,7 +1,8 @@
 package nl.saxion.playground.template.pool;
 
-import android.content.Context;
 
+import android.widget.Button;
+import android.content.Context;
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
@@ -28,6 +29,9 @@ public class Game extends GameModel {
     private ArrayList<Ball> player2scoredballs = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
 
+    MenuBackground menuBackground = new MenuBackground(this);
+    EightBallButton eightBallButton = new EightBallButton(this);
+    MadnessButton madnessButton = new MadnessButton(this);
 
     public Game(Context context) {
         this.context = context;
@@ -50,6 +54,25 @@ public class Game extends GameModel {
         top = getPlayHeight();
         right = left + getPlayWidth();
         bottom = top + guiHeight;
+
+        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
+        Hole hole = new Hole(this, 200, 200);
+
+
+        this.holes.add(hole);
+
+        addEntity(gui);
+        addEntity(hole);
+        addEntity(menuBackground);
+        addEntity(eightBallButton);
+        addEntity(madnessButton);
+    }
+
+    public void startEightBall() {
+
+        removeEntity(menuBackground);
+        removeEntity(eightBallButton);
+        removeEntity(madnessButton);
 
         Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
         ShootLine line = new ShootLine(false);
@@ -89,9 +112,8 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
-
-        addEntity(gui);
-        addEntity(hole);
+        
+        addEntity(line);
         addEntity(ball1);
         addEntity(ball2);
         addEntity(ball3);
@@ -108,9 +130,6 @@ public class Game extends GameModel {
         addEntity(ball14);
         addEntity(ball15);
         addEntity(ball16);
-        addEntity(line);
-
-
     }
 
     public void setCurrentPlayer(int player) {
@@ -192,5 +211,9 @@ public class Game extends GameModel {
 
     public ArrayList<Ball> getMovingBalls() {
         return movingballs;
+    }
+
+    public void startMadness() {
+
     }
 }
