@@ -70,6 +70,12 @@ public class Game extends GameModel {
 
     public void startEightBall() {
 
+        float left, top, right, bottom;
+        left = 0;
+        top = getPlayHeight();
+        right = left + getPlayWidth();
+        bottom = top + guiHeight;
+
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
