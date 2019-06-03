@@ -37,6 +37,7 @@ public class Game extends GameModel {
     private MadnessButton madnessButton = new MadnessButton(this);
 
     private boolean userInterfaceSpawned = false;
+    private boolean playersAdded = false;
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -49,8 +50,11 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
-        players.add(player1);
-        players.add(player2);
+        if (!playersAdded) {
+            players.add(player1);
+            players.add(player2);
+            playersAdded = true;
+        }
 
         this.left = 0;
         this.right = left + getPlayWidth();
@@ -208,11 +212,10 @@ public class Game extends GameModel {
 
         player1.setBalltype(-1);
         player1.resetScoredballs();
-        player2.setBalltype(-2);
+        player2.setBalltype(-1);
         player2.resetScoredballs();
 
         this.balls.clear();
-        this.players.clear();
         this.movingballs.clear();
         this.sunkeBalls.clear();
 
