@@ -24,7 +24,7 @@ public class Game extends GameModel {
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Ball> player1scoredballs = new ArrayList<>();
     private ArrayList<Ball> player2scoredballs = new ArrayList<>();
-    ArrayList<Ball> movingballs = new ArrayList<>();
+    private ArrayList<Ball> movingballs = new ArrayList<>();
 
 
     public Game(Context context) {
@@ -186,5 +186,9 @@ public class Game extends GameModel {
 
     public ArrayList<Ball> getPlayer2scoredballs() {
         return player2scoredballs;
+    }
+
+    public ArrayList<Ball> getMovingBalls(){
+        return movingballs;
     }
 }

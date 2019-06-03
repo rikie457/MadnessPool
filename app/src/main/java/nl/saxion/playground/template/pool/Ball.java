@@ -203,8 +203,8 @@ public class Ball extends Entity {
                         }
                         this.game.removeEntity(this);
                         this.sunkenBalls.add(this);
-                        if (game.movingballs.contains(this)) {
-                            game.movingballs.remove(this);
+                        if (game.getMovingBalls().contains(this)) {
+                            game.getMovingBalls().remove(this);
                         }
                         this.balls.remove(this);
                     } else {
