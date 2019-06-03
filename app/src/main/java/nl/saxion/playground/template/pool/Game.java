@@ -2,6 +2,7 @@ package nl.saxion.playground.template.pool;
 
 
 import android.content.Context;
+
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
@@ -12,32 +13,28 @@ import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
 
 public class Game extends GameModel {
-    //Settings
-    private int currentplayer = 1;
-    private int player1type = -1;
-    private int player2type = -1;
-    private int inactiveplayer = 2;
-    private  float guiHeight = 150;
-    private float left, top, right, bottom;
 
-    //Context
-    private Context context;
+    //Players
+    private Player player1 = new Player();
+    private Player player2 = new Player();
+
+    //Settings
+    private Player currentplayer = player1;
+    private Player inactiveplayer = player2;
+    private float guiHeight = 150;
+    private float left, top, right, bottom;
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Ball> sunkeBalls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
-    private ArrayList<Ball> player1scoredballs = new ArrayList<>();
-    private ArrayList<Ball> player2scoredballs = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
 
-    MenuBackground menuBackground = new MenuBackground(this);
-    EightBallButton eightBallButton = new EightBallButton(this);
-    MadnessButton madnessButton = new MadnessButton(this);
-
-    public Game(Context context) {
-        this.context = context;
-    }
+    //Menu items
+    private MenuBackground menuBackground = new MenuBackground(this);
+    private EightBallButton eightBallButton = new EightBallButton(this);
+    private MadnessButton madnessButton = new MadnessButton(this);
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -50,13 +47,15 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
+        players.add(player1);
+        players.add(player2);
+
         this.left = 0;
         this.right = left + getPlayWidth();
         this.top = getPlayHeight();
         this.bottom = top + guiHeight;
-        Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, this.left, this.top, this.right, this.bottom);
+        Gui gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom);
         Hole hole = new Hole(this, 200, 200);
-
 
         this.holes.add(hole);
 
@@ -107,7 +106,7 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
-        
+
         addEntity(line);
         addEntity(ball1);
         addEntity(ball2);
@@ -127,22 +126,22 @@ public class Game extends GameModel {
         addEntity(ball16);
     }
 
-    public void setCurrentPlayer(int player) {
-        if (player == 1) {
-            this.currentplayer = 1;
-            this.inactiveplayer = 2;
-        } else if (player == 2) {
-            this.currentplayer = 2;
-            this.inactiveplayer = 1;
+    public void setCurrentPlayer(Player player) {
+        if (player == player1) {
+            this.currentplayer = player1;
+            this.inactiveplayer = player2;
+        } else if (player == player2) {
+            this.currentplayer = player2;
+            this.inactiveplayer = player1;
         }
     }
 
-    public int getCurrentplayer() {
+    public Player getCurrentplayer() {
         return this.currentplayer;
     }
 
-    public int getInactiveplayer() {
-        return this.inactiveplayer;
+    public Player getInactiveplayer() {
+        return inactiveplayer;
     }
 
     public Boolean checkMovementForAllBalls() {
@@ -168,10 +167,10 @@ public class Game extends GameModel {
             if (this.balls.get(i).getId() == 16) {
                 Ball ball = this.balls.get(i);
                 if (!this.checkMovementForAllBalls()) {
-                    if (this.currentplayer == 1) {
-                        setCurrentPlayer(2);
+                    if (this.currentplayer == player1) {
+                        setCurrentPlayer(player2);
                     } else {
-                        setCurrentPlayer(1);
+                        setCurrentPlayer(player1);
                     }
                     this.movingballs.clear();
                     ball.setShot(false);
@@ -180,28 +179,8 @@ public class Game extends GameModel {
         }
     }
 
-    public int getPlayer1type() {
-        return player1type;
-    }
-
-    public void setPlayer1type(int player1type) {
-        this.player1type = player1type;
-    }
-
-    public void setPlayer2type(int player2type) {
-        this.player2type = player2type;
-    }
-
-    public int getPlayer2type() {
-        return player2type;
-    }
-
-    public ArrayList<Ball> getPlayer1scoredballs() {
-        return player1scoredballs;
-    }
-
-    public ArrayList<Ball> getPlayer2scoredballs() {
-        return player2scoredballs;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     public ArrayList<Ball> getMovingBalls() {

@@ -28,7 +28,7 @@ public class Activity extends AppCompatActivity {
         if (savedInstanceState != null && savedInstanceState.containsKey("game")) {
             game = (Game) savedInstanceState.getSerializable("game");
         } else {
-            game = new Game(getApplicationContext());
+            game = new Game();
         }
 
     }

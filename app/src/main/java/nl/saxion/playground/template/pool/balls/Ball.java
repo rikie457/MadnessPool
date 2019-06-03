@@ -1,9 +1,6 @@
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
@@ -12,6 +9,7 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
 import nl.saxion.playground.template.pool.Info;
+import nl.saxion.playground.template.pool.Player;
 import nl.saxion.playground.template.pool.Utility;
 
 
@@ -56,9 +54,9 @@ public class Ball extends Entity {
     private void checkCollisionBall(ArrayList<Ball> balls) {
 
         for (int i = 0; i < balls.size(); i++) {
-            double distSqr = Utility.getDistance(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
-            double xd = Utility.getXDistance(this.getX(), balls.get(i).getX());
-            double yd = Utility.getYDistance(this.getY(), balls.get(i).getY());
+            double distSqr = Utility.getDistanceNotSquared(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
+            double xd = this.getX() - balls.get(i).getX();
+            double yd = this.getY() - balls.get(i).getY();
 
             if (this == balls.get(i)) {
                 continue;
@@ -133,74 +131,31 @@ public class Ball extends Entity {
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
-            if (this.id != 16) {
-                if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
+            if (this.getClass() == Ball.class) {
+                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
                     if (this.id != 8) {
-                        System.out.println("id: " + this.id + "type: " + this.type);
-                        switch (game.getCurrentplayer()) {
-                            case 1:
-                                switch (game.getPlayer1type()) {
-                                    case -1:
-                                            if (this.type == 1) {
-                                                game.setPlayer1type(1);
-                                                game.setPlayer2type(2);
-                                                game.getPlayer1scoredballs().add(this);
-                                            } else if (this.type == 2) {
-                                                game.setPlayer1type(2);
-                                                game.setPlayer2type(1);
-                                                game.getPlayer1scoredballs().add(this);
-                                            }
-                                        break;
-
-                                    case 1:
-                                        if (this.type == 1) {
-                                            game.getPlayer1scoredballs().add(this);
-                                        } else if (type == 2) {
-                                            game.getPlayer2scoredballs().add(this);
-                                        }
-                                        break;
-
-                                    case 2:
-                                        if (this.type == 2) {
-                                            game.getPlayer1scoredballs().add(this);
-                                        } else if (type == 1) {
-                                            game.getPlayer2scoredballs().add(this);
-                                        }
-                                        break;
+                        for (i = 0; i < game.getPlayers().size(); i++) {
+                            if (game.getCurrentplayer() == game.getPlayers().get(i)) {
+                                Player player = game.getPlayers().get(i);
+                                if (player.getBalltype() == -1) {
+                                    if (this.type == 1) {
+                                        player.setBalltype(1);
+                                        game.getInactiveplayer().setBalltype(2);
+                                    } else if (this.type == 2) {
+                                        player.setBalltype(2);
+                                        game.getInactiveplayer().setBalltype(1);
+                                    }
+                                    player.getScoredballs().add(this);
+                                } else {
+                                    if (this.type == player.getBalltype()) {
+                                        player.getScoredballs().add(this);
+                                    } else {
+                                        game.getInactiveplayer().getScoredballs().add(this);
+                                    }
                                 }
-
-                            case 2:
-                                switch (game.getPlayer2type()) {
-                                    case -1:
-                                            if (this.type == 1) {
-                                                game.setPlayer2type(1);
-                                                game.setPlayer1type(2);
-                                                game.getPlayer2scoredballs().add(this);
-                                            } else if (this.type == 2) {
-                                                game.setPlayer2type(2);
-                                                game.setPlayer1type(1);
-                                                game.getPlayer2scoredballs().add(this);
-                                            }
-
-                                        break;
-
-                                    case 1:
-                                        if (this.type == 1) {
-                                            game.getPlayer2scoredballs().add(this);
-                                        } else if (this.type == 2) {
-                                            game.getPlayer1scoredballs().add(this);
-                                        }
-                                        break;
-
-                                    case 2:
-                                        if (this.type == 2) {
-                                            game.getPlayer2scoredballs().add(this);
-                                        } else if (type == 1) {
-                                            game.getPlayer1scoredballs().add(this);
-                                        }
-                                        break;
-                                }
+                            }
                         }
+
                         this.game.removeEntity(this);
                         this.sunkenBalls.add(this);
                         if (game.getMovingBalls().contains(this)) {

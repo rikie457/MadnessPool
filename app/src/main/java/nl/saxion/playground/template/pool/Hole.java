@@ -10,12 +10,14 @@ public class Hole extends Entity {
     private double x;
     private double y;
     private double radius;
+    private Paint blackpaint = new Paint();
     private Game game;
 
     public Hole(Game game, double x, double y) {
         this.game = game;
         this.x = x;
         this.y = y;
+        this.blackpaint.setColor(Color.BLACK);
     }
 
     public double getX() {
@@ -32,8 +34,6 @@ public class Hole extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        gv.getCanvas().drawCircle((float) this.x, (float) this.y, 50, paint);
+        gv.getCanvas().drawCircle((float) this.x, (float) this.y, 50, this.blackpaint);
     }
 }
