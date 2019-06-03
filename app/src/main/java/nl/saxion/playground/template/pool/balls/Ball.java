@@ -163,7 +163,12 @@ public class Ball extends Entity {
                         }
                         this.balls.remove(this);
                     } else {
-                        //Is 8 Ball
+                        //is 8 ball
+                        if (game.getCurrentplayer().getScoredballs().size() < 7) {
+                            game.winnerScreen(game.getInactiveplayer().getPlayerId());
+                        } else {
+                            game.winnerScreen(game.getCurrentplayer().getPlayerId());
+                        }
                     }
                 }
             }

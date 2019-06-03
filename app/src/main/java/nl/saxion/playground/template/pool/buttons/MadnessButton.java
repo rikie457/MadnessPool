@@ -29,6 +29,7 @@ public class MadnessButton extends Entity {
         super.tick();
 
         if (buttonPressed) {
+            buttonPressed = false;
             game.startMadness();
         }
     }
