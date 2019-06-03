@@ -38,9 +38,6 @@ public class WhiteBall extends Ball {
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         if (this.line != null && !game.checkMovementForAllBalls()) {
-            Paint paint = new Paint();
-            paint.setColor(Color.WHITE);
-
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 this.oldX = (float) this.x;
@@ -65,7 +62,7 @@ public class WhiteBall extends Ball {
                 this.line.setNewY((float) this.newY);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                double mag = Math.abs(Utility.getDistance(this.x, this.y, touch.x, touch.y)) * 2;
+                double mag = Math.abs(Utility.getDistanceNotSquared(this.x, this.y, touch.x, touch.y)) * 2;
                 this.line.setVisible(false);
 
                 this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.oldY - this.newY, this.oldX - this.newX) * 180 / PI)));
