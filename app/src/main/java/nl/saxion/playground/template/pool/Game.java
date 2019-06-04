@@ -98,6 +98,7 @@ public class Game extends GameModel {
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15, 2);
         WhiteBall ball16 = new WhiteBall(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
 
+        ball1.resetLastisertedid();
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
@@ -215,7 +216,6 @@ public class Game extends GameModel {
         player2.setBalltype(-1);
         player2.resetScoredballs();
 
-        this.balls.get(0).resetLastisertedid();
         this.balls.clear();
         this.movingballs.clear();
         this.sunkeBalls.clear();
