@@ -15,8 +15,8 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 public class Game extends GameModel {
 
     //Players
-    private Player player1 = new Player();
-    private Player player2 = new Player();
+    private Player player1 = new Player(1);
+    private Player player2 = new Player(2);
 
     //Settings
     private Player currentplayer = player1;
@@ -36,6 +36,9 @@ public class Game extends GameModel {
     private EightBallButton eightBallButton = new EightBallButton(this);
     private MadnessButton madnessButton = new MadnessButton(this);
 
+    private boolean userInterfaceSpawned = false;
+    private boolean playersAdded = false;
+
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
     }
@@ -47,20 +50,25 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
-        players.add(player1);
-        players.add(player2);
+        if (!playersAdded) {
+            players.add(player1);
+            players.add(player2);
+            playersAdded = true;
+        }
 
         this.left = 0;
         this.right = left + getPlayWidth();
         this.top = getPlayHeight();
         this.bottom = top + guiHeight;
-        Gui gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom);
-        Hole hole = new Hole(this, 200, 200);
 
-        this.holes.add(hole);
+        if (!userInterfaceSpawned) {
+            Gui gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom);
+            Hole hole = new Hole(this, 200, 200);
+            addEntity(gui);
+            addEntity(hole);
+            this.holes.add(hole);
+        }
 
-        addEntity(gui);
-        addEntity(hole);
         addEntity(menuBackground);
         addEntity(eightBallButton);
         addEntity(madnessButton);
@@ -90,6 +98,7 @@ public class Game extends GameModel {
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15, 2);
         WhiteBall ball16 = new WhiteBall(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
 
+        ball1.resetLastisertedid();
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
@@ -189,5 +198,32 @@ public class Game extends GameModel {
 
     public void startMadness() {
 
+    }
+
+    public void winnerScreen(int winnerId) {
+        for (int i = 0; i < balls.size(); i++) {
+            removeEntity(this.balls.get(i));
+        }
+        WinMessage winMessage = new WinMessage(this, winnerId);
+        addEntity(menuBackground);
+        addEntity(winMessage);
+    }
+
+    public void reset() {
+
+        player1.setBalltype(-1);
+        player1.resetScoredballs();
+        player2.setBalltype(-1);
+        player2.resetScoredballs();
+
+        this.balls.clear();
+        this.movingballs.clear();
+        this.sunkeBalls.clear();
+
+        setCurrentPlayer(player1);
+        setCurrentPlayer(player2);
+
+        removeEntity(menuBackground);
+        start();
     }
 }

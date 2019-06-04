@@ -28,11 +28,8 @@ public class EightBallButton extends Entity {
     public void tick() {
         super.tick();
 
-        if (buttonPressed && timer < 60) {
-            timer++;
-        }
-
-        if (buttonPressed && timer == 60) {
+        if (buttonPressed) {
+            buttonPressed = false;
             game.startEightBall();
         }
     }

@@ -86,9 +86,7 @@ public class Ball extends Entity {
                 }
             }
         }
-
     }
-
 
     private void checkCollisionWall() {
         this.x += this.speedX;
@@ -155,16 +153,20 @@ public class Ball extends Entity {
                                 }
                             }
                         }
-
-                        this.game.removeEntity(this);
-                        this.sunkenBalls.add(this);
-                        if (game.getMovingBalls().contains(this)) {
-                            game.getMovingBalls().remove(this);
-                        }
-                        this.balls.remove(this);
                     } else {
-                        //Is 8 Ball
+                        //is 8 ball
+                        if (game.getCurrentplayer().getScoredballs().size() < 7) {
+                            game.winnerScreen(game.getInactiveplayer().getPlayerId());
+                        } else {
+                            game.winnerScreen(game.getCurrentplayer().getPlayerId());
+                        }
                     }
+                    this.game.removeEntity(this);
+                    this.sunkenBalls.add(this);
+                    if (game.getMovingBalls().contains(this)) {
+                        game.getMovingBalls().remove(this);
+                    }
+                    this.balls.remove(this);
                 }
             }
         }
@@ -248,5 +250,9 @@ public class Ball extends Entity {
 
     public boolean isMoving() {
         return moving;
+    }
+
+    public void resetLastisertedid() {
+        lastisertedid = 1;
     }
 }
