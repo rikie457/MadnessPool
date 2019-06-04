@@ -215,6 +215,7 @@ public class Game extends GameModel {
         player2.setBalltype(-1);
         player2.resetScoredballs();
 
+        this.balls.get(0).resetLastisertedid();
         this.balls.clear();
         this.movingballs.clear();
         this.sunkeBalls.clear();
