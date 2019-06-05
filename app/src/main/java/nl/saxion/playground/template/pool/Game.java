@@ -23,6 +23,7 @@ public class Game extends GameModel {
     private Player inactiveplayer = player2;
     private float guiHeight = 150;
     private float left, top, right, bottom;
+    private boolean cueBallScored = false;
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -35,6 +36,8 @@ public class Game extends GameModel {
     private MenuBackground menuBackground = new MenuBackground(this);
     private EightBallButton eightBallButton = new EightBallButton(this);
     private MadnessButton madnessButton = new MadnessButton(this);
+
+    private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this);
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -89,6 +92,8 @@ public class Game extends GameModel {
         Ball ball14 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball14, 2);
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball15, 2);
         WhiteBall ball16 = new WhiteBall(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
+
+        this.whiteBallHandler.setWhiteBall(ball16);
 
         this.balls.add(ball1);
         this.balls.add(ball2);
@@ -179,12 +184,37 @@ public class Game extends GameModel {
         }
     }
 
+    public void scoreCueBall() {
+        this.cueBallScored = true;
+        for (int i = 0; i < this.movingballs.size(); i++) {
+            if (this.movingballs.get(i).getId() == 16) {
+                this.movingballs.remove(i);
+            }
+        }
+    }
+
+    public void placeCueBall() {
+        addEntity(whiteBallHandler);
+    }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public ArrayList<Ball> getMovingBalls() {
         return movingballs;
+    }
+
+    public ArrayList<Ball> getAllBalls() {
+        return this.balls;
+    }
+
+    public boolean getCueBallScored() {
+        return this.cueBallScored;
+    }
+
+    public void resetCueBallScored() {
+        this.cueBallScored = false;
     }
 
     public void startMadness() {

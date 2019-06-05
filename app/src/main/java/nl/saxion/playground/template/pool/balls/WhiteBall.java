@@ -12,6 +12,7 @@ import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
 import nl.saxion.playground.template.pool.ShootLine;
 import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.WhiteBallHandler;
 
 import static java.lang.Math.PI;
 
@@ -19,7 +20,6 @@ import static java.lang.Math.PI;
 public class WhiteBall extends Ball {
 
     private ShootLine line;
-    private boolean isScored = false;
 
     public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type, ShootLine line) {
         super(game, balls, holes, sunkenBalls, x, y, width, height, image, type);
@@ -29,6 +29,7 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
+        checkCollisionHoleCueBall();
     }
 
     @Override
@@ -36,9 +37,21 @@ public class WhiteBall extends Ball {
         super.draw(gv);
     }
 
+    public void checkCollisionHoleCueBall() {
+        for (int i = 0; i < this.holes.size(); i++) {
+            for (int j = 0; j < this.holes.size(); j++) {
+                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0 && this.getId() == 16) {
+                    game.scoreCueBall();
+                    game.placeCueBall();
+                    game.removeEntity(this);
+                }
+            }
+        }
+    }
+
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.line != null && !game.checkMovementForAllBalls() && !this.isScored) {
+        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 this.oldX = (float) this.x;
@@ -71,5 +84,10 @@ public class WhiteBall extends Ball {
                 this.shot = true;
             }
         }
+    }
+
+    public void cord(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 }

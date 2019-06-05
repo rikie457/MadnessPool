@@ -214,8 +214,16 @@ public class Ball extends Entity {
         return this.speedX;
     }
 
+    public void setSpeedX(double speedX) {
+        this.speedX = speedX;
+    }
+
     public double getSpeedY() {
         return this.speedY;
+    }
+
+    public void setSpeedY(double speedY) {
+        this.speedY = speedY;
     }
 
     public double getRadius() {
