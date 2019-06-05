@@ -16,6 +16,11 @@ public class ShootLine extends Entity {
     }
 
     @Override
+    public int getLayer() {
+        return 1;
+    }
+
+    @Override
     public void draw(GameView gv) {
         if (visible) {
             Paint paint = new Paint();

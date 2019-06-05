@@ -96,6 +96,7 @@ public class Ball extends Entity {
         this.x += this.speedX;
         this.y += this.speedY;
 
+/*
         if (this.x - this.radius < 0) {
             Info.addToWallCollisionCounter();
             this.x = this.radius;
@@ -112,8 +113,28 @@ public class Ball extends Entity {
                 this.speedX = 0;
             }
         }
+*/
+        //muren rechts en links
+        if (this.x - this.radius <= 100) {
+            Info.addToWallCollisionCounter();
+            this.x = 100 + this.radius;
+            this.speedX = -this.speedX;
+        } else if (this.x + this.radius >= game.getWidth() - 150) {
+            Info.addToWallCollisionCounter();
+            this.speedX = -this.speedX;
+            this.x = game.getPlayWidth() - 150 - this.radius;
+            this.speedX *= this.energyloss;
+        } else {
+            this.x += this.speedX;
+            this.speedX *= this.friction;
+            if (Math.abs(this.speedX) < .1 && Math.abs(this.speedY) < .1) {
+                this.speedX = 0;
+            }
+        }
 
-        if (this.y - this.radius < 0) {
+
+
+/*        if (this.y - this.radius < 0) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
             this.y = this.radius;
@@ -128,12 +149,31 @@ public class Ball extends Entity {
             if (Math.abs(this.speedY) < .1 && Math.abs(this.speedX) < .1) {
                 this.speedY = 0;
             }
+        }*/
+
+        //muuren boven en onder
+        if (this.y - this.radius <= 80) {
+            Info.addToWallCollisionCounter();
+            this.speedY = -this.speedY;
+            this.y = 80+this.radius;
+        } else if (this.y + this.radius > game.getHeight() - 290) {
+            Info.addToWallCollisionCounter();
+            this.speedY = -this.speedY;
+            this.y = game.getHeight() -290 - this.radius;
+            this.speedY *= this.energyloss;
+        } else {
+            this.y += this.speedY;
+            this.speedY *= this.friction;
+            if (Math.abs(this.speedY) < .1 && Math.abs(this.speedX) < .1) {
+                this.speedY = 0;
+            }
         }
     }
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
             if (this.id != 16) {
+                //if (Math.sqrt(Utility.getDistance(x + radius, y + radius, holes.get(i).getX(), holes.get(i).getY())) <=30){
                 if (Math.sqrt(Utility.getDistance(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
                     if (this.id != 8) {
                         System.out.println("id: " + this.id + "type: " + this.type);
@@ -275,6 +315,10 @@ public class Ball extends Entity {
         }
     }
 
+    @Override
+    public int getLayer() {
+        return 1;
+    }
 
     @Override
     public void draw(GameView gv) {

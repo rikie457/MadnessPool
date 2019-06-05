@@ -50,8 +50,20 @@ public class Game extends GameModel {
         bottom = top + guiHeight;
 
         Gui gui = new Gui(this, this.context, this.sunkeBalls, this.player1scoredballs, this.player2scoredballs, left, top, right, bottom);
+
         ShootLine line = new ShootLine(false);
-        Hole hole = new Hole(this, 200, 200);
+
+        //holes bovenkant pooltafel
+        Hole hole = new Hole(this,240/2,240/2);
+        Hole hole1 = new Hole(this,getWidth()/2,200/2);
+        Hole hole2 = new Hole(this,getWidth() - 230/2,230/2);
+
+        //holes onderkant pooltafel
+        Hole hole3 = new Hole(this,240/2,getHeight() - 240);
+        Hole hole4 = new Hole(this,getWidth()/2,getHeight() - 220);
+        Hole hole5 = new Hole(this,getWidth() - 240/2,getHeight() - 240);
+
+        addEntity(new Background(this));
 
         Ball ball1 = new Ball(this, this.balls, this.holes, this.sunkeBalls, this.getWidth() / 2, Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball1, 1, null);
         Ball ball2 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball2, 1, null);
@@ -71,6 +83,12 @@ public class Game extends GameModel {
         Ball ball16 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getWidth()), Utility.randomDoubleFromRange(0, getHeight()), 75, 75, R.drawable.ball16, 0, line);
 
         this.holes.add(hole);
+        this.holes.add(hole1);
+        this.holes.add(hole2);
+        this.holes.add(hole3);
+        this.holes.add(hole4);
+        this.holes.add(hole5);
+
         this.balls.add(ball1);
         this.balls.add(ball2);
         this.balls.add(ball3);
@@ -89,7 +107,14 @@ public class Game extends GameModel {
         this.balls.add(ball16);
 
         addEntity(gui);
+
         addEntity(hole);
+        addEntity(hole1);
+        addEntity(hole2);
+        addEntity(hole3);
+        addEntity(hole4);
+        addEntity(hole5);
+
         addEntity(ball1);
         addEntity(ball2);
         addEntity(ball3);
