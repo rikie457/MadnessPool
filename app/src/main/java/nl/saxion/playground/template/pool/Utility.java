@@ -9,6 +9,8 @@ public class Utility {
     }
 
     public static double randomDoubleFromRange(double min, double max) {
+        min -= 1000;
+        max -= 10000;
         return (Math.random() * (max - min + 1) + min);
     }
 
