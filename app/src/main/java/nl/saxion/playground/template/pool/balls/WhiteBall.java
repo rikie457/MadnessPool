@@ -19,6 +19,7 @@ import static java.lang.Math.PI;
 public class WhiteBall extends Ball {
 
     private ShootLine line;
+    private boolean isScored = false;
 
     public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type, ShootLine line) {
         super(game, balls, holes, sunkenBalls, x, y, width, height, image, type);
@@ -37,7 +38,7 @@ public class WhiteBall extends Ball {
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.line != null && !game.checkMovementForAllBalls()) {
+        if (this.line != null && !game.checkMovementForAllBalls() && !this.isScored) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 this.oldX = (float) this.x;
