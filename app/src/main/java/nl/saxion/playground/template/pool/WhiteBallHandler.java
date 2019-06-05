@@ -15,6 +15,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 public class WhiteBallHandler extends Entity {
 
     float aVal;
+    private boolean ballReplaced = false;
 
     ArrayList<Ball> balls;
 
@@ -35,24 +36,27 @@ public class WhiteBallHandler extends Entity {
 
     @Override
     public void draw(GameView gv) {
-//        if (bitmap == null) {
-//            if (game.getCurrentplayer() == game.getPlayers().get(0)) {
-//                gv.getBitmapFromResource(R.drawable.playertwoplace);
-//            } else {
-//                gv.getBitmapFromResource(R.drawable.playeroneplace);
-//            }
-//        }
-//        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight()/2 - 150, 600, 300, aVal);
     }
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
-        this.whiteBall.cord(event.getX() - (this.whiteBall.getWidth() / 2), event.getY() - (this.whiteBall.getHeight() / 2));
-        this.whiteBall.setSpeedX(0);
-        this.whiteBall.setSpeedY(0);
-        game.addEntity(this.whiteBall);
-        game.removeEntity(this);
+
+        if (!this.ballReplaced && event.getAction() == MotionEvent.ACTION_UP) {
+            this.whiteBall.cord(event.getX() - (this.whiteBall.getWidth() / 2), event.getY() - (this.whiteBall.getHeight() / 2));
+            this.whiteBall.setSpeedX(0);
+            this.whiteBall.setSpeedY(0);
+            this.ballReplaced = true;
+            game.addEntity(this.whiteBall);
+        }
+
+        if (this.ballReplaced){
+            if (event.getX() > this.whiteBall.getX() - 10 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 10 && event.getY() > this.whiteBall.getY() - 10 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 10 && event.getAction() == MotionEvent.ACTION_MOVE) {
+                whiteBall.cord(event.getX() + this.whiteBall.getWidth() / 2, event.getY() + this.whiteBall.getHeight() / 2);
+            } else {
+                game.removeEntity(this);
+            }
+        }
     }
 
     public void setWhiteBall (WhiteBall whiteBall) {
