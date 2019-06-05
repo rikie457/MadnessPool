@@ -73,8 +73,8 @@ public class Game extends GameModel {
     private float y_offset = 1 * padding;
     private float x_diff = ball_radius + x_offset;
     private float y_diff = ball_radius + y_offset;
-    private float rack_x_offset = 350;
-    private float rack_y_offset = -50;
+    private float rack_x_offset = 500;
+    private float rack_y_offset = -150;
 
     private Coord[] rackPositions = new Coord[] {
             // 1ST-ROW
@@ -137,7 +137,7 @@ public class Game extends GameModel {
 
             // WHITE-BALL
             new Coord(
-                    -700 + ball_radius,
+                    -1300 + ball_radius,
                     +getHeight() / 2 + ball_radius - 50)
     };
 
