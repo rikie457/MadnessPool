@@ -66,6 +66,37 @@ public class Game extends GameModel {
         addEntity(madnessButton);
     }
 
+    private Coord[] rackPositions = {
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0),
+            new Coord(0, 0)
+    };
+
+    public void rackBalls(ArrayList<Ball> balls, WhiteBall whiteBall) {
+        // ball radius = 75
+
+        for(int i = 0; i < balls.size(); i++) {
+            //balls.get(i).getX
+        }
+
+        for(int i = 0; i < rackPositions.length; i++) {
+            rackPositions[i].setX(rackPositions[i].getX() + getWidth() / 2);
+        }
+    }
+
     public void startEightBall() {
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
