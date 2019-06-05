@@ -66,35 +66,200 @@ public class Game extends GameModel {
         addEntity(madnessButton);
     }
 
-    private Coord[] rackPositions = {
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0),
-            new Coord(0, 0)
+    // RACKING BALL-POSITIONING PROPERTIES
+    private float padding = (float)1; // factor that determines how much space there is between the racked pool balls (1 = tightest possible)
+    private float ball_radius= 75/2;
+    private float x_offset = ball_radius / 2 + 10 * padding;
+    private float y_offset = 1 * padding;
+    private float x_diff = ball_radius + x_offset;
+    private float y_diff = ball_radius + y_offset;
+    private float rack_x_offset = 350;
+    private float rack_y_offset = -50;
+
+    private Coord[] rackPositions = new Coord[] {
+            // 1ST-ROW
+            new Coord(
+                    0,
+                    0),
+
+            // 2ND-ROW
+            new Coord(
+                    +x_diff,
+                    -y_diff),
+            new Coord(
+                    +x_diff,
+                    y_diff),
+
+            // 3RD-ROW
+            new Coord(
+                    +x_diff * 2,
+                    -y_diff * 2),
+            // actual location of the black ball
+            new Coord(
+                    +x_diff * 2,
+                    +y_diff * 2),
+
+            // 4TH-ROW
+            new Coord(
+                    +x_diff * 3,
+                    -y_diff * 3),
+            new Coord(
+                    +x_diff * 3,
+                    -y_diff * 1),
+            new Coord(
+                    +x_diff * 3,
+                    +y_diff * 1),
+            new Coord(
+                    +x_diff * 3,
+                    +y_diff * 3),
+
+            // 5TH-ROW
+            new Coord(
+                    +x_diff * 4,
+                    -y_diff * 4),
+            new Coord(
+                    +x_diff * 4,
+                    -y_diff * 2),
+            new Coord(
+                    +x_diff * 4,
+                    +0),
+            new Coord(
+                    +x_diff * 4,
+                    +y_diff * 2),
+            new Coord(
+                    +x_diff * 4,
+                    +y_diff * 4),
+
+            // (BLACK-BALL)
+            new Coord(
+                    +x_diff * 2,
+                    +0),
+
+            // WHITE-BALL
+            new Coord(
+                    -700 + ball_radius,
+                    +getHeight() / 2 + ball_radius - 50)
     };
 
-    public void rackBalls(ArrayList<Ball> balls, WhiteBall whiteBall) {
-        // ball radius = 75
+    private static int currentSolid = 0, currentStriped = 8;
 
-        for(int i = 0; i < balls.size(); i++) {
-            //balls.get(i).getX
-        }
+    private void getNextSolid() {
+        currentSolid++;
+    }
 
+    private void getNextStriped() {
+        currentStriped++;
+    }
+
+    private int getRandIntInRange(int left, int right) {
+        return (int)(left + (Math.random() * (right - left + 1)));
+    }
+
+    // initializes the 'currentStriped' and 'currentSolid' indecis, which are used in the rackBalls() function
+    // to consistently cycle through all balls
+    public void resetRackPositions() {
+        this.currentStriped = 8;
+        this.currentSolid = 0;
+    }
+
+    // swaps the elements at loc a and b in array 'arrayInt'
+    public void swap(int[] arrayInt, int a, int b) {
+        if(a == b) return;
+        int temp = arrayInt[a];
+        arrayInt[a] = arrayInt[b];
+        arrayInt[b] = temp;
+    }
+
+    public void rackBalls(ArrayList<Ball> balls) {
+        resetRackPositions();
+
+        // add offsets to the coordinates to center the balls
         for(int i = 0; i < rackPositions.length; i++) {
-            rackPositions[i].setX(rackPositions[i].getX() + getWidth() / 2);
+            rackPositions[i].setX(rackPositions[i].getX() + getWidth() / 2 + ball_radius + rack_x_offset);
+            rackPositions[i].setY(rackPositions[i].getY() + getHeight() / 2 + ball_radius + rack_y_offset);
         }
+
+        // balls 0 through 6 are SOLID BALLS (0 t/m 14)
+        // balls 7 through 13 are STRIPED BALLS (0 t/m 14)
+        // ball at 7 == BLACK BALL (index 14)
+        // ball at 15 is WHITE BALL (index 15)
+
+        int[] sideBallIndecis = new int[] {
+            13, 9,
+            8, 5,
+            4, 3,
+            2, 1
+        };
+        int[] normalBallIndecis = new int[] {
+            12, 11, 10, 7, 6, 0
+        };
+        int blackBallIndex = 14,
+                whiteBallIndex = 15;
+
+        for(int i = 0; i < sideBallIndecis.length; i+=2) {
+            int randBoolean = getRandIntInRange(0, 1);
+
+            // 1st side
+            balls.get(this.currentSolid).setX(
+                    rackPositions[sideBallIndecis[i + (1 - randBoolean)]].getX()
+            );
+            balls.get(this.currentSolid).setY(
+                    rackPositions[sideBallIndecis[i + (1 - randBoolean)]].getY()
+            );
+
+            // second side
+            balls.get(this.currentStriped).setX(
+                    rackPositions[sideBallIndecis[i + randBoolean]].getX()
+            );
+            balls.get(this.currentStriped).setY(
+                    rackPositions[sideBallIndecis[i + randBoolean]].getY()
+            );
+
+            getNextSolid();
+            getNextStriped();
+        }
+
+        // shuffle the ball indecis in the 'normal' range
+        for(int i = 0, a, b; i < normalBallIndecis.length; i++) {
+            a = getRandIntInRange(0, normalBallIndecis.length - 1);
+            b = getRandIntInRange(0, normalBallIndecis.length - 1);
+
+            swap(normalBallIndecis, a, b);
+        }
+
+        // assign positions to these 'normal' balls
+        for(int i = 0; i < normalBallIndecis.length; i++) {
+            int currentBall;
+
+            if(i % 2 == 1) {
+                currentBall = this.currentSolid;
+            }
+            else {
+                currentBall = this.currentStriped;
+            }
+
+            balls.get(currentBall).setX(
+                    rackPositions[normalBallIndecis[i]].getX()
+            );
+
+            balls.get(currentBall).setY(
+                    rackPositions[normalBallIndecis[i]].getY()
+            );
+
+            if(i % 2 == 1) {
+                getNextSolid();
+            } else {
+                getNextStriped();
+            }
+        }
+
+        // initialize the black ball
+        balls.get(7).setX(rackPositions[blackBallIndex].getX());
+        balls.get(7).setY(rackPositions[blackBallIndex].getY());
+
+        // initialize the white ball
+        balls.get(15).setX(rackPositions[whiteBallIndex].getX());
+        balls.get(15).setY(rackPositions[whiteBallIndex].getY());
     }
 
     public void startEightBall() {
@@ -138,6 +303,9 @@ public class Game extends GameModel {
         this.balls.add(ball15);
         this.balls.add(ball16);
 
+        // puts the balls in the rack
+        rackBalls(this.balls);
+
         addEntity(line);
         addEntity(ball1);
         addEntity(ball2);
@@ -175,6 +343,7 @@ public class Game extends GameModel {
         return inactiveplayer;
     }
 
+    // checks whether there are balls moving or not
     public Boolean checkMovementForAllBalls() {
         for (int i = 0; i < this.balls.size(); i++) {
             if (this.balls.get(i).isMoving()) {

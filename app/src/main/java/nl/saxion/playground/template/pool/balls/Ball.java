@@ -87,6 +87,7 @@ public class Ball extends Entity {
             }
         }
 
+
     }
 
 
@@ -210,9 +211,19 @@ public class Ball extends Entity {
         return this.y;
     }
 
+    public void setX(float x) { this.x = x; }
+
+    public void setY(float y) { this.y = y; }
+
     public double getSpeedX() {
         return this.speedX;
     }
+
+    // werkt niet, niet gebruiken
+    public void setSpeedX(float xSpeed) { this.speedX = xSpeed; }
+
+    // werkt niet, niet gebruiken
+    public void setSpeedY(float ySpeed) { this.speedY = ySpeed; }
 
     public double getSpeedY() {
         return this.speedY;
