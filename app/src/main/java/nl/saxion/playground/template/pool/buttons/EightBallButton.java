@@ -9,8 +9,14 @@ import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 
+/**
+ * The type Eight ball button.
+ */
 public class EightBallButton extends Entity {
 
+    /**
+     * The A val.
+     */
     float aVal;
 
     static private Bitmap bitmap;
@@ -20,7 +26,12 @@ public class EightBallButton extends Entity {
     private boolean buttonPressed = false;
     private int timer = 0;
 
-     public EightBallButton(Game game) {
+    /**
+     * Instantiates a new Eight ball button.
+     *
+     * @param game the game
+     */
+    public EightBallButton(Game game) {
         this.game = game;
     }
 
@@ -28,11 +39,8 @@ public class EightBallButton extends Entity {
     public void tick() {
         super.tick();
 
-        if (buttonPressed && timer < 60) {
-            timer++;
-        }
-
-        if (buttonPressed && timer == 60) {
+        if (buttonPressed) {
+            buttonPressed = false;
             game.startEightBall();
         }
     }

@@ -6,14 +6,25 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Menu background.
+ */
 public class MenuBackground extends Entity {
 
+    /**
+     * The A val.
+     */
     float aVal;
 
     static private Bitmap bitmap;
 
     private Game game;
 
+    /**
+     * Instantiates a new Menu background.
+     *
+     * @param game the game
+     */
     MenuBackground(Game game) {
         this.game = game;
     }
