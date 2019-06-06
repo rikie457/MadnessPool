@@ -53,40 +53,40 @@ public class Ball extends Entity {
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
 
-        for (int i = 0; i < balls.size(); i++) {
-            double distSqr = Utility.getDistanceNotSquared(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
-            double xd = this.getX() - balls.get(i).getX();
-            double yd = this.getY() - balls.get(i).getY();
+        if (!game.getCueBallScored()) {
+            for (int i = 0; i < balls.size(); i++) {
+                double distSqr = Utility.getDistanceNotSquared(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
+                double xd = this.getX() - balls.get(i).getX();
+                double yd = this.getY() - balls.get(i).getY();
 
-            if (this == balls.get(i)) {
-                continue;
-            }
-
-            if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius())) {
-                if (this.speedX == 0 && this.speedY == 0 && balls.get(i).getSpeedX() == 0 && balls.get(i).getSpeedY() == 0) {
-                    this.speedY = .5;
-                    this.speedX = -.5;
+                if (this == balls.get(i)) {
+                    continue;
                 }
-                Info.addToBallCollisionCounter();
-                double xVelocity = balls.get(i).getSpeedX() - this.getSpeedX();
-                double yVelocity = balls.get(i).getSpeedY() - this.getSpeedY();
-                double dotProduct = xd * xVelocity + yd * yVelocity;
-                if (dotProduct > 0) {
-                    double collisionScale = dotProduct / distSqr;
-                    double xCollision = xd * collisionScale;
-                    double yCollision = yd * collisionScale;
-                    double combinedMass = this.getMass() + balls.get(i).getMass();
-                    double collisionWeightA = 2 * balls.get(i).getMass() / combinedMass;
-                    double collisionWeightB = 2 * this.getMass() / combinedMass;
-                    this.speedX += collisionWeightA * xCollision;
-                    this.speedY += collisionWeightA * yCollision;
-                    balls.get(i).speedX -= collisionWeightB * xCollision;
-                    balls.get(i).speedY -= collisionWeightB * yCollision;
 
+                if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius())) {
+                    if (this.speedX == 0 && this.speedY == 0 && balls.get(i).getSpeedX() == 0 && balls.get(i).getSpeedY() == 0) {
+                        this.speedY = .5;
+                        this.speedX = -.5;
+                    }
+                    Info.addToBallCollisionCounter();
+                    double xVelocity = balls.get(i).getSpeedX() - this.getSpeedX();
+                    double yVelocity = balls.get(i).getSpeedY() - this.getSpeedY();
+                    double dotProduct = xd * xVelocity + yd * yVelocity;
+                    if (dotProduct > 0) {
+                        double collisionScale = dotProduct / distSqr;
+                        double xCollision = xd * collisionScale;
+                        double yCollision = yd * collisionScale;
+                        double combinedMass = this.getMass() + balls.get(i).getMass();
+                        double collisionWeightA = 2 * balls.get(i).getMass() / combinedMass;
+                        double collisionWeightB = 2 * this.getMass() / combinedMass;
+                        this.speedX += collisionWeightA * xCollision;
+                        this.speedY += collisionWeightA * yCollision;
+                        balls.get(i).speedX -= collisionWeightB * xCollision;
+                        balls.get(i).speedY -= collisionWeightB * yCollision;
+                    }
                 }
             }
         }
-
     }
 
 
@@ -206,8 +206,16 @@ public class Ball extends Entity {
         return this.x;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
     public double getY() {
         return this.y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     public double getSpeedX() {

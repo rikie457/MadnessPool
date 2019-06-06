@@ -35,14 +35,18 @@ public class WhiteBall extends Ball {
     @Override
     public void draw(GameView gv) {
         super.draw(gv);
+        if (this.bitmap == null) {
+            this.bitmap = gv.getBitmapFromResource(this.image);
+        }
+        gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
     }
 
     public void checkCollisionHoleCueBall() {
         for (int i = 0; i < this.holes.size(); i++) {
             for (int j = 0; j < this.holes.size(); j++) {
-                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0 && this.getId() == 16) {
-                    game.scoreCueBall();
+                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0 && this.getId() == 16 && !game.getCueBallScored()) {
                     game.placeCueBall();
+                    game.getMovingBalls().remove(this);
                     game.removeEntity(this);
                 }
             }
@@ -84,10 +88,5 @@ public class WhiteBall extends Ball {
                 this.shot = true;
             }
         }
-    }
-
-    public void cord(double x, double y) {
-        this.x = x;
-        this.y = y;
     }
 }

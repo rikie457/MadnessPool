@@ -24,6 +24,7 @@ public class Game extends GameModel {
     private float guiHeight = 150;
     private float left, top, right, bottom;
     private boolean cueBallScored = false;
+    private boolean cueBallInHand = false;
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -215,6 +216,14 @@ public class Game extends GameModel {
 
     public void resetCueBallScored() {
         this.cueBallScored = false;
+    }
+
+    public boolean getCueBallInHand () {
+        return this.getCueBallInHand();
+    }
+
+    public void setCueBallInHand(boolean cueBallInHand) {
+        this.cueBallInHand = cueBallInHand;
     }
 
     public void startMadness() {
