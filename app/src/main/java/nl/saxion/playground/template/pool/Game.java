@@ -185,6 +185,10 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * scoreCueBall.
+     * Is started when the cue ball gets pocketed.
+     */
     public void scoreCueBall() {
         this.cueBallScored = true;
         for (int i = 0; i < this.movingballs.size(); i++) {

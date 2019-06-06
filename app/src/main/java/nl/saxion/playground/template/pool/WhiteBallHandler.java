@@ -10,6 +10,9 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type  WhiteBallHandler.
+ */
 public class WhiteBallHandler extends Entity {
 
     private boolean ballReplaced = false;
@@ -21,6 +24,13 @@ public class WhiteBallHandler extends Entity {
     private Game game;
     private WhiteBall whiteBall;
 
+    /**
+     * Initiates a new WhiteBallHandler
+     *
+     * @param game
+     * @param balls
+     * @param holes
+     */
     public WhiteBallHandler(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes) {
         this.game = game;
         this.balls = balls;
@@ -87,6 +97,12 @@ public class WhiteBallHandler extends Entity {
         }
     }
 
+    /**
+     * Checks if the place where the player wants to
+     * place the cue ball is free.
+     * @param event Information about the touch event
+     * @return
+     */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
         for (int i = 0; i < this.balls.size(); i++) {
@@ -112,18 +128,31 @@ public class WhiteBallHandler extends Entity {
         return isValid;
     }
 
+    /**
+     * fingerOnWhiteBall.
+     * Checks if the user touches the Cue ball.
+     * @param event Information about the touch event.
+     * @return
+     */
     private boolean fingerOnhWhiteBall(MotionEvent event) {
         return event.getX() > this.whiteBall.getX() - 30 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 30 &&
                 event.getY() > this.whiteBall.getY() - 30 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 30;
     }
 
-    //Checks if there are moving balls before it disables collision
+    /**
+     * checkMovingBalls.
+     * Checks if balls are moving on the table.
+     */
     public void checkMovingBalls() {
         if (game.getMovingBalls().size() == 0) {
             game.scoreCueBall();
         }
     }
 
+    /**
+     * Sets the cue ball used on the table.
+     * @param whiteBall The cue ball.
+     */
     public void setWhiteBall(WhiteBall whiteBall) {
         this.whiteBall = whiteBall;
     }
