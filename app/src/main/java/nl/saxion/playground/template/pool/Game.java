@@ -38,7 +38,7 @@ public class Game extends GameModel {
     private EightBallButton eightBallButton = new EightBallButton(this);
     private MadnessButton madnessButton = new MadnessButton(this);
 
-    private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this);
+    private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
 
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
@@ -189,6 +189,7 @@ public class Game extends GameModel {
         this.cueBallScored = true;
         for (int i = 0; i < this.movingballs.size(); i++) {
             if (this.movingballs.get(i).getId() == 16) {
+                this.movingballs.get(i).setCollision(false);
                 this.movingballs.remove(i);
             }
         }
@@ -219,7 +220,7 @@ public class Game extends GameModel {
     }
 
     public boolean getCueBallInHand () {
-        return this.getCueBallInHand();
+        return this.cueBallInHand;
     }
 
     public void setCueBallInHand(boolean cueBallInHand) {

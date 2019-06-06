@@ -26,6 +26,7 @@ public class Ball extends Entity {
     protected Bitmap bitmap;
     protected boolean moving;
     protected boolean shot;
+    protected boolean collision = true;
     protected double oldX, oldY, newX, newY;
 
     public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type) {
@@ -63,7 +64,7 @@ public class Ball extends Entity {
                     continue;
                 }
 
-                if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius())) {
+                if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius()) && this.collision) {
                     if (this.speedX == 0 && this.speedY == 0 && balls.get(i).getSpeedX() == 0 && balls.get(i).getSpeedY() == 0) {
                         this.speedY = .5;
                         this.speedX = -.5;
@@ -264,5 +265,13 @@ public class Ball extends Entity {
 
     public boolean isMoving() {
         return moving;
+    }
+
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
+
+    public boolean getCollision () {
+        return this.collision;
     }
 }

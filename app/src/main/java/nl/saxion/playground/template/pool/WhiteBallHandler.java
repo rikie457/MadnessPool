@@ -1,11 +1,9 @@
 package nl.saxion.playground.template.pool;
 
-import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
@@ -14,26 +12,38 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 public class WhiteBallHandler extends Entity {
 
-    float aVal;
     private boolean ballReplaced = false;
-
+    private boolean canContinue = false;
+    private boolean movingBall = false;
+    private int timer = 0;
     ArrayList<Ball> balls;
-
-    WhiteBall whiteBall;
-    private double oldX, oldY;
-
-    static private Bitmap bitmap;
-
+    ArrayList<Hole> holes;
     private Game game;
+    private WhiteBall whiteBall;
 
-    public WhiteBallHandler(Game game) {
+    public WhiteBallHandler(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes) {
         this.game = game;
+        this.balls = balls;
+        this.holes = holes;
     }
 
     @Override
     public void tick() {
         super.tick();
         checkMovingBalls();
+
+        if (this.canContinue && this.timer < 10) {
+            this.timer++;
+        }
+
+        if (canContinue && timer == 10) {
+            this.timer = 0;
+            this.canContinue = false;
+            game.setCueBallInHand(false);
+            game.resetCueBallScored();
+            this.ballReplaced = false;
+            game.removeEntity(this);
+        }
     }
 
     @Override
@@ -44,50 +54,67 @@ public class WhiteBallHandler extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
             game.setCueBallInHand(true);
-        }
-
-        if (!this.ballReplaced && game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
-            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
-            this.whiteBall.setSpeedX(0);
-            this.whiteBall.setSpeedY(0);
-            this.ballReplaced = true;
-            game.addEntity(this.whiteBall);
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
             game.setCueBallInHand(false);
         }
 
-        if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
-            game.setCueBallInHand(true);
-            this.oldX = this.whiteBall.getX();
-            this.oldY = this.whiteBall.getY();
+        if (!this.ballReplaced && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
+            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
+            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
+            this.whiteBall.setSpeedX(0);
+            this.whiteBall.setSpeedY(0);
+            this.ballReplaced = true;
+            this.whiteBall.setCollision(true);
+            game.addEntity(this.whiteBall);
+        }
+
+        if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
+            this.movingBall = true;
             this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
             this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
         }
 
-        if (this.ballReplaced && !fingerOnhWhiteBall(event) && !game.getCueBallInHand()) {
-            game.resetCueBallScored();
-            this.ballReplaced = false;
-            game.removeEntity(this);
+        if (this.ballReplaced && !this.movingBall && !fingerOnhWhiteBall(event) && !game.getCueBallInHand() && event.getAction() == MotionEvent.ACTION_UP) {
+            this.canContinue = true;
+        }
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            this.movingBall = false;
         }
     }
 
-//    public boolean ballNotOnBall(MotionEvent event) {
-//        for (int i =0 ; i < this.balls.size(); i++) {
-//        }
-//    }
+    public boolean isValidPosition(MotionEvent event) {
+        boolean isValid = true;
+        for (int i = 0; i < this.balls.size(); i++) {
+            double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), balls.get(i).getX(), balls.get(i).getY());
+
+            if (this.whiteBall == balls.get(i)) {
+                continue;
+            }
+            if (distSqr <= (this.whiteBall.getRadius() + balls.get(i).getRadius()) * (this.whiteBall.getRadius() + balls.get(i).getRadius()) && this.whiteBall.getCollision()) {
+                isValid = false;
+            }
+        }
+
+        for (int i = 0; i < this.holes.size(); i++) {
+            double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (holes.get(i).getX() - 35), (holes.get(i).getY() - 35));
+
+            if (distSqr <= (this.whiteBall.getRadius() + 50) * (this.whiteBall.getRadius() + 50) && this.whiteBall.getCollision()) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
 
     private boolean fingerOnhWhiteBall(MotionEvent event) {
         return event.getX() > this.whiteBall.getX() - 30 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 30 &&
                 event.getY() > this.whiteBall.getY() - 30 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 30;
-    }
-
-    public void setWhiteBall (WhiteBall whiteBall) {
-        this.whiteBall  = whiteBall;
     }
 
     //Checks if there are moving balls before it disables collision
@@ -95,5 +122,9 @@ public class WhiteBallHandler extends Entity {
         if (game.getMovingBalls().size() == 0) {
             game.scoreCueBall();
         }
+    }
+
+    public void setWhiteBall(WhiteBall whiteBall) {
+        this.whiteBall = whiteBall;
     }
 }
