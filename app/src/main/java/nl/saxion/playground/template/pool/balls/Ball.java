@@ -333,15 +333,29 @@ public class Ball extends Entity {
      *
      * @return the speed x
      */
+
+    public void setX(float x) { this.x = x; }
+
+    public void setY(float y) { this.y = y; }
+
     public double getSpeedX() {
         return this.speedX;
     }
+
 
     /**
      * Gets speed y.
      *
      * @return the speed y
      */
+
+    // werkt niet, niet gebruiken
+    public void setSpeedX(float xSpeed) { this.speedX = xSpeed; }
+
+    // werkt niet, niet gebruiken
+    public void setSpeedY(float ySpeed) { this.speedY = ySpeed; }
+
+
     public double getSpeedY() {
         return this.speedY;
     }
