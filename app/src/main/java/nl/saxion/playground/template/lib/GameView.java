@@ -252,7 +252,6 @@ public class GameView extends View implements View.OnTouchListener {
         canvas.drawPaint(blackPaint);
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(28);
-      canvas.drawText("Tycho Engberink 464544", getWidth() / 2 - 120, getHeight() / 2 + 30, textPaint);
 
 
         // Based on these calculations, we can configure the canvas.

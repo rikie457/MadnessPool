@@ -8,8 +8,14 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Win message.
+ */
 public class WinMessage extends Entity {
 
+    /**
+     * The A val.
+     */
     float aVal;
 
     static private Bitmap bitmap;
@@ -17,6 +23,12 @@ public class WinMessage extends Entity {
     private Game game;
     private int winnerId;
 
+    /**
+     * Instantiates a new Win message.
+     *
+     * @param game     the game
+     * @param winnerId the winner id
+     */
     public WinMessage(Game game, int winnerId) {
         this.game = game;
         this.winnerId = winnerId;
@@ -36,7 +48,7 @@ public class WinMessage extends Entity {
                 bitmap = gv.getBitmapFromResource(R.drawable.playertwowin);
             }
         }
-        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight()/2 - 150, 600, 300, aVal);
+        gv.drawBitmap(bitmap, 1000 / 2 - 300, 1000 / 2 - 450, 600, 300, aVal);
     }
 
     @Override
