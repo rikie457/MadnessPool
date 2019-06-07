@@ -31,26 +31,18 @@ public class Hole extends Entity {
         return this.y;
     }
 
-    public double getRadius() {
+    public double getRadiusHole() {
         return radius;
     }
 
     @Override
-    //draw alle Holes.
-    //Maak alle holes onzichtbaar waneer alles op zijn plek staad.
+    /**
+     //draw alle Holes.
+     //Maak alle holes onzichtbaar waneer alles op zijn plek staad.
+     **/
     public void draw(GameView gv) {
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        //Holes boven
-/*        gv.getCanvas().drawCircle((float) this.x/2, (float) this.y/2, 50, paint);
-        gv.getCanvas().drawCircle((game.getWidth()/2), (float) this.y/2, 50, paint);
-        gv.getCanvas().drawCircle(game.getWidth() - (float) this.x/2, (float) this.y/2, 50, paint);
-
-        //Holes onder
-        gv.getCanvas().drawCircle((float) this.x/2, game.getHeight() - (float) this.y, 50, paint);
-        gv.getCanvas().drawCircle((game.getWidth()/2), game.getHeight() - (float) this.y, 50, paint);
-        gv.getCanvas().drawCircle(game.getWidth() - (float) this.x/2, game.getHeight() - (float) this.y, 50, paint);*/
-        gv.getCanvas().drawCircle((float) this.x, (float) this.y, 50, paint);
-
+            Paint paint = new Paint();
+            paint.setColor(Color.TRANSPARENT);
+            gv.getCanvas().drawCircle((float) this.x, (float) this.y, 50, paint);
     }
 }

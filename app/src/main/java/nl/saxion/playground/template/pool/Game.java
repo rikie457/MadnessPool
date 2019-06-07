@@ -53,15 +53,20 @@ public class Game extends GameModel {
 
         ShootLine line = new ShootLine(false);
 
-        //holes bovenkant pooltafel
-        Hole hole = new Hole(this,240/2,240/2);
-        Hole hole1 = new Hole(this,getWidth()/2,200/2);
+        /**
+         * holes bovenkant pooltafel.
+         */
+
+        Hole hole = new Hole(this,140,getHeight()-955);
+        Hole hole1 = new Hole(this,getWidth()/2,getHeight()-970);
         Hole hole2 = new Hole(this,getWidth() - 230/2,230/2);
 
-        //holes onderkant pooltafel
-        Hole hole3 = new Hole(this,240/2,getHeight() - 240);
-        Hole hole4 = new Hole(this,getWidth()/2,getHeight() - 220);
-        Hole hole5 = new Hole(this,getWidth() - 240/2,getHeight() - 240);
+        /**
+         * holes onderkant pooltafel.
+         */
+        Hole hole3 = new Hole(this,getWidth()/8 -85,getHeight() - 260);
+        Hole hole4 = new Hole(this,getWidth()/2,getHeight() - 245);
+        Hole hole5 = new Hole(this,getWidth() - 145,getHeight() - 280);
 
         addEntity(new Background(this));
 
