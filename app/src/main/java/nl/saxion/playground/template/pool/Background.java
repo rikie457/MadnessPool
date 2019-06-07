@@ -23,9 +23,7 @@ public void draw(GameView gameView){
     if (bitmap==null) {
         bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
     }
-    for(int x = 0; x <= Math.ceil(game.getWidth()/game.getHeight()); x++) {
-        double height = game.getHeight()/1.15;
-        gameView.drawBitmap(bitmap, (float) x * game.getWidth(), 0, game.getWidth(),(float) height);
-    }
+    double height = game.getHeight()/1.15;
+    gameView.drawBitmap(bitmap,0,0,game.getWidth(),(float) height);
 }
 }
