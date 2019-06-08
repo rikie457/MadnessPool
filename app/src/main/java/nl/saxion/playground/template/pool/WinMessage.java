@@ -56,6 +56,7 @@ public class WinMessage extends Entity {
         super.handleTouch(touch, event);
         if (event.getAction() == MotionEvent.ACTION_UP) {
             game.removeEntity(this);
+            game.setWinMessage(null);
             game.reset();
         }
     }

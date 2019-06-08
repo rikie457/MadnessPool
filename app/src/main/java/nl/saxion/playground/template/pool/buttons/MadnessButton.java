@@ -35,6 +35,10 @@ public class MadnessButton extends Entity {
         this.game = game;
     }
 
+    public int getLayer() {
+        return 2;
+    }
+
     @Override
     public void tick() {
         super.tick();

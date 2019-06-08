@@ -7,7 +7,7 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 public class Background extends Entity {
-    private static Bitmap bitmap;
+    private Bitmap bitmap;
     private Game game;
 
     @Override
@@ -23,7 +23,6 @@ public void draw(GameView gameView){
     if (bitmap==null) {
         bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
     }
-    double height = game.getHeight()/1.15;
-    gameView.drawBitmap(bitmap,0,0,game.getWidth(),(float) height);
+    gameView.drawBitmap(bitmap,0,0,game.getPlayWidth(),(float) game.getPlayHeight());
 }
 }

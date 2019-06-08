@@ -82,10 +82,6 @@ public class Ball extends Entity {
      */
     protected ArrayList<Hole> holes;
     /**
-     * The Sunken balls.
-     */
-    protected ArrayList<Ball> sunkenBalls;
-    /**
      * The Game.
      */
     protected Game game;
@@ -121,7 +117,6 @@ public class Ball extends Entity {
      * @param game        the game
      * @param balls       the balls
      * @param holes       the holes
-     * @param sunkenBalls the sunken balls
      * @param x           the x
      * @param y           the y
      * @param width       the width
@@ -129,13 +124,12 @@ public class Ball extends Entity {
      * @param image       the image
      * @param type        the type
      */
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image, int type) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
         this.balls = balls;
         this.holes = holes;
-        this.sunkenBalls = sunkenBalls;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -193,14 +187,17 @@ public class Ball extends Entity {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.x - this.radius < 0) {
+        /**
+         * muren rechts en links
+         */
+        if (this.x - this.radius <= 60) {
             Info.addToWallCollisionCounter();
-            this.x = this.radius;
+            this.x = 60 + this.radius;
             this.speedX = -this.speedX;
-        } else if (this.x + this.radius > this.bx) {
+        } else if (this.x + this.radius >=  game.getPlayWidth() - 60) {
             Info.addToWallCollisionCounter();
             this.speedX = -this.speedX;
-            this.x = this.bx - this.radius;
+            this.x =  game.getPlayWidth() - 60 - this.radius;
             this.speedX *= this.energyloss;
         } else {
             this.x += this.speedX;
@@ -209,15 +206,17 @@ public class Ball extends Entity {
                 this.speedX = 0;
             }
         }
-
-        if (this.y - this.radius < 0) {
+        /**
+         * muuren boven en onder
+         */
+        if (this.y - this.radius <= 45) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y = this.radius;
-        } else if (this.y + this.radius > this.by) {
+            this.y = 45 + this.radius;
+        } else if (this.y + this.radius > game.getPlayHeight()- 50) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y = this.by - this.radius;
+            this.y =  game.getPlayHeight() - this.radius - 50;
             this.speedY *= this.energyloss;
         } else {
             this.y += this.speedY;
@@ -230,12 +229,11 @@ public class Ball extends Entity {
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
-            if (this.getClass() == Ball.class) {
-                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (56) <= 0) {
                     if (this.id != 8) {
                         for (i = 0; i < game.getPlayers().size(); i++) {
-                            if (game.getCurrentplayer() == game.getPlayers().get(i)) {
-                                Player player = game.getPlayers().get(i);
+                            Player player =  game.getPlayers().get(i);
+                            if (game.getCurrentplayer() == player) {
                                 if (player.getBalltype() == -1) {
                                     if (this.type == 1) {
                                         player.setBalltype(1);
@@ -263,7 +261,6 @@ public class Ball extends Entity {
                         }
                     }
                     this.game.removeEntity(this);
-                    this.sunkenBalls.add(this);
                     if (game.getMovingBalls().contains(this)) {
                         game.getMovingBalls().remove(this);
                     }
@@ -271,7 +268,6 @@ public class Ball extends Entity {
                 }
             }
         }
-    }
 
     private boolean checkMovement() {
         if (this.speedX == 0 && this.speedY == 0) {
@@ -300,6 +296,12 @@ public class Ball extends Entity {
         }
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
     }
+
+    @Override
+    public int getLayer() {
+        return 1;
+    }
+
 
     /**
      * Gets mass.
@@ -334,14 +336,25 @@ public class Ball extends Entity {
      * @return the speed x
      */
 
-    public void setX(float x) { this.x = x; }
+    public void setX(float x) {
+        this.x = x;
+    }
 
-    public void setY(float y) { this.y = y; }
+    public void setY(float y) {
+        this.y = y;
+    }
 
     public double getSpeedX() {
         return this.speedX;
     }
 
+    public ArrayList<Ball> getBalls() {
+        return balls;
+    }
+
+    public ArrayList<Hole> getHoles() {
+        return holes;
+    }
 
     /**
      * Gets speed y.
@@ -350,10 +363,14 @@ public class Ball extends Entity {
      */
 
     // werkt niet, niet gebruiken
-    public void setSpeedX(float xSpeed) { this.speedX = xSpeed; }
+    public void setSpeedX(float xSpeed) {
+        this.speedX = xSpeed;
+    }
 
     // werkt niet, niet gebruiken
-    public void setSpeedY(float ySpeed) { this.speedY = ySpeed; }
+    public void setSpeedY(float ySpeed) {
+        this.speedY = ySpeed;
+    }
 
 
     public double getSpeedY() {

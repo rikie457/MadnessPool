@@ -27,7 +27,6 @@ public class WhiteBall extends Ball {
      * @param game        the game
      * @param balls       the balls
      * @param holes       the holes
-     * @param sunkenBalls the sunken balls
      * @param x           the x
      * @param y           the y
      * @param width       the width
@@ -36,8 +35,8 @@ public class WhiteBall extends Ball {
      * @param type        the type
      * @param line        the line
      */
-    public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type, ShootLine line) {
-        super(game, balls, holes, sunkenBalls, x, y, width, height, image, type);
+    public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image, int type, ShootLine line) {
+        super(game, balls, holes, x, y, width, height, image, type);
         this.line = line;
     }
 

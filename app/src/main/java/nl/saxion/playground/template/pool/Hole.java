@@ -24,12 +24,13 @@ public class Hole extends Entity {
      * @param y          the y
      * @param blackpaint the blackpaint
      */
-    public Hole(Game game, double x, double y, Paint blackpaint) {
+    public Hole(Game game, double x, double y, double radius, Paint blackpaint) {
         this.game = game;
         this.x = x;
         this.y = y;
         this.blackpaint = blackpaint;
-        this.blackpaint.setColor(Color.TRANSPARENT);
+        this.radius = radius;
+        this.blackpaint.setColor(Color.BLACK);
     }
 
     @Override
@@ -66,6 +67,6 @@ public class Hole extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        gv.getCanvas().drawCircle((float) this.x, (float) this.y, 20, this.blackpaint);
+        gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, this.blackpaint);
     }
 }

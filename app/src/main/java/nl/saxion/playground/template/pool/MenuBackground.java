@@ -30,6 +30,11 @@ public class MenuBackground extends Entity {
     }
 
     @Override
+    public int getLayer() {
+        return 2;
+    }
+
+    @Override
     public void tick() {
         super.tick();
     }
@@ -39,6 +44,6 @@ public class MenuBackground extends Entity {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.menubackground);
         }
-        gv.drawBitmap(bitmap, 0, 0, game.getWidth(), game.getHeight(), aVal);
+        gv.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), game.getPlayHeight(), aVal);
     }
 }
