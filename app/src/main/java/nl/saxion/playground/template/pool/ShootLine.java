@@ -30,6 +30,11 @@ public class ShootLine extends Entity {
     }
 
     @Override
+    public int getLayer() {
+        return 1;
+    }
+
+    @Override
     public void draw(GameView gv) {
         if (visible) {
             gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitepaint);

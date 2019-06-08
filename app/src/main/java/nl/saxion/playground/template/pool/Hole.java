@@ -29,7 +29,12 @@ public class Hole extends Entity {
         this.x = x;
         this.y = y;
         this.blackpaint = blackpaint;
-        this.blackpaint.setColor(Color.BLACK);
+        this.blackpaint.setColor(Color.TRANSPARENT);
+    }
+
+    @Override
+    public int getLayer() {
+        return 1;
     }
 
     /**
@@ -55,7 +60,7 @@ public class Hole extends Entity {
      *
      * @return the radius
      */
-    public double getRadius() {
+    public double getRadiusHole() {
         return radius;
     }
 

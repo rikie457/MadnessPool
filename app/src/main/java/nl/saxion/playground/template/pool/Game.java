@@ -97,12 +97,37 @@ public class Game extends GameModel {
 
         if (!userInterfaceSpawned) {
             Gui gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom, whitePaint, blackPaint);
-            Hole hole = new Hole(this, 50, 50, blackPaint);
-            addEntity(gui);
-            addEntity(hole);
-            this.holes.add(hole);
-        }
 
+            /**
+             * holes bovenkant pooltafel.
+             */
+
+            Hole hole = new Hole(this,140,getHeight()-955, blackPaint);
+            Hole hole1 = new Hole(this,getWidth()/2,getHeight()-970, blackPaint);
+            Hole hole2 = new Hole(this,getWidth() - 230/2,230/2, blackPaint);
+
+            /**
+             * holes onderkant pooltafel.
+             */
+            Hole hole3 = new Hole(this,getWidth()/8 -85,getHeight() - 260, blackPaint);
+            Hole hole4 = new Hole(this,getWidth()/2,getHeight() - 245, blackPaint);
+            Hole hole5 = new Hole(this,getWidth() - 145,getHeight() - 280, blackPaint);
+
+            addEntity(new Background(this));
+            addEntity(hole);
+            addEntity(hole1);
+            addEntity(hole2);
+            addEntity(hole3);
+            addEntity(hole4);
+            addEntity(hole5);
+
+            this.holes.add(hole);
+            this.holes.add(hole1);
+            this.holes.add(hole2);
+            this.holes.add(hole3);
+            this.holes.add(hole4);
+            this.holes.add(hole5);
+        }
         addEntity(menuBackground);
         addEntity(eightBallButton);
         addEntity(madnessButton);
@@ -331,6 +356,8 @@ public class Game extends GameModel {
         Ball ball15 = new Ball(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getPlayWidth()), Utility.randomDoubleFromRange(0, getPlayHeight()), ballsize, ballsize, R.drawable.ball15, 2);
         WhiteBall ball16 = new WhiteBall(this, this.balls, this.holes, this.sunkeBalls, Utility.randomDoubleFromRange(0, this.getPlayWidth()), Utility.randomDoubleFromRange(0, getPlayHeight()), ballsize, ballsize, R.drawable.ball16, 0, line);
 
+
+
         ball1.resetLastisertedid();
         this.balls.add(ball1);
         this.balls.add(ball2);
@@ -339,6 +366,7 @@ public class Game extends GameModel {
         this.balls.add(ball5);
         this.balls.add(ball6);
         this.balls.add(ball7);
+        this.balls.add(ball8);
         this.balls.add(ball9);
         this.balls.add(ball10);
         this.balls.add(ball11);
@@ -347,13 +375,10 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
-        this.balls.add(ball8);
-
 
 
         // puts the balls in the rack
         rackBalls(this.balls);
-
         addEntity(line);
         addEntity(ball1);
         addEntity(ball2);
