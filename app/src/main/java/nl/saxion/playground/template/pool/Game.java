@@ -23,6 +23,7 @@ public class Game extends GameModel {
     private Player player2 = new Player(2);
 
     //Paints
+    private Paint transparent = new Paint();
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
 
@@ -49,12 +50,13 @@ public class Game extends GameModel {
     private Gui gui;
     private WinMessage winMessage;
 
-    private Hole hole = new Hole(this, 65, 45, holesize, blackPaint);
-    private Hole hole1 = new Hole(this, 505, 45, holesize, blackPaint);
-    private Hole hole2 = new Hole(this, 945, 45, holesize, blackPaint);
-    private Hole hole3 = new Hole(this, 65, 355, holesize, blackPaint);
-    private Hole hole4 = new Hole(this, 505, 355, holesize, blackPaint);
-    private Hole hole5 = new Hole(this, 945, 355, holesize, blackPaint);
+    private Hole hole = new Hole(this,  getPlayWidth()/14,  actualHeight/2 + 75,  holesize, transparent);
+    private Hole hole1 = new Hole(this, getPlayWidth()/2+5, actualHeight/2 + 65,  holesize, transparent);
+    private Hole hole2 = new Hole(this, getPlayWidth()-70, actualHeight/2 + 75,  holesize, transparent);
+
+    private Hole hole3 = new Hole(this, getPlayWidth()/14,  actualHeight/2 + 465, holesize, transparent);
+    private Hole hole4 = new Hole(this, getPlayWidth()/2+5, actualHeight/2 + 465, holesize, transparent);
+    private Hole hole5 = new Hole(this, getPlayWidth()-70, actualHeight/2 + 465, holesize, transparent);
 
     private ShootLine line = new ShootLine(false, whitePaint);
 
