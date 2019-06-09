@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
@@ -69,12 +70,6 @@ public class Game extends GameModel {
     private Background background = new Background(this);
     private Gui gui;
     private WinMessage winMessage;
-    private Hole hole = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 75, holesize);
-    private Hole hole1 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 65, holesize);
-    private Hole hole2 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 75, holesize);
-    private Hole hole3 = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 465, holesize);
-    private Hole hole4 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 465, holesize);
-    private Hole hole5 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 465, holesize);
     private ShootLine line = new ShootLine(false, this);
     private ShootLine lineReflection = new ShootLine(false, this);
     private Cue cue = new Cue(false, this);
@@ -99,9 +94,12 @@ public class Game extends GameModel {
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
+    /**
+     * Start eight ball.
+     */
 
-    private float padding = (float) 0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
-    private float ball_radius = ballsize / 2;
+    private float padding = (float)0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
+    private float ball_radius = ballsize/2;
 
     // defines spacing between balls horizontally
     private float x_diff = (ball_radius + (ball_radius / 2) + 10) * padding;
@@ -228,20 +226,29 @@ public class Game extends GameModel {
         addEntity(madnessButton);
 
         if (runs < 1) {
-            this.holes.add(hole);
+            Hole hole1 = new Hole(this, getPlayWidth() * 0.08,  this.getHeight() * 0.12, holesize);
+            Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize);
+            Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize);
+
+            Hole hole4 = new Hole(this, getPlayWidth() * 0.08,  this.getHeight() * 0.75, holesize);
+            Hole hole5 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.75, holesize);
+            Hole hole6 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.75, holesize);
             this.holes.add(hole1);
             this.holes.add(hole2);
             this.holes.add(hole3);
             this.holes.add(hole4);
             this.holes.add(hole5);
+            this.holes.add(hole6);
             addEntity(background);
-            addEntity(hole);
             addEntity(hole1);
             addEntity(hole2);
             addEntity(hole3);
             addEntity(hole4);
             addEntity(hole5);
+            addEntity(hole6);
             addEntity(gui);
+
+
         }
         System.out.println("Runs:" + runs);
         runs++;

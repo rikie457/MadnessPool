@@ -31,6 +31,6 @@ public class Background extends Entity {
         if (bitmap == null) {
             bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
         }
-        gameView.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), (float) game.getPlayHeight());
+        gameView.drawBitmap(bitmap, 0, 0, game.getPlayWidth(),game.getPlayHeight());
     }
 }
