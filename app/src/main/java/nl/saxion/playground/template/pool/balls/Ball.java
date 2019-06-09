@@ -194,10 +194,10 @@ public class Ball extends Entity {
             Info.addToWallCollisionCounter();
             this.x = 60 + this.radius;
             this.speedX = -this.speedX;
-        } else if (this.x + this.radius >=  game.getPlayWidth() - 60) {
+        } else if (this.x + this.radius >=  game.getPlayWidth() - 70) {
             Info.addToWallCollisionCounter();
             this.speedX = -this.speedX;
-            this.x =  game.getPlayWidth() - 60 - this.radius;
+            this.x =  game.getPlayWidth() - 70 - this.radius;
             this.speedX *= this.energyloss;
         } else {
             this.x += this.speedX;
@@ -209,14 +209,14 @@ public class Ball extends Entity {
         /**
          * muuren boven en onder
          */
-        if (this.y - this.radius <= 45) {
+        if (this.y - this.radius <= 55) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y = 45 + this.radius;
-        } else if (this.y + this.radius > game.getPlayHeight()- 50) {
+            this.y = 55 + this.radius;
+        } else if (this.y + this.radius > game.getPlayHeight()- 80) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y =  game.getPlayHeight() - this.radius - 50;
+            this.y =  game.getPlayHeight() - this.radius - 80;
             this.speedY *= this.energyloss;
         } else {
             this.y += this.speedY;
@@ -229,7 +229,7 @@ public class Ball extends Entity {
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
-            if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (56) <= 0) {
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
                     if (this.id != 8) {
                         for (i = 0; i < game.getPlayers().size(); i++) {
                             Player player =  game.getPlayers().get(i);
