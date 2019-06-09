@@ -11,13 +11,11 @@ import nl.saxion.playground.template.lib.GameView;
  */
 public class MenuBackground extends Entity {
 
+    static private Bitmap bitmap;
     /**
      * The A val.
      */
     float aVal;
-
-    static private Bitmap bitmap;
-
     private Game game;
 
     /**

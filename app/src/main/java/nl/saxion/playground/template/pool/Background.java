@@ -10,19 +10,19 @@ public class Background extends Entity {
     private Bitmap bitmap;
     private Game game;
 
+    public Background(Game game) {
+        this.game = game;
+    }
+
     @Override
     public int getLayer() {
         return 0;
     }
 
-    public Background(Game game) {
-        this.game = game;
+    public void draw(GameView gameView) {
+        if (bitmap == null) {
+            bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
+        }
+        gameView.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), (float) game.getPlayHeight());
     }
-
-public void draw(GameView gameView){
-    if (bitmap==null) {
-        bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
-    }
-    gameView.drawBitmap(bitmap,0,0,game.getPlayWidth(),(float) game.getPlayHeight());
-}
 }

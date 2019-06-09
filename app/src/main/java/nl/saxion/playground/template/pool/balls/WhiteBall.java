@@ -8,9 +8,9 @@ import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Player;
 import nl.saxion.playground.template.pool.ShootLine;
 import nl.saxion.playground.template.pool.Utility;
-import nl.saxion.playground.template.pool.WhiteBallHandler;
 
 import static java.lang.Math.PI;
 
@@ -22,22 +22,23 @@ public class WhiteBall extends Ball {
 
     private ShootLine line;
 
+
     /**
      * Instantiates a new White ball.
      *
-     * @param game        the game
-     * @param balls       the balls
-     * @param holes       the holes
-     * @param x           the x
-     * @param y           the y
-     * @param width       the width
-     * @param height      the height
-     * @param image       the image
-     * @param type        the type
-     * @param line        the line
+     * @param game   the game
+     * @param balls  the balls
+     * @param holes  the holes
+     * @param x      the x
+     * @param y      the y
+     * @param width  the width
+     * @param height the height
+     * @param image  the image
+     * @param type   the type
+     * @param line   the line
      */
-    public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image, int type, ShootLine line) {
-        super(game, balls, holes, x, y, width, height, image, type);
+    public WhiteBall(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players, double x, double y, double width, double height, int image, int type, ShootLine line) {
+        super(game, balls, holes, players, x, y, width, height, image, type);
         this.line = line;
     }
 

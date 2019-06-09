@@ -15,12 +15,12 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
  */
 public class WhiteBallHandler extends Entity {
 
+    ArrayList<Ball> balls;
+    ArrayList<Hole> holes;
     private boolean ballReplaced = false;
     private boolean canContinue = false;
     private boolean movingBall = false;
     private int timer = 0;
-    ArrayList<Ball> balls;
-    ArrayList<Hole> holes;
     private Game game;
     private WhiteBall whiteBall;
 
@@ -100,6 +100,7 @@ public class WhiteBallHandler extends Entity {
     /**
      * Checks if the place where the player wants to
      * place the cue ball is free.
+     *
      * @param event Information about the touch event
      * @return
      */
@@ -131,6 +132,7 @@ public class WhiteBallHandler extends Entity {
     /**
      * fingerOnWhiteBall.
      * Checks if the user touches the Cue ball.
+     *
      * @param event Information about the touch event.
      * @return
      */
@@ -151,6 +153,7 @@ public class WhiteBallHandler extends Entity {
 
     /**
      * Sets the cue ball used on the table.
+     *
      * @param whiteBall The cue ball.
      */
     public void setWhiteBall(WhiteBall whiteBall) {

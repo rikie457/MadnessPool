@@ -19,9 +19,9 @@ public class Hole extends Entity {
     /**
      * Instantiates a new Hole.
      *
-     * @param game       the game
-     * @param x          the x
-     * @param y          the y
+     * @param game        the game
+     * @param x           the x
+     * @param y           the y
      * @param transparent the transparentpaint
      */
     public Hole(Game game, double x, double y, double radius, Paint transparent) {

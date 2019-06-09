@@ -14,13 +14,11 @@ import nl.saxion.playground.template.pool.Game;
  */
 public class MadnessButton extends Entity {
 
+    static private Bitmap bitmap;
     /**
      * The A val.
      */
     float aVal;
-
-    static private Bitmap bitmap;
-
     private Game game;
 
     private boolean buttonPressed = false;

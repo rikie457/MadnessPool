@@ -9,7 +9,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
  */
 public class Player {
     private int balltype = -1;
-    private ArrayList<Ball> scoredballs = new ArrayList<>();
+    private ArrayList<Ball> scoredballs;
     private int playerId;
 
     /**
@@ -17,7 +17,7 @@ public class Player {
      *
      * @param playerId the player id
      */
-    public Player (int playerId) {
+    public Player(int playerId) {
         this.playerId = playerId;
     }
 
@@ -46,6 +46,10 @@ public class Player {
      */
     public ArrayList<Ball> getScoredballs() {
         return scoredballs;
+    }
+
+    public void setScoredballs(ArrayList<Ball> scoredballs) {
+        this.scoredballs = scoredballs;
     }
 
     /**

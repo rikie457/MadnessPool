@@ -37,7 +37,7 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitepaint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, this.whitepaint);
         }
     }
 
@@ -60,21 +60,21 @@ public class ShootLine extends Entity {
     }
 
     /**
+     * Get visible boolean.
+     *
+     * @return the boolean
+     */
+    public boolean getVisible() {
+        return this.visible;
+    }
+
+    /**
      * Sets visible.
      *
      * @param visible the visible
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    /**
-     * Get visible boolean.
-     *
-     * @return the boolean
-     */
-    public boolean getVisible(){
-        return this.visible;
     }
 
     /**

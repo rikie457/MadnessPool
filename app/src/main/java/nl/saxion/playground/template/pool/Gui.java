@@ -88,13 +88,13 @@ public class Gui extends Entity {
                 if (this.player2.getBalltype() == 2) {
                     for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
                         if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x + 410 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius()+ 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
+                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x + 410 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
                         }
                     }
                 } else {
                     for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
                         if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x - 180 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius()+ 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
+                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x - 180 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
                         }
                     }
                 }

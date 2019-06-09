@@ -8,18 +8,19 @@ public class Coord {
         this.y = y;
     }
 
+    public float getX() {
+        return this.x;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
 
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public float getX() {
-        return this.x;
-    }
     public float getY() {
         return this.y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
