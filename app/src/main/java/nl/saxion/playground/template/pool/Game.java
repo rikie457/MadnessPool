@@ -3,6 +3,7 @@ package nl.saxion.playground.template.pool;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,6 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
  */
 public class Game extends GameModel {
 
-    private static int currentSolid = 0, currentStriped = 8;
     //Players
     private Player player1 = new Player(1);
     private Player player2 = new Player(2);
@@ -26,6 +26,9 @@ public class Game extends GameModel {
     private Paint transparent = new Paint();
     private Paint blackPaint = new Paint();
     private Paint whitePaint = new Paint();
+    private Paint grayPaintReflection = new Paint();
+    private Paint redPaint = new Paint();
+
     //Settings
     private Player currentplayer = player1;
     private ArrayList<Ball> player1balls = new ArrayList<>();
@@ -43,6 +46,7 @@ public class Game extends GameModel {
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+
     //Menu items
     private MenuBackground menuBackground = new MenuBackground(this);
     private EightBallButton eightBallButton = new EightBallButton(this);
@@ -56,7 +60,10 @@ public class Game extends GameModel {
     private Hole hole3 = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 465, holesize, transparent);
     private Hole hole4 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 465, holesize, transparent);
     private Hole hole5 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 465, holesize, transparent);
-    private ShootLine line = new ShootLine(false, whitePaint);
+    private ShootLine line = new ShootLine(false, redPaint, this);
+    private ShootLine lineReflection = new ShootLine(false, this.grayPaintReflection, this);
+    private Cue cue = new Cue(false, this.whitePaint);
+
     private Ball ball1;
     private Ball ball2;
     private Ball ball3;
@@ -78,15 +85,19 @@ public class Game extends GameModel {
     /**
      * Start eight ball.
      */
-    private float padding = (float) 1; // factor that determines how much space there is between the racked pool balls (1 = tightest possible)
-    private float ball_radius = 60;
-    private float x_offset = ball_radius / 2 + 10 * padding;
-    private float y_offset = 1 * padding;
-    private float x_diff = ball_radius + x_offset;
-    private float y_diff = ball_radius + y_offset;
-    private float rack_x_offset = 250;
-    private float rack_y_offset = 250;
-    private Coord[] rackPositions = new Coord[]{
+
+    private float padding = (float)0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
+    private float ball_radius = ballsize/2;
+
+    // defines spacing between balls horizontally
+    private float x_diff = (ball_radius + (ball_radius / 2) + 10) * padding;
+    // defines spacing between balls vertically
+    private float y_diff = (ball_radius + 3) * padding;
+
+    private float rack_x_offset = 700;
+    private float rack_y_offset = 200;
+
+    private Coord[] rackPositions = new Coord[] {
             // 1ST-ROW
             new Coord(
                     0,
@@ -140,15 +151,15 @@ public class Game extends GameModel {
                     +x_diff * 4,
                     +y_diff * 4),
 
+            // WHITE-BALL
+            new Coord(
+                    -400 + ball_radius,
+                    0),
+
             // (BLACK-BALL)
             new Coord(
                     +x_diff * 2,
-                    +0),
-
-            // WHITE-BALL
-            new Coord(
-                    -1300 + ball_radius,
-                    +getHeight() / 2 + ball_radius - 50)
+                    +0)
     };
 
     /**
@@ -223,129 +234,103 @@ public class Game extends GameModel {
 
     }
 
-    private void getNextSolid() {
-        currentSolid++;
-    }
-
-    private void getNextStriped() {
-        currentStriped++;
-    }
-
     private int getRandIntInRange(int left, int right) {
-        return (int) (left + (Math.random() * (right - left + 1)));
-    }
-
-    // initializes the 'currentStriped' and 'currentSolid' indecis, which are used in the rackBalls() function
-    // to consistently cycle through all balls
-    public void resetRackPositions() {
-        this.currentStriped = 8;
-        this.currentSolid = 0;
+        return (int)(left + (Math.random() * (right - left + 1)));
     }
 
     // swaps the elements at loc a and b in array 'arrayInt'
-    public void swap(int[] arrayInt, int a, int b) {
-        if (a == b) return;
-        int temp = arrayInt[a];
-        arrayInt[a] = arrayInt[b];
-        arrayInt[b] = temp;
+    public void swap(ArrayList<Integer> arrayInt, int a, int b) {
+        if(a == b) return;
+        int temp = arrayInt.get(a);
+        arrayInt.set(a, arrayInt.get(b));
+        arrayInt.set(b, temp);
     }
 
+    /**
+     *
+     * @param balls array of balls to be racked
+     */
     public void rackBalls(ArrayList<Ball> balls) {
-        resetRackPositions();
+        // balls 0 through 6 are SOLID BALLS (0 t/m 13)
+        // balls 7 through 13 are STRIPED BALLS (0 t/m 13)
+        // ball at 14 is WHITE BALL (index 14)
+        // ball at 15 is BLACK BALL (index 15)
 
-        // add offsets to the coordinates to center the balls
-        for (int i = 0; i < rackPositions.length; i++) {
-            rackPositions[i].setX(rackPositions[i].getX() + getWidth() / 2 + ball_radius + rack_x_offset);
-            rackPositions[i].setY(rackPositions[i].getY() + getHeight() / 2 + ball_radius + rack_y_offset);
+        int[] sideBallIndecis = new int[] {13, 9, 8, 5, 4, 3, 2, 1};
+        int[] normalBallIndecis = new int[] {12, 11, 10, 7, 6, 0};
+
+        ArrayList<Integer> solidBallIndecis = new ArrayList<>();
+        ArrayList<Integer> stripedBallIndecis = new ArrayList<>();
+
+        for(int i = 0; i < 7; i++) {
+            solidBallIndecis.add(i);
+            stripedBallIndecis.add(i + 7);
         }
 
-        // balls 0 through 6 are SOLID BALLS (0 t/m 14)
-        // balls 7 through 13 are STRIPED BALLS (0 t/m 14)
-        // ball at 7 == BLACK BALL (index 14)
-        // ball at 15 is WHITE BALL (index 15)
+        for(int i = 0; i < 7; i++) {
+            int a, b;
+            a = getRandIntInRange(0, 6);
+            b = getRandIntInRange(0, 6);
+            swap(solidBallIndecis, a, b);
 
-        int[] sideBallIndecis = new int[]{
-                13, 9,
-                8, 5,
-                4, 3,
-                2, 1
-        };
-        int[] normalBallIndecis = new int[]{
-                12, 11, 10, 7, 6, 0
-        };
-        int blackBallIndex = 14,
-                whiteBallIndex = 15;
+            a = getRandIntInRange(0, 6);
+            b = getRandIntInRange(0, 6);
+            swap(stripedBallIndecis, a, b);
+        }
 
-        for (int i = 0; i < sideBallIndecis.length; i += 2) {
+        int currentSolid = 0, currentStriped = 0;
+
+        for(int i = 0; i < sideBallIndecis.length; i+=2, currentSolid++, currentStriped++) {
             int randBoolean = getRandIntInRange(0, 1);
 
             // 1st side
-            balls.get(this.currentSolid).setX(
-                    rackPositions[sideBallIndecis[i + (1 - randBoolean)]].getX()
-            );
-            balls.get(this.currentSolid).setY(
-                    rackPositions[sideBallIndecis[i + (1 - randBoolean)]].getY()
-            );
+            balls.get(solidBallIndecis.get(currentSolid)).setCoord(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]);
 
-            // second side
-            balls.get(this.currentStriped).setX(
-                    rackPositions[sideBallIndecis[i + randBoolean]].getX()
-            );
-            balls.get(this.currentStriped).setY(
-                    rackPositions[sideBallIndecis[i + randBoolean]].getY()
-            );
-
-            getNextSolid();
-            getNextStriped();
-        }
-
-        // shuffle the ball indecis in the 'normal' range
-        for (int i = 0, a, b; i < normalBallIndecis.length; i++) {
-            a = getRandIntInRange(0, normalBallIndecis.length - 1);
-            b = getRandIntInRange(0, normalBallIndecis.length - 1);
-
-            swap(normalBallIndecis, a, b);
+            // 2nd side
+            balls.get(stripedBallIndecis.get(currentStriped)).setCoord(rackPositions[sideBallIndecis[i + randBoolean]]);
         }
 
         // assign positions to these 'normal' balls
-        for (int i = 0; i < normalBallIndecis.length; i++) {
-            int currentBall;
+        for(int i = 0; i < normalBallIndecis.length; i++) {
+            Ball currentBall;
 
-            if (i % 2 == 1) {
-                currentBall = this.currentSolid;
-            } else {
-                currentBall = this.currentStriped;
-            }
+            if(i % 2 == 1) currentBall = balls.get(solidBallIndecis.get(currentSolid));
+            else currentBall = balls.get(stripedBallIndecis.get(currentStriped));
 
-            balls.get(currentBall).setX(
-                    rackPositions[normalBallIndecis[i]].getX()
-            );
+            currentBall.setCoord(rackPositions[normalBallIndecis[i]]);
 
-            balls.get(currentBall).setY(
-                    rackPositions[normalBallIndecis[i]].getY()
-            );
-
-            if (i % 2 == 1) {
-                getNextSolid();
-            } else {
-                getNextStriped();
-            }
+            if(i % 2 == 1) currentSolid++;
+            else currentStriped++;
         }
 
+        int whiteBallIndex = 14, blackBallIndex = 15;
+
         // initialize the black ball
-        balls.get(7).setX(rackPositions[blackBallIndex].getX());
-        balls.get(7).setY(rackPositions[blackBallIndex].getY());
+        balls.get(15).setCoord(rackPositions[blackBallIndex]);
 
         // initialize the white ball
-        balls.get(15).setX(rackPositions[whiteBallIndex].getX());
-        balls.get(15).setY(rackPositions[whiteBallIndex].getY());
-    }
+        balls.get(14).setCoord(rackPositions[whiteBallIndex]);
 
+        // add the x- and y-offsets to the ball's coords
+        for(Ball ball : balls) {
+            ball.addCoord(rack_x_offset, rack_y_offset);
+        }
+
+        if(false) {
+            int i = 0;
+            for (Ball ball : balls) {
+                final String TAG = "Game.java [302]";
+                Log.e(TAG, "\nball [" + i + "]:\n" + ball.toString());
+                i++;
+            }
+        }
+    }
 
     public void startEightBall() {
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
+
 
         this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball1, 1);
         this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball2, 1);
@@ -374,7 +359,6 @@ public class Game extends GameModel {
         this.balls.add(ball5);
         this.balls.add(ball6);
         this.balls.add(ball7);
-        this.balls.add(ball8);
         this.balls.add(ball9);
         this.balls.add(ball10);
         this.balls.add(ball11);
@@ -383,11 +367,15 @@ public class Game extends GameModel {
         this.balls.add(ball14);
         this.balls.add(ball15);
         this.balls.add(ball16);
+        this.balls.add(ball8);
 
+        // puts the balls in the rack
+        rackBalls(this.balls);
 
-//         puts the balls in the rack
-//        rackBalls(this.balls);
         addEntity(line);
+        addEntity(lineReflection);
+        addEntity(cue);
+
         addEntity(ball1);
         addEntity(ball2);
         addEntity(ball3);
@@ -483,23 +471,13 @@ public class Game extends GameModel {
     }
 
     /**
-     * scoreCueBall.
-     * Is started when the cue ball gets pocketed.
+     * Gets players.
+     *
+     * @return the players
      */
-    public void scoreCueBall() {
-        this.cueBallScored = true;
-        for (int i = 0; i < this.movingballs.size(); i++) {
-            if (this.movingballs.get(i).getId() == 16) {
-                this.movingballs.get(i).setCollision(false);
-                this.movingballs.remove(i);
-            }
-        }
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
-
-    public void placeCueBall() {
-        addEntity(whiteBallHandler);
-    }
-
 
     /**
      * Gets moving balls.
@@ -509,27 +487,6 @@ public class Game extends GameModel {
     public ArrayList<Ball> getMovingBalls() {
         return movingballs;
     }
-
-    public ArrayList<Ball> getAllBalls() {
-        return this.balls;
-    }
-
-    public boolean getCueBallScored() {
-        return this.cueBallScored;
-    }
-
-    public void resetCueBallScored() {
-        this.cueBallScored = false;
-    }
-
-    public boolean getCueBallInHand() {
-        return this.cueBallInHand;
-    }
-
-    public void setCueBallInHand(boolean cueBallInHand) {
-        this.cueBallInHand = cueBallInHand;
-    }
-
 
     /**
      * Start madness.
@@ -547,13 +504,9 @@ public class Game extends GameModel {
         for (int i = 0; i < balls.size(); i++) {
             removeEntity(this.balls.get(i));
         }
-        this.setWinMessage(new WinMessage(this, winnerId));
+        WinMessage winMessage = new WinMessage(this, winnerId);
         addEntity(menuBackground);
-        addEntity(this.winMessage);
-    }
-
-    public void setWinMessage(WinMessage winMessage) {
-        this.winMessage = winMessage;
+        addEntity(winMessage);
     }
 
     /**
@@ -568,28 +521,12 @@ public class Game extends GameModel {
 
         this.balls.clear();
         this.movingballs.clear();
-
-        this.ball1 = null;
-        this.ball2 = null;
-        this.ball3 = null;
-        this.ball4 = null;
-        this.ball5 = null;
-        this.ball6 = null;
-        this.ball7 = null;
-        this.ball8 = null;
-        this.ball9 = null;
-        this.ball10 = null;
-        this.ball11 = null;
-        this.ball12 = null;
-        this.ball13 = null;
-        this.ball14 = null;
-        this.ball15 = null;
-        this.ball16 = null;
+        this.sunkeBalls.clear();
 
         setCurrentPlayer(player1);
+        setCurrentPlayer(player2);
 
         removeEntity(menuBackground);
-        this.gui = null;
         start();
     }
 }

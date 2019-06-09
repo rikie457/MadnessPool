@@ -13,20 +13,18 @@ public class ShootLine extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint whitepaint;
-
+    private Paint paint;
+    private Game game;
 
     /**
      * Instantiates a new Shoot line.
      *
      * @param visible    the visible
-     * @param whitepaint the whitepaint
      */
-    public ShootLine(boolean visible, Paint whitepaint) {
+    public ShootLine(boolean visible, Paint paint, Game game) {
         this.visible = visible;
-        this.whitepaint = whitepaint;
-        this.whitepaint.setStrokeWidth(2);
-        this.whitepaint.setColor(Color.WHITE);
+        this.paint = paint;
+        this.game = game;
     }
 
     @Override
@@ -37,8 +35,48 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, this.whitepaint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.paint);
         }
+    }
+
+    public boolean reflect() {
+        if(this.newX > game.getPlayWidth() || this.newX <= 0) {
+            return true;
+        }
+        if(this.newY > game.getPlayHeight() || this.newY <= 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public Coord[] getReflectionLine() {
+        Coord origin = new Coord();
+        Coord end = new Coord();
+
+        // calculate the origin of the reflection line
+        double lengthLaying = this.newX - this.x;
+        double lengthStanding = this.newY - this.y;
+
+        double tanAngle = lengthStanding / lengthLaying;
+
+        double angle = Math.atan(tanAngle);
+
+        lengthLaying = game.getWidth() - this.newX;
+        lengthStanding = Math.tan(angle) * lengthLaying;
+
+        double xPosOrigin = game.getPlayWidth();
+        double yPosOrigin = this.newY + lengthStanding;
+
+        origin.setX((float)xPosOrigin);
+        origin.setY((float)yPosOrigin);
+
+        double xPosEnd = -lengthStanding + origin.getX();
+        double yPosEnd = -lengthLaying + origin.getY();
+
+        end.setX((float)xPosEnd);
+        end.setY((float)yPosEnd);
+
+        return new Coord[]{origin, end};
     }
 
     /**
@@ -60,21 +98,21 @@ public class ShootLine extends Entity {
     }
 
     /**
-     * Get visible boolean.
-     *
-     * @return the boolean
-     */
-    public boolean getVisible() {
-        return this.visible;
-    }
-
-    /**
      * Sets visible.
      *
      * @param visible the visible
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    /**
+     * Get visible boolean.
+     *
+     * @return the boolean
+     */
+    public boolean getVisible(){
+        return this.visible;
     }
 
     /**

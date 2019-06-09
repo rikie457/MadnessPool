@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Coord;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
 import nl.saxion.playground.template.pool.Player;
@@ -265,6 +266,25 @@ public class Ball extends Entity {
         }
     }
 
+    /**
+     *
+     * @param coord set of coordinates that will both be assigned to this.x and this.y
+     */
+    public void setCoord(Coord coord) {
+        this.x = coord.getX();
+        this.y = coord.getY();
+    }
+
+    /**
+     *
+     * @param x - to be added to this.x
+     * @param y - to be added to this.y
+     */
+    public void addCoord(float x, float y) {
+        this.x += x;
+        this.y += y;
+    }
+
     private boolean checkMovement() {
         if (this.speedX == 0 && this.speedY == 0) {
             if (game.getMovingBalls().contains(this)) {
@@ -273,6 +293,11 @@ public class Ball extends Entity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.x + ", " + this.y + ", MOVING: " + this.moving;
     }
 
     @Override
