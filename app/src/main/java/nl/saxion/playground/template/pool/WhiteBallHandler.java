@@ -120,9 +120,9 @@ public class WhiteBallHandler extends Entity {
 
         for (int i = 0; i < this.holes.size(); i++) {
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (holes.get(i).getX() - 35), (holes.get(i).getY() - 35));
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (holes.get(i).getX() - 18), (holes.get(i).getY() - 18));
 
-            if (distSqr <= (this.whiteBall.getRadius() + 50) * (this.whiteBall.getRadius() + 50) && this.whiteBall.getCollision()) {
+            if (distSqr <= (this.whiteBall.getRadius() + 20) * (this.whiteBall.getRadius() + 20) && this.whiteBall.getCollision()) {
                 isValid = false;
             }
         }
@@ -148,6 +148,12 @@ public class WhiteBallHandler extends Entity {
     public void checkMovingBalls() {
         if (game.getMovingBalls().size() == 0) {
             game.scoreCueBall();
+        } else {
+            for (int i = 0; i < game.getMovingBalls().size(); i++) {
+                if (game.getMovingBalls().get(i).getId() == 16) {
+                    game.getMovingBalls().remove(i);
+                }
+            }
         }
     }
 

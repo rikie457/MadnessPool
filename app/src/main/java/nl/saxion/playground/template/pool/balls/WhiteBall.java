@@ -45,7 +45,6 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
-        checkCollisionHoleCueBall();
     }
 
     @Override
@@ -55,16 +54,6 @@ public class WhiteBall extends Ball {
             this.bitmap = gv.getBitmapFromResource(this.image);
         }
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
-    }
-
-    public void checkCollisionHoleCueBall() {
-        for (int i = 0; i < this.holes.size(); i++) {
-            if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0 && this.getId() == 16 && !game.getCueBallScored()) {
-                game.placeCueBall();
-                game.getMovingBalls().remove(this);
-                game.removeEntity(this);
-            }
-        }
     }
 
     @Override

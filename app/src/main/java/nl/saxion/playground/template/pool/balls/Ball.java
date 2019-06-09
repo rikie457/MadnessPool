@@ -219,7 +219,7 @@ public class Ball extends Entity {
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
             if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
-                if (this.id != 8) {
+                if (this.id != 8 && this.id != 16) {
 
                     for (int j = 0; j < this.players.size(); j++) {
                         Player player = this.players.get(j);
@@ -242,19 +242,25 @@ public class Ball extends Entity {
                             }
                         }
                     }
-                } else {
+                } else if (this.id == 8){
                     //is 8 ball
                     if (game.getCurrentplayer().getScoredballs().size() < 7) {
                         game.winnerScreen(game.getInactiveplayer().getPlayerId());
                     } else {
                         game.winnerScreen(game.getCurrentplayer().getPlayerId());
                     }
+                } else if (this.id == 16) {
+                    //is cue ball
+                    game.placeCueBall();
                 }
+
                 this.game.removeEntity(this);
                 if (game.getMovingBalls().contains(this)) {
                     game.getMovingBalls().remove(this);
                 }
-                this.balls.remove(this);
+                if (this.id != 16) {
+                    this.balls.remove(this);
+                }
             }
         }
     }
