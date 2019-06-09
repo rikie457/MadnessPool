@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool;
 
 import nl.saxion.playground.template.lib.Entity;
@@ -33,21 +39,12 @@ public class Cue extends Entity {
     }
 
     /**
-     * Sets x.
+     * Gets visible.
      *
-     * @param x the x
+     * @return the visible
      */
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    /**
-     * Sets y.
-     *
-     * @param y the y
-     */
-    public void setY(float y) {
-        this.y = y;
+    public boolean getVisible() {
+        return this.visible;
     }
 
     /**
@@ -60,15 +57,6 @@ public class Cue extends Entity {
     }
 
     /**
-     * Gets visible.
-     *
-     * @return the visible
-     */
-    public boolean getVisible() {
-        return this.visible;
-    }
-
-    /**
      * Gets x.
      *
      * @return the x
@@ -78,12 +66,30 @@ public class Cue extends Entity {
     }
 
     /**
+     * Sets x.
+     *
+     * @param x the x
+     */
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    /**
      * Gets y.
      *
      * @return the y
      */
     public float getY() {
         return this.y;
+    }
+
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
+    public void setY(float y) {
+        this.y = y;
     }
 
     /**

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
@@ -20,9 +26,62 @@ import nl.saxion.playground.template.pool.Utility;
 public class Ball extends Entity {
 
     /**
+     * The Bitmaps.
+     */
+    static public ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    /**
      * The constant lastisertedid.
      */
     protected static int lastisertedid = 1;
+    /**
+     * The Bitmap 1.
+     */
+    static protected Bitmap bitmap1, /**
+     * The Bitmap 2.
+     */
+    bitmap2, /**
+     * The Bitmap 3.
+     */
+    bitmap3, /**
+     * The Bitmap 4.
+     */
+    bitmap4, /**
+     * The Bitmap 5.
+     */
+    bitmap5, /**
+     * The Bitmap 6.
+     */
+    bitmap6, /**
+     * The Bitmap 7.
+     */
+    bitmap7, /**
+     * The Bitmap 8.
+     */
+    bitmap8, /**
+     * The Bitmap 9.
+     */
+    bitmap9, /**
+     * The Bitmap 10.
+     */
+    bitmap10, /**
+     * The Bitmap 11.
+     */
+    bitmap11, /**
+     * The Bitmap 12.
+     */
+    bitmap12, /**
+     * The Bitmap 13.
+     */
+    bitmap13, /**
+     * The Bitmap 14.
+     */
+    bitmap14, /**
+     * The Bitmap 15.
+     */
+    bitmap15, /**
+     * The Bitmap 16.
+     */
+    bitmap16;
     /**
      * The Speed x.
      */
@@ -84,62 +143,9 @@ public class Ball extends Entity {
      */
     protected ArrayList<Player> players;
     /**
-     * The Bitmaps.
-     */
-    static public ArrayList<Bitmap> bitmaps = new ArrayList<>();
-    /**
      * The Game.
      */
     protected Game game;
-    /**
-     * The Bitmap 1.
-     */
-    static protected Bitmap bitmap1, /**
-     * The Bitmap 2.
-     */
-    bitmap2, /**
-     * The Bitmap 3.
-     */
-    bitmap3, /**
-     * The Bitmap 4.
-     */
-    bitmap4, /**
-     * The Bitmap 5.
-     */
-    bitmap5, /**
-     * The Bitmap 6.
-     */
-    bitmap6, /**
-     * The Bitmap 7.
-     */
-    bitmap7, /**
-     * The Bitmap 8.
-     */
-    bitmap8, /**
-     * The Bitmap 9.
-     */
-    bitmap9, /**
-     * The Bitmap 10.
-     */
-    bitmap10, /**
-     * The Bitmap 11.
-     */
-    bitmap11, /**
-     * The Bitmap 12.
-     */
-    bitmap12, /**
-     * The Bitmap 13.
-     */
-    bitmap13, /**
-     * The Bitmap 14.
-     */
-    bitmap14, /**
-     * The Bitmap 15.
-     */
-    bitmap15, /**
-     * The Bitmap 16.
-     */
-    bitmap16;
     /**
      * The Moving.
      */
@@ -263,7 +269,7 @@ public class Ball extends Entity {
         /**
          * muuren boven en onder
          */
-        if (this.y - this.radius <=  game.getPlayWidth() * 0.04) {
+        if (this.y - this.radius <= game.getPlayWidth() * 0.04) {
             this.speedY = -this.speedY;
             this.y = game.getPlayWidth() * 0.04 + this.radius;
         } else if (this.y + this.radius > game.getPlayHeight() * 0.85) {

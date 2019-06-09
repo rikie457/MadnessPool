@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool;
 
 import android.graphics.Bitmap;
@@ -31,6 +37,6 @@ public class Background extends Entity {
         if (bitmap == null) {
             bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview);
         }
-        gameView.drawBitmap(bitmap, 0, 0, game.getPlayWidth(),game.getPlayHeight());
+        gameView.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), game.getPlayHeight());
     }
 }

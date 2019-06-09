@@ -1,7 +1,10 @@
-package nl.saxion.playground.template.pool;
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
 
-import android.graphics.Color;
-import android.graphics.Paint;
+package nl.saxion.playground.template.pool;
 
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
@@ -34,7 +37,7 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, game.redPaint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.redPaint);
         }
     }
 
@@ -44,10 +47,10 @@ public class ShootLine extends Entity {
      * @return the boolean
      */
     public boolean reflect() {
-        if(this.newX > game.getPlayWidth() || this.newX <= 0) {
+        if (this.newX > game.getPlayWidth() || this.newX <= 0) {
             return true;
         }
-        if(this.newY > game.getPlayHeight() || this.newY <= 0) {
+        if (this.newY > game.getPlayHeight() || this.newY <= 0) {
             return true;
         }
         return false;
@@ -76,14 +79,14 @@ public class ShootLine extends Entity {
         double xPosOrigin = game.getPlayWidth();
         double yPosOrigin = this.newY + lengthStanding;
 
-        origin.setX((float)xPosOrigin);
-        origin.setY((float)yPosOrigin);
+        origin.setX((float) xPosOrigin);
+        origin.setY((float) yPosOrigin);
 
         double xPosEnd = -lengthStanding + origin.getX();
         double yPosEnd = -lengthLaying + origin.getY();
 
-        end.setX((float)xPosEnd);
-        end.setY((float)yPosEnd);
+        end.setX((float) xPosEnd);
+        end.setY((float) yPosEnd);
 
         return new Coord[]{origin, end};
     }
@@ -107,21 +110,21 @@ public class ShootLine extends Entity {
     }
 
     /**
+     * Get visible boolean.
+     *
+     * @return the boolean
+     */
+    public boolean getVisible() {
+        return this.visible;
+    }
+
+    /**
      * Sets visible.
      *
      * @param visible the visible
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    /**
-     * Get visible boolean.
-     *
-     * @return the boolean
-     */
-    public boolean getVisible(){
-        return this.visible;
     }
 
     /**

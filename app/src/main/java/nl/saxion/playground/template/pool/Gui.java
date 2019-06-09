@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool;
 
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
@@ -11,8 +16,8 @@ import nl.saxion.playground.template.lib.GameView;
  * The type Gui.
  */
 public class Gui extends Entity {
+    static private Bitmap bitmap;
     private double x, y, width, height;
-   static private Bitmap bitmap;
     private Game game;
     private Player player1;
     private Player player2;
