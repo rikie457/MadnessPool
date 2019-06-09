@@ -1,8 +1,5 @@
 package nl.saxion.playground.template.pool;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
@@ -13,26 +10,25 @@ public class Cue extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint whitePaint;
+    private Game game;
 
 
     /**
-     * Instantiates a new Shoot line.
+     * Instantiates a new Cue.
      *
-     * @param visible    the visible
-     * @param whitePaint the whitePaint
+     * @param visible the visible
+     * @param game    the game
      */
-    public Cue(boolean visible, Paint whitePaint) {
+    public Cue(boolean visible, Game game) {
         this.visible = visible;
-        this.whitePaint = whitePaint;
-        this.whitePaint.setStrokeWidth(2);
-        this.whitePaint.setColor(Color.WHITE);
+        this.game = game;
+
     }
 
     @Override
     public void draw(GameView gv) {
         if (this.visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitePaint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.whitePaint);
         }
     }
 
@@ -64,18 +60,28 @@ public class Cue extends Entity {
     }
 
     /**
-     * Get visible boolean.
+     * Gets visible.
      *
-     * @return the boolean
+     * @return the visible
      */
-    public boolean getVisible(){
+    public boolean getVisible() {
         return this.visible;
     }
 
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
     public float getX() {
         return this.x;
     }
 
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
     public float getY() {
         return this.y;
     }

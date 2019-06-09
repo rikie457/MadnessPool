@@ -6,10 +6,18 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Background.
+ */
 public class Background extends Entity {
-    private Bitmap bitmap;
+    static private Bitmap bitmap;
     private Game game;
 
+    /**
+     * Instantiates a new Background.
+     *
+     * @param game the game
+     */
     public Background(Game game) {
         this.game = game;
     }

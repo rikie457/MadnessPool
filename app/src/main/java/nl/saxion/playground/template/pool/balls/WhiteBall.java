@@ -32,23 +32,24 @@ public class WhiteBall extends Ball {
     /**
      * Instantiates a new White ball.
      *
-     * @param game   the game
-     * @param balls  the balls
-     * @param holes  the holes
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
-     * @param image  the image
-     * @param type   the type
-     * @param line   the line
+     * @param game           the game
+     * @param balls          the balls
+     * @param holes          the holes
+     * @param players        the players
+     * @param x              the x
+     * @param y              the y
+     * @param width          the width
+     * @param height         the height
+     * @param type           the type
+     * @param line           the line
+     * @param lineReflection the line reflection
+     * @param cue            the cue
      */
     public WhiteBall(Game game,
                      ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players,
-                     double x, double y, double width, double height,
-                     int image, int type,
+                     double x, double y, double width, double height, int type,
                      ShootLine line, ShootLine lineReflection, Cue cue) {
-        super(game, balls, holes, players, x, y, width, height, image, type);
+        super(game, balls, holes, players, x, y, width, height, type);
         this.line = line;
         this.lineReflection = lineReflection;
         this.cue = cue;
@@ -62,10 +63,6 @@ public class WhiteBall extends Ball {
     @Override
     public void draw(GameView gv) {
         super.draw(gv);
-        if (this.bitmap == null) {
-            this.bitmap = gv.getBitmapFromResource(this.image);
-        }
-        gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
     }
 
     @Override
@@ -91,7 +88,7 @@ public class WhiteBall extends Ball {
                 this.line.setNewX(this.newXReversed);
                 this.line.setNewY(this.newYReversed);
 
-                if(this.line.reflect()) {
+                if (this.line.reflect()) {
                     this.lineReflection.setVisible(true);
                     Coord[] reflection = this.line.getReflectionLine();
                     this.lineReflection.setX(reflection[0].getX());
@@ -129,7 +126,7 @@ public class WhiteBall extends Ball {
                 this.line.setNewX((float) this.newXReversed);
                 this.line.setNewY((float) this.newYReversed);
 
-                if(this.line.reflect()) {
+                if (this.line.reflect()) {
                     this.lineReflection.setVisible(true);
                     Coord[] reflection = this.line.getReflectionLine();
                     this.lineReflection.setX(reflection[0].getX());
