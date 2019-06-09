@@ -10,6 +10,7 @@ import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
 import nl.saxion.playground.template.pool.ShootLine;
 import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.WhiteBallHandler;
 
 import static java.lang.Math.PI;
 
@@ -43,16 +44,31 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
+        checkCollisionHoleCueBall();
     }
 
     @Override
     public void draw(GameView gv) {
         super.draw(gv);
+        if (this.bitmap == null) {
+            this.bitmap = gv.getBitmapFromResource(this.image);
+        }
+        gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+    }
+
+    public void checkCollisionHoleCueBall() {
+        for (int i = 0; i < this.holes.size(); i++) {
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0 && this.getId() == 16 && !game.getCueBallScored()) {
+                game.placeCueBall();
+                game.getMovingBalls().remove(this);
+                game.removeEntity(this);
+            }
+        }
     }
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.line != null && !game.checkMovementForAllBalls()) {
+        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 this.oldX = (float) this.x;

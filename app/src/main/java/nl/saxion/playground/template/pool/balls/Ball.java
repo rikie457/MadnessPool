@@ -97,6 +97,10 @@ public class Ball extends Entity {
      * The Shot.
      */
     protected boolean shot;
+    
+    protected boolean collision = true;
+    protected double oldX, oldY, newX, newY;
+
     /**
      * The Old x.
      */
@@ -157,7 +161,7 @@ public class Ball extends Entity {
                 continue;
             }
 
-            if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius())) {
+            if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius()) && this.collision) {
                 if (this.speedX == 0 && this.speedY == 0 && balls.get(i).getSpeedX() == 0 && balls.get(i).getSpeedY() == 0) {
                     this.speedY = .5;
                     this.speedX = -.5;
@@ -177,7 +181,6 @@ public class Ball extends Entity {
                     this.speedY += collisionWeightA * yCollision;
                     balls.get(i).speedX -= collisionWeightB * xCollision;
                     balls.get(i).speedY -= collisionWeightB * yCollision;
-
                 }
             }
         }
@@ -271,6 +274,9 @@ public class Ball extends Entity {
 
     private boolean checkMovement() {
         if (this.speedX == 0 && this.speedY == 0) {
+            if (game.getMovingBalls().contains(this)) {
+                game.getMovingBalls().remove(this);
+            }
             return false;
         }
         return true;
@@ -321,6 +327,10 @@ public class Ball extends Entity {
         return this.x;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
     /**
      * Gets y.
      *
@@ -329,6 +339,7 @@ public class Ball extends Entity {
     public double getY() {
         return this.y;
     }
+
 
     /**
      * Gets speed x.
@@ -346,6 +357,10 @@ public class Ball extends Entity {
 
     public double getSpeedX() {
         return this.speedX;
+    }
+
+    public void setSpeedX(double speedX) {
+        this.speedX = speedX;
     }
 
     public ArrayList<Ball> getBalls() {
@@ -376,6 +391,7 @@ public class Ball extends Entity {
     public double getSpeedY() {
         return this.speedY;
     }
+
 
     /**
      * Gets radius.
@@ -449,6 +465,14 @@ public class Ball extends Entity {
         return moving;
     }
 
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
+
+    public boolean getCollision () {
+        return this.collision;
+    }
+    
     /**
      * Reset lastisertedid.
      */

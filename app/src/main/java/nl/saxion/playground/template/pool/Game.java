@@ -30,10 +30,14 @@ public class Game extends GameModel {
     //Settings
     private Player currentplayer = player1;
     private Player inactiveplayer = player2;
+    private boolean cueBallScored = false;
+    private boolean cueBallInHand = false;
+
     private float guiHeight = 75f;
     private float left = 0, top = getPlayHeight(), right = getPlayWidth(), bottom = getPlayHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
+
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -77,6 +81,10 @@ public class Game extends GameModel {
     private Ball ball15;
     private WhiteBall ball16;
     private int runs = 0;
+
+
+    private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
+
 
     /**
      * Gets play height.
@@ -370,6 +378,7 @@ public class Game extends GameModel {
         this.ball15 = new Ball(this, this.balls, this.holes, Utility.randomDoubleFromRange(46, getPlayWidth()), Utility.randomDoubleFromRange(46, getPlayHeight()), ballsize, ballsize, R.drawable.ball15, 2);
         this.ball16 = new WhiteBall(this, this.balls, this.holes, Utility.randomDoubleFromRange(46, getPlayWidth()), Utility.randomDoubleFromRange(46, getPlayHeight()), ballsize, ballsize, R.drawable.ball16, 0, this.line);
 
+        this.whiteBallHandler.setWhiteBall(ball16);
 
         this.ball1.resetLastisertedid();
         this.balls.add(ball1);
@@ -488,7 +497,25 @@ public class Game extends GameModel {
     }
 
     /**
-     * Gets players.
+     * scoreCueBall.
+     * Is started when the cue ball gets pocketed.
+     */
+    public void scoreCueBall() {
+        this.cueBallScored = true;
+        for (int i = 0; i < this.movingballs.size(); i++) {
+            if (this.movingballs.get(i).getId() == 16) {
+                this.movingballs.get(i).setCollision(false);
+                this.movingballs.remove(i);
+            }
+        }
+    }
+
+    public void placeCueBall() {
+        addEntity(whiteBallHandler);
+    }
+
+
+     /** Gets players.
      *
      * @return the players
      */
@@ -504,6 +531,27 @@ public class Game extends GameModel {
     public ArrayList<Ball> getMovingBalls() {
         return movingballs;
     }
+
+    public ArrayList<Ball> getAllBalls() {
+        return this.balls;
+    }
+
+    public boolean getCueBallScored() {
+        return this.cueBallScored;
+    }
+
+    public void resetCueBallScored() {
+        this.cueBallScored = false;
+    }
+
+    public boolean getCueBallInHand () {
+        return this.cueBallInHand;
+    }
+
+    public void setCueBallInHand(boolean cueBallInHand) {
+        this.cueBallInHand = cueBallInHand;
+    }
+
 
     /**
      * Start madness.
