@@ -187,8 +187,8 @@ public class Game extends GameModel {
 
             // WHITE-BALL
             new Coord(
-                    -150 + ball_radius,
-                    ball_radius - 50),
+                    -400 + ball_radius,
+                    0),
 
             // (BLACK-BALL)
             new Coord(
