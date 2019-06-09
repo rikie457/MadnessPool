@@ -53,12 +53,6 @@ public class Game extends GameModel {
     private Background background = new Background(this);
     private Gui gui;
     private WinMessage winMessage;
-    private Hole hole = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 75, holesize, transparent);
-    private Hole hole1 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 65, holesize, transparent);
-    private Hole hole2 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 75, holesize, transparent);
-    private Hole hole3 = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 465, holesize, transparent);
-    private Hole hole4 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 465, holesize, transparent);
-    private Hole hole5 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 465, holesize, transparent);
     private ShootLine line = new ShootLine(false, redPaint, this);
     private ShootLine lineReflection = new ShootLine(false, this.grayPaintReflection, this);
     private Cue cue = new Cue(false, this.whitePaint);
@@ -192,7 +186,6 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
-
         this.blackPaint.setColor(Color.BLACK);
         this.whitePaint.setColor(Color.WHITE);
 
@@ -213,20 +206,29 @@ public class Game extends GameModel {
         addEntity(madnessButton);
 
         if (runs < 1) {
-            this.holes.add(hole);
+            Hole hole1 = new Hole(this, getPlayWidth() * 0.08,  this.getHeight() * 0.12, holesize, transparent);
+            Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize, transparent);
+            Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize, transparent);
+
+            Hole hole4 = new Hole(this, getPlayWidth() * 0.08,  this.getHeight() * 0.75, holesize, transparent);
+            Hole hole5 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.75, holesize, transparent);
+            Hole hole6 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.75, holesize, transparent);
             this.holes.add(hole1);
             this.holes.add(hole2);
             this.holes.add(hole3);
             this.holes.add(hole4);
             this.holes.add(hole5);
+            this.holes.add(hole6);
             addEntity(background);
-            addEntity(hole);
             addEntity(hole1);
             addEntity(hole2);
             addEntity(hole3);
             addEntity(hole4);
             addEntity(hole5);
+            addEntity(hole6);
             addEntity(gui);
+
+
         }
         System.out.println("Runs:" + runs);
         runs++;

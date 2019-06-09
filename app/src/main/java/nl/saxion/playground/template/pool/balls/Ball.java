@@ -184,12 +184,12 @@ public class Ball extends Entity {
         /**
          * muren rechts en links
          */
-        if (this.x - this.radius <= 60) {
-            this.x = 60 + this.radius;
+        if (this.x - this.radius <= game.getPlayWidth() * 0.056) {
+            this.x = game.getPlayWidth() * 0.056 + this.radius;
             this.speedX = -this.speedX;
-        } else if (this.x + this.radius >= game.getPlayWidth() - 70) {
+        } else if (this.x + this.radius >= game.getPlayWidth() * 0.93) {
             this.speedX = -this.speedX;
-            this.x = game.getPlayWidth() - 70 - this.radius;
+            this.x = game.getPlayWidth() * 0.93 - this.radius;
             this.speedX *= this.energyloss;
         } else {
             this.x += this.speedX;
@@ -201,12 +201,12 @@ public class Ball extends Entity {
         /**
          * muuren boven en onder
          */
-        if (this.y - this.radius <= 55) {
+        if (this.y - this.radius <=  game.getPlayWidth() * 0.04) {
             this.speedY = -this.speedY;
-            this.y = 55 + this.radius;
-        } else if (this.y + this.radius > game.getPlayHeight() - 80) {
+            this.y = game.getPlayWidth() * 0.04 + this.radius;
+        } else if (this.y + this.radius > game.getPlayHeight() * 0.85) {
             this.speedY = -this.speedY;
-            this.y = game.getPlayHeight() - this.radius - 80;
+            this.y = game.getPlayHeight() * 0.85 - this.radius;
             this.speedY *= this.energyloss;
         } else {
             this.y += this.speedY;
