@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Coord;
@@ -67,9 +68,6 @@ public class Ball extends Entity {
      * The Id.
      */
     id, /**
-     * The Image.
-     */
-    image, /**
      * The Type.
      */
     type;
@@ -81,17 +79,67 @@ public class Ball extends Entity {
      * The Holes.
      */
     protected ArrayList<Hole> holes;
-
-
+    /**
+     * The Players.
+     */
     protected ArrayList<Player> players;
+    /**
+     * The Bitmaps.
+     */
+    static public ArrayList<Bitmap> bitmaps = new ArrayList<>();
     /**
      * The Game.
      */
     protected Game game;
     /**
-     * The Bitmap.
+     * The Bitmap 1.
      */
-    protected Bitmap bitmap;
+    static protected Bitmap bitmap1, /**
+     * The Bitmap 2.
+     */
+    bitmap2, /**
+     * The Bitmap 3.
+     */
+    bitmap3, /**
+     * The Bitmap 4.
+     */
+    bitmap4, /**
+     * The Bitmap 5.
+     */
+    bitmap5, /**
+     * The Bitmap 6.
+     */
+    bitmap6, /**
+     * The Bitmap 7.
+     */
+    bitmap7, /**
+     * The Bitmap 8.
+     */
+    bitmap8, /**
+     * The Bitmap 9.
+     */
+    bitmap9, /**
+     * The Bitmap 10.
+     */
+    bitmap10, /**
+     * The Bitmap 11.
+     */
+    bitmap11, /**
+     * The Bitmap 12.
+     */
+    bitmap12, /**
+     * The Bitmap 13.
+     */
+    bitmap13, /**
+     * The Bitmap 14.
+     */
+    bitmap14, /**
+     * The Bitmap 15.
+     */
+    bitmap15, /**
+     * The Bitmap 16.
+     */
+    bitmap16;
     /**
      * The Moving.
      */
@@ -101,24 +149,39 @@ public class Ball extends Entity {
      */
     protected boolean shot;
 
+    /**
+     * The Collision.
+     */
     protected boolean collision = true;
-    protected double oldX, oldY, newX, newY;
+    /**
+     * The Old x.
+     */
+    protected double oldX, /**
+     * The Old y.
+     */
+    oldY, /**
+     * The New x.
+     */
+    newX, /**
+     * The New y.
+     */
+    newY;
 
 
     /**
      * Instantiates a new Ball.
      *
-     * @param game   the game
-     * @param balls  the balls
-     * @param holes  the holes
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
-     * @param image  the image
-     * @param type   the type
+     * @param game    the game
+     * @param balls   the balls
+     * @param holes   the holes
+     * @param players the players
+     * @param x       the x
+     * @param y       the y
+     * @param width   the width
+     * @param height  the height
+     * @param type    the type
      */
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players, double x, double y, double width, double height, int image, int type) {
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players, double x, double y, double width, double height, int type) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -138,7 +201,6 @@ public class Ball extends Entity {
         this.friction = .9965;
         this.energyloss = .900;
         this.type = type;
-        this.image = image;
     }
 
 
@@ -243,7 +305,7 @@ public class Ball extends Entity {
                             }
                         }
                     }
-                } else if (this.id == 8){
+                } else if (this.id == 8) {
                     //is 8 ball
                     if (game.getCurrentplayer().getScoredballs().size() < 7) {
                         game.winnerScreen(game.getInactiveplayer().getPlayerId());
@@ -267,8 +329,9 @@ public class Ball extends Entity {
     }
 
     /**
+     * Sets coord.
      *
-     * @param coord set of coordinates that will both be assigned to this.x and this.y
+     * @param coord the coord
      */
     public void setCoord(Coord coord) {
         this.x = coord.getX();
@@ -276,9 +339,10 @@ public class Ball extends Entity {
     }
 
     /**
+     * Add coord.
      *
-     * @param x - to be added to this.x
-     * @param y - to be added to this.y
+     * @param x the x
+     * @param y the y
      */
     public void addCoord(float x, float y) {
         this.x += x;
@@ -315,10 +379,123 @@ public class Ball extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        if (this.bitmap == null) {
-            this.bitmap = gv.getBitmapFromResource(this.image);
+        switch (this.id) {
+            case 1:
+                if (bitmap1 == null) {
+                    bitmap1 = gv.getBitmapFromResource(R.drawable.ball1);
+                    bitmaps.add(bitmap1);
+                }
+                gv.drawBitmap(bitmap1, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 2:
+                if (bitmap2 == null) {
+                    bitmap2 = gv.getBitmapFromResource(R.drawable.ball2);
+                    bitmaps.add(bitmap2);
+                }
+                gv.drawBitmap(bitmap2, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 3:
+                if (bitmap3 == null) {
+                    bitmap3 = gv.getBitmapFromResource(R.drawable.ball3);
+                    bitmaps.add(bitmap3);
+                }
+                gv.drawBitmap(bitmap3, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 4:
+                if (bitmap4 == null) {
+                    bitmap4 = gv.getBitmapFromResource(R.drawable.ball4);
+                    bitmaps.add(bitmap4);
+                }
+                gv.drawBitmap(bitmap4, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 5:
+                if (bitmap5 == null) {
+                    bitmap5 = gv.getBitmapFromResource(R.drawable.ball5);
+                    bitmaps.add(bitmap5);
+                }
+                gv.drawBitmap(bitmap5, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 6:
+                if (bitmap6 == null) {
+                    bitmap6 = gv.getBitmapFromResource(R.drawable.ball6);
+                    bitmaps.add(bitmap6);
+                }
+                gv.drawBitmap(bitmap6, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 7:
+                if (bitmap7 == null) {
+                    bitmap7 = gv.getBitmapFromResource(R.drawable.ball7);
+                    bitmaps.add(bitmap7);
+                }
+                gv.drawBitmap(bitmap7, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 8:
+                if (bitmap8 == null) {
+                    bitmap8 = gv.getBitmapFromResource(R.drawable.ball8);
+                    bitmaps.add(bitmap8);
+                }
+                gv.drawBitmap(bitmap8, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 9:
+                if (bitmap9 == null) {
+                    bitmap9 = gv.getBitmapFromResource(R.drawable.ball9);
+                    bitmaps.add(bitmap9);
+                }
+                gv.drawBitmap(bitmap9, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 10:
+                if (bitmap10 == null) {
+                    bitmap10 = gv.getBitmapFromResource(R.drawable.ball10);
+                    bitmaps.add(bitmap10);
+                }
+                gv.drawBitmap(bitmap10, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 11:
+                if (bitmap11 == null) {
+                    bitmap11 = gv.getBitmapFromResource(R.drawable.ball11);
+                    bitmaps.add(bitmap11);
+                }
+                gv.drawBitmap(bitmap11, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 12:
+                if (bitmap12 == null) {
+                    bitmap12 = gv.getBitmapFromResource(R.drawable.ball12);
+                    bitmaps.add(bitmap12);
+                }
+                gv.drawBitmap(bitmap12, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 13:
+                if (bitmap13 == null) {
+                    bitmap13 = gv.getBitmapFromResource(R.drawable.ball13);
+                    bitmaps.add(bitmap13);
+                }
+                gv.drawBitmap(bitmap13, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 14:
+                if (bitmap14 == null) {
+                    bitmap14 = gv.getBitmapFromResource(R.drawable.ball14);
+                    bitmaps.add(bitmap14);
+                }
+                gv.drawBitmap(bitmap14, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 15:
+                if (bitmap15 == null) {
+                    bitmap15 = gv.getBitmapFromResource(R.drawable.ball15);
+                    bitmaps.add(bitmap15);
+                }
+                gv.drawBitmap(bitmap15, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+            case 16:
+                if (bitmap16 == null) {
+                    bitmap16 = gv.getBitmapFromResource(R.drawable.ball16);
+                    bitmaps.add(bitmap16);
+                }
+                gv.drawBitmap(bitmap16, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                break;
+
         }
-        gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+
+
     }
 
     @Override
@@ -345,6 +522,11 @@ public class Ball extends Entity {
         return this.x;
     }
 
+    /**
+     * Sets x.
+     *
+     * @param x the x
+     */
     public void setX(double x) {
         this.x = x;
     }
@@ -359,6 +541,11 @@ public class Ball extends Entity {
     }
 
 
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
     public void setY(double y) {
         this.y = y;
     }
@@ -368,13 +555,45 @@ public class Ball extends Entity {
      *
      * @return the speed x
      */
-
     public double getSpeedX() {
         return this.speedX;
     }
 
+    /**
+     * Sets speed x.
+     *
+     * @param speedX the speed x
+     */
     public void setSpeedX(double speedX) {
         this.speedX = speedX;
+    }
+
+    /**
+     * Sets speed x.
+     *
+     * @param xSpeed the x speed
+     */
+// werkt niet, niet gebruiken
+    public void setSpeedX(float xSpeed) {
+        this.speedX = xSpeed;
+    }
+
+    /**
+     * Gets balls.
+     *
+     * @return the balls
+     */
+    public ArrayList<Ball> getBalls() {
+        return balls;
+    }
+
+    /**
+     * Gets holes.
+     *
+     * @return the holes
+     */
+    public ArrayList<Hole> getHoles() {
+        return holes;
     }
 
     /**
@@ -382,25 +601,16 @@ public class Ball extends Entity {
      *
      * @return the speed y
      */
-
-    // werkt niet, niet gebruiken
-    public void setSpeedX(float xSpeed) {
-        this.speedX = xSpeed;
-    }
-
-    public ArrayList<Ball> getBalls() {
-        return balls;
-    }
-
-    public ArrayList<Hole> getHoles() {
-        return holes;
-    }
-
     public double getSpeedY() {
         return this.speedY;
     }
 
-    // werkt niet, niet gebruiken
+    /**
+     * Sets speed y.
+     *
+     * @param ySpeed the y speed
+     */
+// werkt niet, niet gebruiken
     public void setSpeedY(float ySpeed) {
         this.speedY = ySpeed;
     }
@@ -430,15 +640,6 @@ public class Ball extends Entity {
      */
     public double getHeight() {
         return height;
-    }
-
-    /**
-     * Gets bitmap.
-     *
-     * @return the bitmap
-     */
-    public Bitmap getBitmap() {
-        return bitmap;
     }
 
     /**
@@ -477,10 +678,20 @@ public class Ball extends Entity {
         return moving;
     }
 
+    /**
+     * Gets collision.
+     *
+     * @return the collision
+     */
     public boolean getCollision() {
         return this.collision;
     }
 
+    /**
+     * Sets collision.
+     *
+     * @param collision the collision
+     */
     public void setCollision(boolean collision) {
         this.collision = collision;
     }
@@ -490,6 +701,65 @@ public class Ball extends Entity {
      */
     public void resetLastisertedid() {
         lastisertedid = 1;
+    }
+
+    /**
+     * Gets bitmap.
+     *
+     * @return the bitmap
+     */
+    public Bitmap getBitmap() {
+        switch (this.id) {
+            case 1:
+                return bitmap1;
+
+            case 2:
+                return bitmap2;
+
+            case 3:
+                return bitmap3;
+
+            case 4:
+                return bitmap4;
+
+            case 5:
+                return bitmap5;
+
+            case 6:
+                return bitmap6;
+
+            case 7:
+                return bitmap7;
+
+            case 8:
+                return bitmap8;
+
+            case 9:
+                return bitmap9;
+
+            case 10:
+                return bitmap10;
+
+            case 11:
+                return bitmap11;
+
+            case 12:
+                return bitmap12;
+
+            case 13:
+                return bitmap13;
+
+            case 14:
+                return bitmap14;
+
+            case 15:
+                return bitmap15;
+            case 16:
+                return bitmap16;
+
+
+        }
+        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 package nl.saxion.playground.template.pool;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.pool.balls.Ball;
@@ -7,7 +8,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
 /**
  * The type Player.
  */
-public class Player {
+public class Player implements Serializable {
     private int balltype = -1;
     private ArrayList<Ball> scoredballs;
     private int playerId;
@@ -48,6 +49,11 @@ public class Player {
         return scoredballs;
     }
 
+    /**
+     * Sets scoredballs.
+     *
+     * @param scoredballs the scoredballs
+     */
     public void setScoredballs(ArrayList<Ball> scoredballs) {
         this.scoredballs = scoredballs;
     }

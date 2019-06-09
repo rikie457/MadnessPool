@@ -13,17 +13,16 @@ public class ShootLine extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint paint;
     private Game game;
 
     /**
      * Instantiates a new Shoot line.
      *
-     * @param visible    the visible
+     * @param visible the visible
+     * @param game    the game
      */
-    public ShootLine(boolean visible, Paint paint, Game game) {
+    public ShootLine(boolean visible, Game game) {
         this.visible = visible;
-        this.paint = paint;
         this.game = game;
     }
 
@@ -35,10 +34,15 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.paint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, game.redPaint);
         }
     }
 
+    /**
+     * Reflect boolean.
+     *
+     * @return the boolean
+     */
     public boolean reflect() {
         if(this.newX > game.getPlayWidth() || this.newX <= 0) {
             return true;
@@ -49,6 +53,11 @@ public class ShootLine extends Entity {
         return false;
     }
 
+    /**
+     * Get reflection line coord [ ].
+     *
+     * @return the coord [ ]
+     */
     public Coord[] getReflectionLine() {
         Coord origin = new Coord();
         Coord end = new Coord();
