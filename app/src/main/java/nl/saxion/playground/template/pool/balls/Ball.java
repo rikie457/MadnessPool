@@ -275,6 +275,10 @@ public class Ball extends Entity {
         this.y = coord.getY();
     }
 
+    public int getType() {
+        return this.type;
+    }
+
     /**
      *
      * @param x - to be added to this.x

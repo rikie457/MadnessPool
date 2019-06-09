@@ -2,6 +2,7 @@ package nl.saxion.playground.template.pool;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
@@ -49,32 +50,21 @@ public class ShootLine extends Entity {
         return false;
     }
 
+    public void setColor(float r, float g, float b) {
+        this.paint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
+    }
+
     public Coord[] getReflectionLine() {
         Coord origin = new Coord();
         Coord end = new Coord();
 
-        // calculate the origin of the reflection line
-        double lengthLaying = this.newX - this.x;
-        double lengthStanding = this.newY - this.y;
+        double aanliggende = this.newX - this.x;
+        double overstaande = this.newY - this.y;
 
-        double tanAngle = lengthStanding / lengthLaying;
+        double tanOfAngle = overstaande / aanliggende; // TOA
+        double angle = Math.atan(tanOfAngle);
 
-        double angle = Math.atan(tanAngle);
-
-        lengthLaying = game.getWidth() - this.newX;
-        lengthStanding = Math.tan(angle) * lengthLaying;
-
-        double xPosOrigin = game.getPlayWidth();
-        double yPosOrigin = this.newY + lengthStanding;
-
-        origin.setX((float)xPosOrigin);
-        origin.setY((float)yPosOrigin);
-
-        double xPosEnd = -lengthStanding + origin.getX();
-        double yPosEnd = -lengthLaying + origin.getY();
-
-        end.setX((float)xPosEnd);
-        end.setY((float)yPosEnd);
+        //Log.e("angle: ", Double.toString(angle) + ", Overstaande: " + Double.toString(overstaande) + ", Aanliggende: " + Double.toString(aanliggende));
 
         return new Coord[]{origin, end};
     }

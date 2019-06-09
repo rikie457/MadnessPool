@@ -1,8 +1,10 @@
 package nl.saxion.playground.template.pool.balls;
 
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
@@ -28,6 +30,8 @@ public class WhiteBall extends Ball {
 
     private float newXReversed;
     private float newYReversed;
+
+    private Coord origin, end;
 
     /**
      * Instantiates a new White ball.
@@ -69,6 +73,69 @@ public class WhiteBall extends Ball {
     }
 
     @Override
+    public void handleTouch(GameModel.Touch touch, MotionEvent event) {
+        if (this.line != null && this.cue != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                this.line.setVisible(true);
+
+                initOriginAndEnd(touch);
+
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (!this.line.getVisible()) {
+                    initOriginAndEnd(touch);
+                    this.line.setVisible(true);
+                }
+
+                updateEnd(touch);
+
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                double mag = Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y)) * 2;
+                this.cue.setVisible(false);
+                this.line.setVisible(false);
+                this.lineReflection.setVisible(false);
+
+                this.speedX = 0.00001 * (this.x + mag * Math.cos(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
+                this.speedY = 0.00001 * (this.y + mag * Math.sin(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
+                this.shot = true;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param touch has all information about the initial touch
+     */
+    private void initOriginAndEnd(GameModel.Touch touch) {
+        this.origin = new Coord(touch.x, touch.y);
+        this.end = new Coord(touch.x, touch.y);
+
+        // init drawable shootLine
+        this.line.setX((float)this.x + (float)this.radius);
+        this.line.setY((float)this.y + (float)this.radius);
+    }
+
+    /**
+     *
+     * @param touch has all the information about the touch
+     */
+    public void updateEnd(GameModel.Touch touch) {
+        this.end.set(touch.x, touch.y);
+
+        // update drawable shootLine
+        float xOffset = (float)this.x - this.origin.getX() + (float)this.radius;
+        float yOffset = (float)this.y - this.origin.getY() + (float)this.radius;
+
+        this.line.setNewX(this.end.getX() + xOffset);
+        this.line.setNewY(this.end.getY() + yOffset);
+
+        // update line color
+        int mag = (int)(Math.sqrt(Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y))) * 0.20);
+
+        this.line.setColor(mag, 128 - mag/2, 255 - mag);
+    }
+
+    /*
+    * @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         if (this.line != null && this.cue != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -149,5 +216,5 @@ public class WhiteBall extends Ball {
                 this.shot = true;
             }
         }
-    }
+    }*/
 }

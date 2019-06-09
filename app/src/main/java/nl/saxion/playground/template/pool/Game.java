@@ -93,8 +93,8 @@ public class Game extends GameModel {
     // defines spacing between balls vertically
     private float y_diff = (ball_radius + 3) * padding;
 
-    private float rack_x_offset = 700;
-    private float rack_y_offset = 250;
+    private float rack_x_offset;
+    private float rack_y_offset;
 
     private Coord[] rackPositions = new Coord[] {
             // 1ST-ROW
@@ -152,7 +152,7 @@ public class Game extends GameModel {
 
             // WHITE-BALL
             new Coord(
-                    -400 + ball_radius,
+                    -500 + ball_radius,
                     0),
 
             // (BLACK-BALL)
@@ -187,14 +187,24 @@ public class Game extends GameModel {
     @Override
     public float getHeight() {
         // Height fills actual screen size, but is based on width scaling.
-        return actualHeight / actualWidth * getWidth();
+        return (float)(actualHeight / (double)actualWidth * getWidth());
     }
 
     @Override
     public void start() {
-
         this.blackPaint.setColor(Color.BLACK);
-        this.whitePaint.setColor(Color.WHITE);
+
+        // shootLine reflection colors
+        this.grayPaintReflection.setColor(Color.argb(255, 50, 50, 50));
+        this.grayPaintReflection.setStrokeWidth(2);
+
+        // shootLine colors
+        this.redPaint.setColor(Color.argb(255, 255, 0, 0));
+        this.redPaint.setStrokeWidth(3);
+
+        // cue colors
+        this.whitePaint.setColor(Color.argb(255, 255, 255, 255));
+        this.whitePaint.setStrokeWidth(4);
 
         this.players.add(player1);
         player1.setScoredballs(this.player1balls);
@@ -206,7 +216,6 @@ public class Game extends GameModel {
         this.top = getPlayHeight();
         this.bottom = top + guiHeight;
         this.gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom, whitePaint, blackPaint);
-
 
         addEntity(menuBackground);
         addEntity(eightBallButton);
@@ -230,7 +239,6 @@ public class Game extends GameModel {
         }
         System.out.println("Runs:" + runs);
         runs++;
-
     }
 
     private int getRandIntInRange(int left, int right) {
@@ -254,6 +262,15 @@ public class Game extends GameModel {
         // balls 7 through 13 are STRIPED BALLS (0 t/m 13)
         // ball at 14 is WHITE BALL (index 14)
         // ball at 15 is BLACK BALL (index 15)
+
+        this.rack_x_offset = (getPlayWidth() / 4) * 3;
+        this.rack_y_offset = (getPlayHeight() / 2);
+
+        int whiteBallIndex = 14, blackBallIndex = 15;
+
+        rackPositions[whiteBallIndex] = new Coord(getPlayWidth() / 4, this.rack_y_offset);
+
+        Log.e("white ball index: ", rackPositions[whiteBallIndex].getX() + ", " + rackPositions[whiteBallIndex].getY());
 
         int[] sideBallIndecis = new int[] {13, 9, 8, 5, 4, 3, 2, 1};
         int[] normalBallIndecis = new int[] {12, 11, 10, 7, 6, 0};
@@ -302,8 +319,6 @@ public class Game extends GameModel {
             else currentStriped++;
         }
 
-        int whiteBallIndex = 14, blackBallIndex = 15;
-
         // initialize the black ball
         balls.get(15).setCoord(rackPositions[blackBallIndex]);
 
@@ -312,10 +327,11 @@ public class Game extends GameModel {
 
         // add the x- and y-offsets to the ball's coords
         for(Ball ball : balls) {
+            if(ball.getType() != 0)
             ball.addCoord(rack_x_offset, rack_y_offset);
         }
 
-        if(false) {
+        if(true) {
             int i = 0;
             for (Ball ball : balls) {
                 final String TAG = "Game.java [302]";
@@ -345,7 +361,8 @@ public class Game extends GameModel {
         this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball13, 2);
         this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball14, 2);
         this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball15, 2);
-        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball16, 0, this.line, this.lineReflection, this.cue);
+        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball16, 0,
+                this.line, this.lineReflection, this.cue);
 
         this.whiteBallHandler.setWhiteBall(ball16);
 

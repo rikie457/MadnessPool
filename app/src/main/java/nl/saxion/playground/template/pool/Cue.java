@@ -1,8 +1,13 @@
 package nl.saxion.playground.template.pool;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Picture;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
@@ -14,6 +19,8 @@ public class Cue extends Entity {
     private float newX, newY, x, y;
     private boolean visible;
     private Paint whitePaint;
+    private Bitmap bitmap;
+    private Game game;
 
 
     /**
@@ -29,10 +36,37 @@ public class Cue extends Entity {
         this.whitePaint.setColor(Color.WHITE);
     }
 
+    private static double prevAngle = 0;
+
+    public Bitmap rotateBitmap(Bitmap original, float degrees) {
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.preRotate(degrees);
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(original, 0, 0, width, height, matrix, true);
+
+        return rotatedBitmap;
+    }
+
     @Override
-    public void draw(GameView gv) {
+    public void draw(GameView gameView) {
+
         if (this.visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitePaint);
+            //gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitePaint);
+            /*if (bitmap == null) {
+                bitmap = gameView.getBitmapFromResource(R.drawable.pool_cue);
+            }
+
+            double angle = this.x - this.newX;
+            angle = Math.toDegrees(Math.atan((this.y - this.newY) / angle));
+            if(prevAngle != angle) rotateBitmap(bitmap, (float)Math.random() * 360);
+
+            gameView.drawBitmap(bitmap, x, newY, 200, 25);
+
+            prevAngle = angle;
+            */
         }
     }
 
