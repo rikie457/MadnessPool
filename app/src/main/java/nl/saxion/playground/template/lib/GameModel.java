@@ -1,6 +1,7 @@
 package nl.saxion.playground.template.lib;
 
 import android.view.MotionEvent;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

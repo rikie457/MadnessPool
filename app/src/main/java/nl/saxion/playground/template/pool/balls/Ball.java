@@ -13,29 +13,127 @@ import nl.saxion.playground.template.pool.Player;
 import nl.saxion.playground.template.pool.Utility;
 
 
+/**
+ * The type Ball.
+ */
 public class Ball extends Entity {
 
+    /**
+     * The constant lastisertedid.
+     */
     protected static int lastisertedid = 1;
-    protected double speedX, speedY;
-    protected double mass, x, y, width, height, radius, bx, by, friction, energyloss;
-    protected int color, id, image, type;
+    /**
+     * The Speed x.
+     */
+    protected double speedX, /**
+     * The Speed y.
+     */
+    speedY;
+    /**
+     * The Mass.
+     */
+    protected double mass, /**
+     * The X.
+     */
+    x, /**
+     * The Y.
+     */
+    y, /**
+     * The Width.
+     */
+    width, /**
+     * The Height.
+     */
+    height, /**
+     * The Radius.
+     */
+    radius, /**
+     * The Bx.
+     */
+    bx, /**
+     * The By.
+     */
+    by, /**
+     * The Friction.
+     */
+    friction, /**
+     * The Energyloss.
+     */
+    energyloss;
+    /**
+     * The Color.
+     */
+    protected int color, /**
+     * The Id.
+     */
+    id, /**
+     * The Image.
+     */
+    image, /**
+     * The Type.
+     */
+    type;
+    /**
+     * The Balls.
+     */
     protected ArrayList<Ball> balls;
+    /**
+     * The Holes.
+     */
     protected ArrayList<Hole> holes;
-    protected ArrayList<Ball> sunkenBalls;
+    /**
+     * The Game.
+     */
     protected Game game;
+    /**
+     * The Bitmap.
+     */
     protected Bitmap bitmap;
+    /**
+     * The Moving.
+     */
     protected boolean moving;
+    /**
+     * The Shot.
+     */
     protected boolean shot;
+    
     protected boolean collision = true;
     protected double oldX, oldY, newX, newY;
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Ball> sunkenBalls, double x, double y, double width, double height, int image, int type) {
+    /**
+     * The Old x.
+     */
+    protected double oldX, /**
+     * The Old y.
+     */
+    oldY, /**
+     * The New x.
+     */
+    newX, /**
+     * The New y.
+     */
+    newY;
+
+    /**
+     * Instantiates a new Ball.
+     *
+     * @param game        the game
+     * @param balls       the balls
+     * @param holes       the holes
+     * @param x           the x
+     * @param y           the y
+     * @param width       the width
+     * @param height      the height
+     * @param image       the image
+     * @param type        the type
+     */
+    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, double x, double y, double width, double height, int image, int type) {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
         this.balls = balls;
         this.holes = holes;
-        this.sunkenBalls = sunkenBalls;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -88,19 +186,21 @@ public class Ball extends Entity {
         }
     }
 
-
     private void checkCollisionWall() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.x - this.radius < 0) {
+        /**
+         * muren rechts en links
+         */
+        if (this.x - this.radius <= 60) {
             Info.addToWallCollisionCounter();
-            this.x = this.radius;
+            this.x = 60 + this.radius;
             this.speedX = -this.speedX;
-        } else if (this.x + this.radius > this.bx) {
+        } else if (this.x + this.radius >=  game.getPlayWidth() - 70) {
             Info.addToWallCollisionCounter();
             this.speedX = -this.speedX;
-            this.x = this.bx - this.radius;
+            this.x =  game.getPlayWidth() - 70 - this.radius;
             this.speedX *= this.energyloss;
         } else {
             this.x += this.speedX;
@@ -109,15 +209,17 @@ public class Ball extends Entity {
                 this.speedX = 0;
             }
         }
-
-        if (this.y - this.radius < 0) {
+        /**
+         * muuren boven en onder
+         */
+        if (this.y - this.radius <= 55) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y = this.radius;
-        } else if (this.y + this.radius > this.by) {
+            this.y = 55 + this.radius;
+        } else if (this.y + this.radius > game.getPlayHeight()- 80) {
             Info.addToWallCollisionCounter();
             this.speedY = -this.speedY;
-            this.y = this.by - this.radius;
+            this.y =  game.getPlayHeight() - this.radius - 80;
             this.speedY *= this.energyloss;
         } else {
             this.y += this.speedY;
@@ -130,12 +232,11 @@ public class Ball extends Entity {
 
     private void checkCollisionHole() {
         for (int i = 0; i < this.holes.size(); i++) {
-            if (this.getClass() == Ball.class) {
-                if (Math.sqrt(Utility.getDistanceNotSquared(this.x + this.radius, this.y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (this.radius) <= 0) {
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
                     if (this.id != 8) {
                         for (i = 0; i < game.getPlayers().size(); i++) {
-                            if (game.getCurrentplayer() == game.getPlayers().get(i)) {
-                                Player player = game.getPlayers().get(i);
+                            Player player =  game.getPlayers().get(i);
+                            if (game.getCurrentplayer() == player) {
                                 if (player.getBalltype() == -1) {
                                     if (this.type == 1) {
                                         player.setBalltype(1);
@@ -154,20 +255,22 @@ public class Ball extends Entity {
                                 }
                             }
                         }
-
-                        this.game.removeEntity(this);
-                        this.sunkenBalls.add(this);
-                        if (game.getMovingBalls().contains(this)) {
-                            game.getMovingBalls().remove(this);
-                        }
-                        this.balls.remove(this);
                     } else {
-                        //Is 8 Ball
+                        //is 8 ball
+                        if (game.getCurrentplayer().getScoredballs().size() < 7) {
+                            game.winnerScreen(game.getInactiveplayer().getPlayerId());
+                        } else {
+                            game.winnerScreen(game.getCurrentplayer().getPlayerId());
+                        }
                     }
+                    this.game.removeEntity(this);
+                    if (game.getMovingBalls().contains(this)) {
+                        game.getMovingBalls().remove(this);
+                    }
+                    this.balls.remove(this);
                 }
             }
         }
-    }
 
     private boolean checkMovement() {
         if (this.speedX == 0 && this.speedY == 0) {
@@ -200,10 +303,26 @@ public class Ball extends Entity {
         gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
     }
 
+    @Override
+    public int getLayer() {
+        return 1;
+    }
+
+
+    /**
+     * Gets mass.
+     *
+     * @return the mass
+     */
     public double getMass() {
         return this.mass;
     }
 
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
     public double getX() {
         return this.x;
     }
@@ -212,11 +331,27 @@ public class Ball extends Entity {
         this.x = x;
     }
 
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
     public double getY() {
         return this.y;
     }
 
-    public void setY(double y) {
+
+    /**
+     * Gets speed x.
+     *
+     * @return the speed x
+     */
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
         this.y = y;
     }
 
@@ -228,42 +363,104 @@ public class Ball extends Entity {
         this.speedX = speedX;
     }
 
+    public ArrayList<Ball> getBalls() {
+        return balls;
+    }
+
+    public ArrayList<Hole> getHoles() {
+        return holes;
+    }
+
+    /**
+     * Gets speed y.
+     *
+     * @return the speed y
+     */
+
+    // werkt niet, niet gebruiken
+    public void setSpeedX(float xSpeed) {
+        this.speedX = xSpeed;
+    }
+
+    // werkt niet, niet gebruiken
+    public void setSpeedY(float ySpeed) {
+        this.speedY = ySpeed;
+    }
+
+
     public double getSpeedY() {
         return this.speedY;
     }
 
-    public void setSpeedY(double speedY) {
-        this.speedY = speedY;
-    }
 
+    /**
+     * Gets radius.
+     *
+     * @return the radius
+     */
     public double getRadius() {
         return this.radius;
     }
 
+    /**
+     * Gets width.
+     *
+     * @return the width
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Gets height.
+     *
+     * @return the height
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Gets bitmap.
+     *
+     * @return the bitmap
+     */
     public Bitmap getBitmap() {
         return bitmap;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Is shot boolean.
+     *
+     * @return the boolean
+     */
     public boolean isShot() {
         return shot;
     }
 
+    /**
+     * Sets shot.
+     *
+     * @param shot the shot
+     */
     public void setShot(boolean shot) {
         this.shot = shot;
     }
 
+    /**
+     * Is moving boolean.
+     *
+     * @return the boolean
+     */
     public boolean isMoving() {
         return moving;
     }
@@ -274,5 +471,12 @@ public class Ball extends Entity {
 
     public boolean getCollision () {
         return this.collision;
+    }
+    
+    /**
+     * Reset lastisertedid.
+     */
+    public void resetLastisertedid() {
+        lastisertedid = 1;
     }
 }

@@ -9,8 +9,14 @@ import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 
+/**
+ * The type Madness button.
+ */
 public class MadnessButton extends Entity {
 
+    /**
+     * The A val.
+     */
     float aVal;
 
     static private Bitmap bitmap;
@@ -20,8 +26,17 @@ public class MadnessButton extends Entity {
     private boolean buttonPressed = false;
     private int timer;
 
+    /**
+     * Instantiates a new Madness button.
+     *
+     * @param game the game
+     */
     public MadnessButton(Game game) {
         this.game = game;
+    }
+
+    public int getLayer() {
+        return 2;
     }
 
     @Override
@@ -29,6 +44,7 @@ public class MadnessButton extends Entity {
         super.tick();
 
         if (buttonPressed) {
+            buttonPressed = false;
             game.startMadness();
         }
     }

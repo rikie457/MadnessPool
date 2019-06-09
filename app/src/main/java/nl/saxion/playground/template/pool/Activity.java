@@ -7,9 +7,18 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Activity.
+ */
 public class Activity extends AppCompatActivity {
 
+    /**
+     * The Game.
+     */
     GameModel game;
+    /**
+     * The Game view.
+     */
     GameView gameView;
 
     @Override
