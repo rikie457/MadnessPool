@@ -8,6 +8,10 @@ public class Coord {
         this.y = y;
     }
 
+    public Coord(){
+
+    }
+
     public void setX(float x) {
         this.x = x;
     }

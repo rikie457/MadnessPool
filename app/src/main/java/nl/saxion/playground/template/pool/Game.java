@@ -46,7 +46,6 @@ public class Game extends GameModel {
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
-
     //Menu items
     private MenuBackground menuBackground = new MenuBackground(this);
     private EightBallButton eightBallButton = new EightBallButton(this);
@@ -95,7 +94,7 @@ public class Game extends GameModel {
     private float y_diff = (ball_radius + 3) * padding;
 
     private float rack_x_offset = 700;
-    private float rack_y_offset = 200;
+    private float rack_y_offset = 250;
 
     private Coord[] rackPositions = new Coord[] {
             // 1ST-ROW
@@ -331,7 +330,6 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-
         this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball1, 1);
         this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball2, 1);
         this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball3, 1);
@@ -347,7 +345,7 @@ public class Game extends GameModel {
         this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball13, 2);
         this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball14, 2);
         this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball15, 2);
-        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball16, 0, this.line);
+        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball16, 0, this.line, this.lineReflection, this.cue);
 
         this.whiteBallHandler.setWhiteBall(ball16);
 
@@ -471,13 +469,23 @@ public class Game extends GameModel {
     }
 
     /**
-     * Gets players.
-     *
-     * @return the players
+     * scoreCueBall.
+     * Is started when the cue ball gets pocketed.
      */
-    public ArrayList<Player> getPlayers() {
-        return players;
+    public void scoreCueBall() {
+        this.cueBallScored = true;
+        for (int i = 0; i < this.movingballs.size(); i++) {
+            if (this.movingballs.get(i).getId() == 16) {
+                this.movingballs.get(i).setCollision(false);
+                this.movingballs.remove(i);
+            }
+        }
     }
+
+    public void placeCueBall() {
+        addEntity(whiteBallHandler);
+    }
+
 
     /**
      * Gets moving balls.
@@ -487,6 +495,27 @@ public class Game extends GameModel {
     public ArrayList<Ball> getMovingBalls() {
         return movingballs;
     }
+
+    public ArrayList<Ball> getAllBalls() {
+        return this.balls;
+    }
+
+    public boolean getCueBallScored() {
+        return this.cueBallScored;
+    }
+
+    public void resetCueBallScored() {
+        this.cueBallScored = false;
+    }
+
+    public boolean getCueBallInHand() {
+        return this.cueBallInHand;
+    }
+
+    public void setCueBallInHand(boolean cueBallInHand) {
+        this.cueBallInHand = cueBallInHand;
+    }
+
 
     /**
      * Start madness.
@@ -504,9 +533,13 @@ public class Game extends GameModel {
         for (int i = 0; i < balls.size(); i++) {
             removeEntity(this.balls.get(i));
         }
-        WinMessage winMessage = new WinMessage(this, winnerId);
+        this.setWinMessage(new WinMessage(this, winnerId));
         addEntity(menuBackground);
-        addEntity(winMessage);
+        addEntity(this.winMessage);
+    }
+
+    public void setWinMessage(WinMessage winMessage) {
+        this.winMessage = winMessage;
     }
 
     /**
@@ -521,12 +554,28 @@ public class Game extends GameModel {
 
         this.balls.clear();
         this.movingballs.clear();
-        this.sunkeBalls.clear();
+
+        this.ball1 = null;
+        this.ball2 = null;
+        this.ball3 = null;
+        this.ball4 = null;
+        this.ball5 = null;
+        this.ball6 = null;
+        this.ball7 = null;
+        this.ball8 = null;
+        this.ball9 = null;
+        this.ball10 = null;
+        this.ball11 = null;
+        this.ball12 = null;
+        this.ball13 = null;
+        this.ball14 = null;
+        this.ball15 = null;
+        this.ball16 = null;
 
         setCurrentPlayer(player1);
-        setCurrentPlayer(player2);
 
         removeEntity(menuBackground);
+        this.gui = null;
         start();
     }
 }
