@@ -7,6 +7,8 @@
 
 package nl.saxion.playground.template.pool;
 
+import android.graphics.Color;
+
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
@@ -58,7 +60,7 @@ public class ShootLine extends Entity {
     }
 
     public void setColor(float r, float g, float b) {
-        this.paint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
+    game.redPaint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
     }
 
     public float getNewX() {

@@ -288,7 +288,6 @@ public class Ball extends Entity {
         for (int i = 0; i < this.holes.size(); i++) {
             if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
                 if (this.id != 8 && this.id != 16) {
-
                     for (int j = 0; j < this.players.size(); j++) {
                         Player player = this.players.get(j);
                         if (game.getCurrentplayer() == player) {

@@ -6,7 +6,6 @@
 
 package nl.saxion.playground.template.pool;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
@@ -17,8 +16,6 @@ public class Cue extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint whitePaint;
-    private Bitmap bitmap;
     private Game game;
 
 
@@ -36,22 +33,10 @@ public class Cue extends Entity {
 
     private static double prevAngle = 0;
 
-    public Bitmap rotateBitmap(Bitmap original, float degrees) {
-        int width = original.getWidth();
-        int height = original.getHeight();
-
-        Matrix matrix = new Matrix();
-        matrix.preRotate(degrees);
-
-        Bitmap rotatedBitmap = Bitmap.createBitmap(original, 0, 0, width, height, matrix, true);
-
-        return rotatedBitmap;
-    }
 
     @Override
-    public void draw(GameView gameView) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.whitePaint);
-        }
+    public void draw(GameView gv) {
+        gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.whitePaint);
     }
 
     /**
