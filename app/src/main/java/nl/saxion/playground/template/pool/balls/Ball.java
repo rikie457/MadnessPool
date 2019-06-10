@@ -24,7 +24,6 @@ import nl.saxion.playground.template.pool.Utility;
  * The type Ball.
  */
 public class Ball extends Entity {
-
     /**
      * The Bitmaps.
      */
@@ -342,6 +341,10 @@ public class Ball extends Entity {
     public void setCoord(Coord coord) {
         this.x = coord.getX();
         this.y = coord.getY();
+    }
+
+    public int getType() {
+        return this.type;
     }
 
     /**

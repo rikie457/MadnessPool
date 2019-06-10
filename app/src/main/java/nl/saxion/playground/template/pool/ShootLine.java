@@ -4,6 +4,7 @@
  * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
  */
 
+
 package nl.saxion.playground.template.pool;
 
 import nl.saxion.playground.template.lib.Entity;
@@ -56,40 +57,18 @@ public class ShootLine extends Entity {
         return false;
     }
 
-    /**
-     * Get reflection line coord [ ].
-     *
-     * @return the coord [ ]
-     */
-    public Coord[] getReflectionLine() {
-        Coord origin = new Coord();
-        Coord end = new Coord();
-
-        // calculate the origin of the reflection line
-        double lengthLaying = this.newX - this.x;
-        double lengthStanding = this.newY - this.y;
-
-        double tanAngle = lengthStanding / lengthLaying;
-
-        double angle = Math.atan(tanAngle);
-
-        lengthLaying = game.getWidth() - this.newX;
-        lengthStanding = Math.tan(angle) * lengthLaying;
-
-        double xPosOrigin = game.getPlayWidth();
-        double yPosOrigin = this.newY + lengthStanding;
-
-        origin.setX((float) xPosOrigin);
-        origin.setY((float) yPosOrigin);
-
-        double xPosEnd = -lengthStanding + origin.getX();
-        double yPosEnd = -lengthLaying + origin.getY();
-
-        end.setX((float) xPosEnd);
-        end.setY((float) yPosEnd);
-
-        return new Coord[]{origin, end};
+    public void setColor(float r, float g, float b) {
+        this.paint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
     }
+
+    public float getNewX() {
+        return this.newX;
+    }
+
+    public float getNewY() {
+        return this.newY;
+    }
+
 
     /**
      * Sets x.

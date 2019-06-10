@@ -50,11 +50,20 @@ public class Coord implements Serializable {
         this.x = x;
     }
 
+    public void set(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public float getX() {
+        return this.x;
+    }
     /**
      * Gets y.
      *
      * @return the y
      */
+>>>>>>> app/src/main/java/nl/saxion/playground/template/pool/Coord.java
     public float getY() {
         return this.y;
     }
