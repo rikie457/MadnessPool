@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool;
 
 import android.view.MotionEvent;
@@ -11,11 +17,17 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
- * The type  WhiteBallHandler.
+ * The type White ball handler.
  */
 public class WhiteBallHandler extends Entity {
 
+    /**
+     * The Balls.
+     */
     ArrayList<Ball> balls;
+    /**
+     * The Holes.
+     */
     ArrayList<Hole> holes;
     private boolean ballReplaced = false;
     private boolean canContinue = false;
@@ -25,11 +37,11 @@ public class WhiteBallHandler extends Entity {
     private WhiteBall whiteBall;
 
     /**
-     * Initiates a new WhiteBallHandler
+     * Instantiates a new White ball handler.
      *
-     * @param game
-     * @param balls
-     * @param holes
+     * @param game  the game
+     * @param balls the balls
+     * @param holes the holes
      */
     public WhiteBallHandler(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes) {
         this.game = game;
@@ -98,11 +110,10 @@ public class WhiteBallHandler extends Entity {
     }
 
     /**
-     * Checks if the place where the player wants to
-     * place the cue ball is free.
+     * Is valid position boolean.
      *
-     * @param event Information about the touch event
-     * @return
+     * @param event the event
+     * @return the boolean
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
@@ -129,21 +140,13 @@ public class WhiteBallHandler extends Entity {
         return isValid;
     }
 
-    /**
-     * fingerOnWhiteBall.
-     * Checks if the user touches the Cue ball.
-     *
-     * @param event Information about the touch event.
-     * @return
-     */
     private boolean fingerOnhWhiteBall(MotionEvent event) {
         return event.getX() > this.whiteBall.getX() - 30 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 30 &&
                 event.getY() > this.whiteBall.getY() - 30 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 30;
     }
 
     /**
-     * checkMovingBalls.
-     * Checks if balls are moving on the table.
+     * Check moving balls.
      */
     public void checkMovingBalls() {
         if (game.getMovingBalls().size() == 0) {
@@ -158,9 +161,9 @@ public class WhiteBallHandler extends Entity {
     }
 
     /**
-     * Sets the cue ball used on the table.
+     * Sets white ball.
      *
-     * @param whiteBall The cue ball.
+     * @param whiteBall the white ball
      */
     public void setWhiteBall(WhiteBall whiteBall) {
         this.whiteBall = whiteBall;

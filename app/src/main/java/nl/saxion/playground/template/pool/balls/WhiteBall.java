@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool.balls;
 
 import android.util.Log;
@@ -37,23 +43,24 @@ public class WhiteBall extends Ball {
     /**
      * Instantiates a new White ball.
      *
-     * @param game   the game
-     * @param balls  the balls
-     * @param holes  the holes
-     * @param x      the x
-     * @param y      the y
-     * @param width  the width
-     * @param height the height
-     * @param image  the image
-     * @param type   the type
-     * @param line   the line
+     * @param game           the game
+     * @param balls          the balls
+     * @param holes          the holes
+     * @param players        the players
+     * @param x              the x
+     * @param y              the y
+     * @param width          the width
+     * @param height         the height
+     * @param type           the type
+     * @param line           the line
+     * @param lineReflection the line reflection
+     * @param cue            the cue
      */
     public WhiteBall(Game game,
                      ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players,
-                     double x, double y, double width, double height,
-                     int image, int type,
+                     double x, double y, double width, double height, int type,
                      ShootLine line, ShootLine lineReflection, Cue cue) {
-        super(game, balls, holes, players, x, y, width, height, image, type);
+        super(game, balls, holes, players, x, y, width, height, type);
         this.line = line;
         this.lineReflection = lineReflection;
         this.cue = cue;
@@ -67,11 +74,6 @@ public class WhiteBall extends Ball {
     @Override
     public void draw(GameView gv) {
         super.draw(gv);
-        if (this.bitmap == null) {
-            this.bitmap = gv.getBitmapFromResource(this.image);
-        }
-        gv.drawBitmap(bitmap, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
-
     }
 
     @Override
@@ -79,7 +81,6 @@ public class WhiteBall extends Ball {
         if (this.line != null && this.cue != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
-
                 initOriginAndEnd(touch);
 
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {

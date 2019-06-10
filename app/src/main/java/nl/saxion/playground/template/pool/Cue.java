@@ -1,11 +1,10 @@
-package nl.saxion.playground.template.pool;
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Picture;
+package nl.saxion.playground.template.pool;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
@@ -24,16 +23,15 @@ public class Cue extends Entity {
 
 
     /**
-     * Instantiates a new Shoot line.
+     * Instantiates a new Cue.
      *
-     * @param visible    the visible
-     * @param whitePaint the whitePaint
+     * @param visible the visible
+     * @param game    the game
      */
-    public Cue(boolean visible, Paint whitePaint) {
+    public Cue(boolean visible, Game game) {
         this.visible = visible;
-        this.whitePaint = whitePaint;
-        this.whitePaint.setStrokeWidth(2);
-        this.whitePaint.setColor(Color.WHITE);
+        this.game = game;
+
     }
 
     private static double prevAngle = 0;
@@ -52,40 +50,17 @@ public class Cue extends Entity {
 
     @Override
     public void draw(GameView gameView) {
-
-        if (this.visible) {
-            //gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.whitePaint);
-            /*if (bitmap == null) {
-                bitmap = gameView.getBitmapFromResource(R.drawable.pool_cue);
-            }
-
-            double angle = this.x - this.newX;
-            angle = Math.toDegrees(Math.atan((this.y - this.newY) / angle));
-            if(prevAngle != angle) rotateBitmap(bitmap, (float)Math.random() * 360);
-
-            gameView.drawBitmap(bitmap, x, newY, 200, 25);
-
-            prevAngle = angle;
-            */
+            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.whitePaint);
         }
     }
 
     /**
-     * Sets x.
+     * Gets visible.
      *
-     * @param x the x
+     * @return the visible
      */
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    /**
-     * Sets y.
-     *
-     * @param y the y
-     */
-    public void setY(float y) {
-        this.y = y;
+    public boolean getVisible() {
+        return this.visible;
     }
 
     /**
@@ -98,20 +73,39 @@ public class Cue extends Entity {
     }
 
     /**
-     * Get visible boolean.
+     * Gets x.
      *
-     * @return the boolean
+     * @return the x
      */
-    public boolean getVisible(){
-        return this.visible;
-    }
-
     public float getX() {
         return this.x;
     }
 
+    /**
+     * Sets x.
+     *
+     * @param x the x
+     */
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
     public float getY() {
         return this.y;
+    }
+
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
+    public void setY(float y) {
+        this.y = y;
     }
 
     /**

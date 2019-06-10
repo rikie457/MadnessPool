@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
+
 package nl.saxion.playground.template.pool;
 
 
@@ -7,7 +13,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
@@ -19,16 +24,30 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
  */
 public class Game extends GameModel {
 
+    /**
+     * The constant transparent.
+     */
+//Paints
+    static public Paint transparent = new Paint();
+    /**
+     * The Black paint.
+     */
+    static public Paint blackPaint = new Paint();
+    /**
+     * The White paint.
+     */
+    static public Paint whitePaint = new Paint();
+    /**
+     * The Gray paint reflection.
+     */
+    static public Paint grayPaintReflection = new Paint();
+    /**
+     * The Red paint.
+     */
+    static public Paint redPaint = new Paint();
     //Players
     private Player player1 = new Player(1);
     private Player player2 = new Player(2);
-    //Paints
-    private Paint transparent = new Paint();
-    private Paint blackPaint = new Paint();
-    private Paint whitePaint = new Paint();
-    private Paint grayPaintReflection = new Paint();
-    private Paint redPaint = new Paint();
-
     //Settings
     private Player currentplayer = player1;
     private ArrayList<Ball> player1balls = new ArrayList<>();
@@ -37,15 +56,17 @@ public class Game extends GameModel {
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
     private float guiHeight = 75f;
-    private float left = 0, top = getPlayHeight(), right = getPlayWidth(), bottom = getPlayHeight() + guiHeight;
+    private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
+
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Ball> sunkeBalls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+
     //Menu items
     private MenuBackground menuBackground = new MenuBackground(this);
     private EightBallButton eightBallButton = new EightBallButton(this);
@@ -53,16 +74,11 @@ public class Game extends GameModel {
     private Background background = new Background(this);
     private Gui gui;
     private WinMessage winMessage;
-    private Hole hole = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 75, holesize, transparent);
-    private Hole hole1 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 65, holesize, transparent);
-    private Hole hole2 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 75, holesize, transparent);
-    private Hole hole3 = new Hole(this, getPlayWidth() / 14, actualHeight / 2 + 465, holesize, transparent);
-    private Hole hole4 = new Hole(this, getPlayWidth() / 2 + 5, actualHeight / 2 + 465, holesize, transparent);
-    private Hole hole5 = new Hole(this, getPlayWidth() - 70, actualHeight / 2 + 465, holesize, transparent);
-    private ShootLine line = new ShootLine(false, redPaint, this);
-    private ShootLine lineReflection = new ShootLine(false, this.grayPaintReflection, this);
-    private Cue cue = new Cue(false, this.whitePaint);
+    private ShootLine line = new ShootLine(false, this);
+    private ShootLine lineReflection = new ShootLine(false, this);
+    private Cue cue = new Cue(false, this);
 
+    //Balls
     private Ball ball1;
     private Ball ball2;
     private Ball ball3;
@@ -79,14 +95,15 @@ public class Game extends GameModel {
     private Ball ball14;
     private Ball ball15;
     private WhiteBall ball16;
+
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
     /**
      * Start eight ball.
      */
 
-    private float padding = (float)0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
-    private float ball_radius = ballsize/2;
+    private float padding = (float) 0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
+    private float ball_radius = ballsize / 2;
 
     // defines spacing between balls horizontally
     private float x_diff = (ball_radius + (ball_radius / 2) + 10) * padding;
@@ -96,7 +113,7 @@ public class Game extends GameModel {
     private float rack_x_offset;
     private float rack_y_offset;
 
-    private Coord[] rackPositions = new Coord[] {
+    private Coord[] rackPositions = new Coord[]{
             // 1ST-ROW
             new Coord(
                     0,
@@ -192,19 +209,20 @@ public class Game extends GameModel {
 
     @Override
     public void start() {
-        this.blackPaint.setColor(Color.BLACK);
+        blackPaint.setColor(Color.BLACK);
 
         // shootLine reflection colors
-        this.grayPaintReflection.setColor(Color.argb(255, 50, 50, 50));
-        this.grayPaintReflection.setStrokeWidth(2);
+        grayPaintReflection.setColor(Color.argb(255, 50, 50, 50));
+        grayPaintReflection.setStrokeWidth(2);
 
         // shootLine colors
-        this.redPaint.setColor(Color.argb(255, 255, 0, 0));
-        this.redPaint.setStrokeWidth(3);
+      redPaint.setColor(Color.argb(255, 255, 0, 0));
+        redPaint.setStrokeWidth(3);
 
         // cue colors
-        this.whitePaint.setColor(Color.argb(255, 255, 255, 255));
-        this.whitePaint.setStrokeWidth(4);
+        whitePaint.setColor(Color.argb(255, 255, 255, 255));
+        whitePaint.setStrokeWidth(4);
+
 
         this.players.add(player1);
         player1.setScoredballs(this.player1balls);
@@ -215,47 +233,65 @@ public class Game extends GameModel {
         this.right = left + getPlayWidth();
         this.top = getPlayHeight();
         this.bottom = top + guiHeight;
-        this.gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom, whitePaint, blackPaint);
+        this.gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom);
 
         addEntity(menuBackground);
         addEntity(eightBallButton);
         addEntity(madnessButton);
 
         if (runs < 1) {
-            this.holes.add(hole);
+            Hole hole1 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.12, holesize);
+            Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize);
+            Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize);
+            Hole hole4 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.75, holesize);
+            Hole hole5 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.75, holesize);
+            Hole hole6 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.75, holesize);
+
             this.holes.add(hole1);
             this.holes.add(hole2);
             this.holes.add(hole3);
             this.holes.add(hole4);
             this.holes.add(hole5);
+            this.holes.add(hole6);
+
             addEntity(background);
-            addEntity(hole);
             addEntity(hole1);
             addEntity(hole2);
             addEntity(hole3);
             addEntity(hole4);
             addEntity(hole5);
+            addEntity(hole6);
             addEntity(gui);
+
+
         }
         System.out.println("Runs:" + runs);
         runs++;
     }
 
     private int getRandIntInRange(int left, int right) {
-        return (int)(left + (Math.random() * (right - left + 1)));
+        return (int) (left + (Math.random() * (right - left + 1)));
     }
 
-    // swaps the elements at loc a and b in array 'arrayInt'
+    /**
+     * Swap.
+     *
+     * @param arrayInt the array int
+     * @param a        the a
+     * @param b        the b
+     */
+// swaps the elements at loc a and b in array 'arrayInt'
     public void swap(ArrayList<Integer> arrayInt, int a, int b) {
-        if(a == b) return;
+        if (a == b) return;
         int temp = arrayInt.get(a);
         arrayInt.set(a, arrayInt.get(b));
         arrayInt.set(b, temp);
     }
 
     /**
+     * Rack balls.
      *
-     * @param balls array of balls to be racked
+     * @param balls the balls
      */
     public void rackBalls(ArrayList<Ball> balls) {
         // balls 0 through 6 are SOLID BALLS (0 t/m 13)
@@ -274,16 +310,15 @@ public class Game extends GameModel {
 
         int[] sideBallIndecis = new int[] {13, 9, 8, 5, 4, 3, 2, 1};
         int[] normalBallIndecis = new int[] {12, 11, 10, 7, 6, 0};
-
         ArrayList<Integer> solidBallIndecis = new ArrayList<>();
         ArrayList<Integer> stripedBallIndecis = new ArrayList<>();
 
-        for(int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             solidBallIndecis.add(i);
             stripedBallIndecis.add(i + 7);
         }
 
-        for(int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             int a, b;
             a = getRandIntInRange(0, 6);
             b = getRandIntInRange(0, 6);
@@ -296,7 +331,7 @@ public class Game extends GameModel {
 
         int currentSolid = 0, currentStriped = 0;
 
-        for(int i = 0; i < sideBallIndecis.length; i+=2, currentSolid++, currentStriped++) {
+        for (int i = 0; i < sideBallIndecis.length; i += 2, currentSolid++, currentStriped++) {
             int randBoolean = getRandIntInRange(0, 1);
 
             // 1st side
@@ -307,15 +342,15 @@ public class Game extends GameModel {
         }
 
         // assign positions to these 'normal' balls
-        for(int i = 0; i < normalBallIndecis.length; i++) {
+        for (int i = 0; i < normalBallIndecis.length; i++) {
             Ball currentBall;
 
-            if(i % 2 == 1) currentBall = balls.get(solidBallIndecis.get(currentSolid));
+            if (i % 2 == 1) currentBall = balls.get(solidBallIndecis.get(currentSolid));
             else currentBall = balls.get(stripedBallIndecis.get(currentStriped));
 
             currentBall.setCoord(rackPositions[normalBallIndecis[i]]);
 
-            if(i % 2 == 1) currentSolid++;
+            if (i % 2 == 1) currentSolid++;
             else currentStriped++;
         }
 
@@ -341,28 +376,30 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * Start eight ball.
+     */
     public void startEightBall() {
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball1, 1);
-        this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball2, 1);
-        this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball3, 1);
-        this.ball4 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball4, 1);
-        this.ball5 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball5, 1);
-        this.ball6 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball6, 1);
-        this.ball7 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball7, 1);
-        this.ball8 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball8, 3);
-        this.ball9 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball9, 2);
-        this.ball10 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball10, 2);
-        this.ball11 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball11, 2);
-        this.ball12 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball12, 2);
-        this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball13, 2);
-        this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball14, 2);
-        this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball15, 2);
-        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, R.drawable.ball16, 0,
-                this.line, this.lineReflection, this.cue);
+        this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball4 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball5 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball6 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball7 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
+        this.ball8 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 3);
+        this.ball9 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball10 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball11 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball12 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
+        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line, this.lineReflection, this.cue);
 
         this.whiteBallHandler.setWhiteBall(ball16);
 
@@ -486,8 +523,7 @@ public class Game extends GameModel {
     }
 
     /**
-     * scoreCueBall.
-     * Is started when the cue ball gets pocketed.
+     * Score cue ball.
      */
     public void scoreCueBall() {
         this.cueBallScored = true;
@@ -499,6 +535,9 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * Place cue ball.
+     */
     public void placeCueBall() {
         addEntity(whiteBallHandler);
     }
@@ -513,22 +552,45 @@ public class Game extends GameModel {
         return movingballs;
     }
 
+    /**
+     * Gets all balls.
+     *
+     * @return the all balls
+     */
     public ArrayList<Ball> getAllBalls() {
         return this.balls;
     }
 
+    /**
+     * Gets cue ball scored.
+     *
+     * @return the cue ball scored
+     */
     public boolean getCueBallScored() {
         return this.cueBallScored;
     }
 
+    /**
+     * Reset cue ball scored.
+     */
     public void resetCueBallScored() {
         this.cueBallScored = false;
     }
 
+    /**
+     * Gets cue ball in hand.
+     *
+     * @return the cue ball in hand
+     */
     public boolean getCueBallInHand() {
         return this.cueBallInHand;
     }
 
+    /**
+     * Sets cue ball in hand.
+     *
+     * @param cueBallInHand the cue ball in hand
+     */
     public void setCueBallInHand(boolean cueBallInHand) {
         this.cueBallInHand = cueBallInHand;
     }
@@ -555,6 +617,11 @@ public class Game extends GameModel {
         addEntity(this.winMessage);
     }
 
+    /**
+     * Sets win message.
+     *
+     * @param winMessage the win message
+     */
     public void setWinMessage(WinMessage winMessage) {
         this.winMessage = winMessage;
     }

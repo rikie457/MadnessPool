@@ -1,8 +1,11 @@
-package nl.saxion.playground.template.pool;
+/*
+ * Copyright (c) 2019. Tycho Engberink, Bryan Blekkink, Bram Baggerman, Rob van Heuven.
+ *
+ * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
+ */
 
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Log;
+
+package nl.saxion.playground.template.pool;
 
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
@@ -14,17 +17,16 @@ public class ShootLine extends Entity {
 
     private float newX, newY, x, y;
     private boolean visible;
-    private Paint paint;
     private Game game;
 
     /**
      * Instantiates a new Shoot line.
      *
-     * @param visible    the visible
+     * @param visible the visible
+     * @param game    the game
      */
-    public ShootLine(boolean visible, Paint paint, Game game) {
+    public ShootLine(boolean visible, Game game) {
         this.visible = visible;
-        this.paint = paint;
         this.game = game;
     }
 
@@ -36,15 +38,20 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX,  this.newY, this.paint);
+            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.redPaint);
         }
     }
 
+    /**
+     * Reflect boolean.
+     *
+     * @return the boolean
+     */
     public boolean reflect() {
-        if(this.newX > game.getPlayWidth() || this.newX <= 0) {
+        if (this.newX > game.getPlayWidth() || this.newX <= 0) {
             return true;
         }
-        if(this.newY > game.getPlayHeight() || this.newY <= 0) {
+        if (this.newY > game.getPlayHeight() || this.newY <= 0) {
             return true;
         }
         return false;
@@ -62,20 +69,6 @@ public class ShootLine extends Entity {
         return this.newY;
     }
 
-    public Coord[] getReflectionLine() {
-        Coord origin = new Coord();
-        Coord end = new Coord();
-
-        double aanliggende = this.newX - this.x;
-        double overstaande = this.newY - this.y;
-
-        double tanOfAngle = overstaande / aanliggende; // TOA
-        double angle = Math.atan(tanOfAngle);
-
-        //Log.e("angle: ", Double.toString(angle) + ", Overstaande: " + Double.toString(overstaande) + ", Aanliggende: " + Double.toString(aanliggende));
-
-        return new Coord[]{origin, end};
-    }
 
     /**
      * Sets x.
@@ -96,21 +89,21 @@ public class ShootLine extends Entity {
     }
 
     /**
+     * Get visible boolean.
+     *
+     * @return the boolean
+     */
+    public boolean getVisible() {
+        return this.visible;
+    }
+
+    /**
      * Sets visible.
      *
      * @param visible the visible
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    /**
-     * Get visible boolean.
-     *
-     * @return the boolean
-     */
-    public boolean getVisible(){
-        return this.visible;
     }
 
     /**
