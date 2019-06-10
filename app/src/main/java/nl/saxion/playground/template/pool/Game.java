@@ -659,6 +659,7 @@ public class Game extends GameModel {
         setCurrentPlayer(player1);
 
         removeEntity(menuBackground);
+        removeEntity(whiteBallHandler);
         this.gui = null;
         start();
     }
