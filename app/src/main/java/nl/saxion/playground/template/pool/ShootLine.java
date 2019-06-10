@@ -54,6 +54,14 @@ public class ShootLine extends Entity {
         this.paint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
     }
 
+    public float getNewX() {
+        return this.newX;
+    }
+
+    public float getNewY() {
+        return this.newY;
+    }
+
     public Coord[] getReflectionLine() {
         Coord origin = new Coord();
         Coord end = new Coord();

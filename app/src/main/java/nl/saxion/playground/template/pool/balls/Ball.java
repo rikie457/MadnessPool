@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Coord;
@@ -17,7 +18,6 @@ import nl.saxion.playground.template.pool.Utility;
  * The type Ball.
  */
 public class Ball extends Entity {
-
     /**
      * The constant lastisertedid.
      */
