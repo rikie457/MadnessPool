@@ -618,6 +618,7 @@ public class Game extends GameModel {
      * @param winnerId the winner id
      */
     public void winnerScreen(int winnerId) {
+        removeEntity(whiteBallHandler);
         for (int i = 0; i < balls.size(); i++) {
             removeEntity(this.balls.get(i));
         }
@@ -668,7 +669,6 @@ public class Game extends GameModel {
         setCurrentPlayer(player1);
 
         removeEntity(menuBackground);
-        removeEntity(whiteBallHandler);
         this.gui = null;
         start();
     }
