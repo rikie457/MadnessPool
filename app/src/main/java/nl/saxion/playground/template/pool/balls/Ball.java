@@ -25,6 +25,11 @@ import nl.saxion.playground.template.pool.Utility;
  */
 public class Ball extends Entity {
     /**
+     * temporary variables because i'm lazy and don't want to update every one of the 16 cases in the draw switch statement TYCHO!
+     */
+    private double xBak, yBak, widthBak, heightBak;
+
+    /**
      * The Bitmaps.
      */
     static public ArrayList<Bitmap> bitmaps = new ArrayList<>();
@@ -387,130 +392,146 @@ public class Ball extends Entity {
 
     @Override
     public void draw(GameView gv) {
+        Bitmap toDraw = null;
         switch (this.id) {
             case 1:
                 if (bitmap1 == null) {
                     bitmap1 = gv.getBitmapFromResource(R.drawable.ball1);
                     bitmaps.add(bitmap1);
                 }
-                gv.drawBitmap(bitmap1, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap1;
+                //gv.drawBitmap(bitmap1, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 2:
                 if (bitmap2 == null) {
                     bitmap2 = gv.getBitmapFromResource(R.drawable.ball2);
                     bitmaps.add(bitmap2);
                 }
-                gv.drawBitmap(bitmap2, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap2;
+                //gv.drawBitmap(bitmap2, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 3:
                 if (bitmap3 == null) {
                     bitmap3 = gv.getBitmapFromResource(R.drawable.ball3);
                     bitmaps.add(bitmap3);
                 }
-                gv.drawBitmap(bitmap3, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap3;
+                //gv.drawBitmap(bitmap3, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 4:
                 if (bitmap4 == null) {
                     bitmap4 = gv.getBitmapFromResource(R.drawable.ball4);
                     bitmaps.add(bitmap4);
                 }
-                gv.drawBitmap(bitmap4, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap4;
+                //gv.drawBitmap(bitmap4, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 5:
                 if (bitmap5 == null) {
                     bitmap5 = gv.getBitmapFromResource(R.drawable.ball5);
                     bitmaps.add(bitmap5);
                 }
-                gv.drawBitmap(bitmap5, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap5;
+                //gv.drawBitmap(bitmap5, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 6:
                 if (bitmap6 == null) {
                     bitmap6 = gv.getBitmapFromResource(R.drawable.ball6);
                     bitmaps.add(bitmap6);
                 }
-                gv.drawBitmap(bitmap6, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap6;
+                //gv.drawBitmap(bitmap6, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 7:
                 if (bitmap7 == null) {
                     bitmap7 = gv.getBitmapFromResource(R.drawable.ball7);
                     bitmaps.add(bitmap7);
                 }
-                gv.drawBitmap(bitmap7, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap7;
+                //gv.drawBitmap(bitmap7, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 8:
                 if (bitmap8 == null) {
                     bitmap8 = gv.getBitmapFromResource(R.drawable.ball8);
                     bitmaps.add(bitmap8);
                 }
-                gv.drawBitmap(bitmap8, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap8;
+                //gv.drawBitmap(bitmap8, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 9:
                 if (bitmap9 == null) {
                     bitmap9 = gv.getBitmapFromResource(R.drawable.ball9);
                     bitmaps.add(bitmap9);
                 }
-                gv.drawBitmap(bitmap9, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap9;
+                //gv.drawBitmap(bitmap9, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 10:
                 if (bitmap10 == null) {
                     bitmap10 = gv.getBitmapFromResource(R.drawable.ball10);
                     bitmaps.add(bitmap10);
                 }
-                gv.drawBitmap(bitmap10, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap10;
+                //gv.drawBitmap(bitmap10, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 11:
                 if (bitmap11 == null) {
                     bitmap11 = gv.getBitmapFromResource(R.drawable.ball11);
                     bitmaps.add(bitmap11);
                 }
-                gv.drawBitmap(bitmap11, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap11;
+                //gv.drawBitmap(bitmap11, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 12:
                 if (bitmap12 == null) {
                     bitmap12 = gv.getBitmapFromResource(R.drawable.ball12);
                     bitmaps.add(bitmap12);
                 }
-                gv.drawBitmap(bitmap12, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap12;
+                //gv.drawBitmap(bitmap12, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 13:
                 if (bitmap13 == null) {
                     bitmap13 = gv.getBitmapFromResource(R.drawable.ball13);
                     bitmaps.add(bitmap13);
                 }
-                gv.drawBitmap(bitmap13, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap13;
+                //gv.drawBitmap(bitmap13, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 14:
                 if (bitmap14 == null) {
                     bitmap14 = gv.getBitmapFromResource(R.drawable.ball14);
                     bitmaps.add(bitmap14);
                 }
-                gv.drawBitmap(bitmap14, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap14;
+                //gv.drawBitmap(bitmap14, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 15:
                 if (bitmap15 == null) {
                     bitmap15 = gv.getBitmapFromResource(R.drawable.ball15);
                     bitmaps.add(bitmap15);
                 }
-                gv.drawBitmap(bitmap15, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap15;
+                //gv.drawBitmap(bitmap15, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
             case 16:
                 if (bitmap16 == null) {
                     bitmap16 = gv.getBitmapFromResource(R.drawable.ball16);
                     bitmaps.add(bitmap16);
                 }
-                gv.drawBitmap(bitmap16, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
+                toDraw = bitmap16;
+                //gv.drawBitmap(bitmap16, (float) this.x, (float) this.y, (float) this.width, (float) this.height);
                 break;
-
         }
 
-
+        // draw the ball texture, which is 300x300 pixels, to account for the ball's shadow
+        gv.drawBitmap(toDraw, (float) this.x - 8 * (1000 / game.getWidth()), (float) this.y - 8 * (1000 / game.getWidth()), (float) (this.width * 1.5), (float) (this.height * 1.5));
     }
 
     @Override
     public int getLayer() {
         return 1;
     }
-
 
     /**
      * Gets mass.

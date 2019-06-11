@@ -216,7 +216,7 @@ public class Game extends GameModel {
         grayPaintReflection.setStrokeWidth(2);
 
         // shootLine colors
-      redPaint.setColor(Color.argb(255, 255, 0, 0));
+        redPaint.setColor(Color.argb(255, 255, 0, 0));
         redPaint.setStrokeWidth(3);
 
         // cue colors
@@ -302,21 +302,39 @@ public class Game extends GameModel {
         this.rack_x_offset = (getPlayWidth() / 4) * 3;
         this.rack_y_offset = (getPlayHeight() / 2);
 
-        int whiteBallIndex = 14, blackBallIndex = 15;
-
-        rackPositions[whiteBallIndex] = new Coord(getPlayWidth() / 4, this.rack_y_offset);
-
-        Log.e("white ball index: ", rackPositions[whiteBallIndex].getX() + ", " + rackPositions[whiteBallIndex].getY());
+        int whiteBallIndex = 0, blackBallIndex = 0;
 
         int[] sideBallIndecis = new int[] {13, 9, 8, 5, 4, 3, 2, 1};
         int[] normalBallIndecis = new int[] {12, 11, 10, 7, 6, 0};
         ArrayList<Integer> solidBallIndecis = new ArrayList<>();
         ArrayList<Integer> stripedBallIndecis = new ArrayList<>();
 
-        for (int i = 0; i < 7; i++) {
-            solidBallIndecis.add(i);
-            stripedBallIndecis.add(i + 7);
+        for(int i = 0; i < balls.size(); i++) {
+            switch(balls.get(i).getType()) {
+                case 0: {
+                    // white ball
+                    whiteBallIndex = i;
+                    break;
+                }
+                case 1: {
+                    // solid ball
+                    solidBallIndecis.add(i);
+                    break;
+                }
+                case 2: {
+                    // striped ball
+                    stripedBallIndecis.add(i);
+                    break;
+                }
+                case 3: {
+                    // black ball
+                    blackBallIndex = i;
+                    break;
+                }
+            }
         }
+
+        rackPositions[whiteBallIndex] = new Coord(getPlayWidth() / 4, this.rack_y_offset);
 
         for (int i = 0; i < 7; i++) {
             int a, b;
@@ -355,24 +373,15 @@ public class Game extends GameModel {
         }
 
         // initialize the black ball
-        balls.get(15).setCoord(rackPositions[blackBallIndex]);
+        balls.get(blackBallIndex).setCoord(rackPositions[15]);
 
         // initialize the white ball
-        balls.get(14).setCoord(rackPositions[whiteBallIndex]);
+        balls.get(whiteBallIndex).setCoord(rackPositions[14]);
 
         // add the x- and y-offsets to the ball's coords
         for(Ball ball : balls) {
-            if(ball.getType() != 0)
-            ball.addCoord(rack_x_offset, rack_y_offset);
-        }
-
-        if(true) {
-            int i = 0;
-            for (Ball ball : balls) {
-                final String TAG = "Game.java [302]";
-                Log.e(TAG, "\nball [" + i + "]:\n" + ball.toString());
-                i++;
-            }
+            if (ball.getType() != 0)
+                ball.addCoord(rack_x_offset, rack_y_offset);
         }
     }
 

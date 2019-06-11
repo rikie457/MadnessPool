@@ -7,6 +7,8 @@
 package nl.saxion.playground.template.pool;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
@@ -53,32 +55,46 @@ public class Gui extends Entity {
             bitmap = gv.getBitmapFromResource(R.drawable.shelf);
         }
 
+        Paint colorCurrentPlayer = new Paint();
+        colorCurrentPlayer.setColor(Color.argb(255, 128, 0, 255));
+        colorCurrentPlayer.setStrokeWidth(4);
+        colorCurrentPlayer.setTextSize(20);
 
         if (game.getCurrentplayer() == this.player1) {
-            gv.getCanvas().drawText(">", (float) this.x + 10, (float) this.y + 50, game.whitePaint);
+            gv.getCanvas().drawText(">", (float) this.x + 10, (float) this.y + 50, colorCurrentPlayer);
         } else {
-            gv.getCanvas().drawText("<", (float) this.x + 980, (float) this.y + 50, game.whitePaint);
+            gv.getCanvas().drawText("<", (float) this.x + 980, (float) this.y + 50, colorCurrentPlayer);
         }
 
-        gv.getCanvas().drawText("Player 1", (float) this.x + 20, (float) this.y + 50, game.whitePaint);
+        gv.getCanvas().drawText("Player 1", (float) this.x + 20, (float) this.y + 50, (game.getCurrentplayer() == this.player1) ? colorCurrentPlayer : game.whitePaint);
         gv.drawBitmap(bitmap, (float) this.x + 90, (float) this.y + 25, 230, 50);
-        gv.getCanvas().drawText("Player 2", (float) this.x + 910, (float) this.y + 50, game.whitePaint);
+        gv.getCanvas().drawText("Player 2", (float) this.x + 910, (float) this.y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : game.whitePaint);
         gv.drawBitmap(bitmap, (float) this.x + 680, (float) this.y + 25, 230, 50);
+
+        // texture_fixes_and_updates_2
+        final float coolNewTexturesNecessaryOffset = - (8 * (1000/game.getWidth()));
 
         if (this.player1.getScoredballs().size() != 0) {
             if (this.player1.getBalltype() != -1) {
                 if (this.player1.getBalltype() == 1) {
                     for (int j = 0; j < this.player1.getScoredballs().size(); j++) {
                         if (this.player1.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(), (float) this.x + 60 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15, (float) this.player1.getScoredballs().get(j).getWidth(), (float) this.player1.getScoredballs().get(j).getHeight());
+                            gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(),
+                                    (float) this.x + 60 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
+                                    (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
+                                    (float) (this.player1.getScoredballs().get(j).getWidth() * 1.5),
+                                    (float) (this.player1.getScoredballs().get(j).getHeight() * 1.5));
                         }
                     }
-
                 }
             } else {
                 for (int j = 0; j < this.player1.getScoredballs().size(); j++) {
                     if (this.player1.getScoredballs().get(j).getBitmap() != null) {
-                        gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(), (float) this.x + 650 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15, (float) this.player1.getScoredballs().get(j).getWidth(), (float) this.player1.getScoredballs().get(j).getHeight());
+                        gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(),
+                                (float) this.x + 650 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
+                                (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
+                                (float) (this.player1.getScoredballs().get(j).getWidth() * 1.5),
+                                (float) (this.player1.getScoredballs().get(j).getHeight() * 1.5));
                     }
                 }
             }
@@ -89,18 +105,28 @@ public class Gui extends Entity {
                 if (this.player2.getBalltype() == 2) {
                     for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
                         if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x + 410 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
+                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(),
+                                    (float) this.x + 410 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
+                                    (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
+                                    (float) (this.player2.getScoredballs().get(j).getWidth() * 1.5) - 500,
+                                    (float) (this.player2.getScoredballs().get(j).getHeight() * 1.5));
                         }
                     }
                 }
             } else {
                 for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
                     if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                        gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(), (float) this.x - 180 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10, (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15, (float) this.player2.getScoredballs().get(j).getWidth() - 500, (float) this.player2.getScoredballs().get(j).getHeight());
+                        gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(),
+                                (float) this.x - 180 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
+                                (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
+                                (float) (this.player2.getScoredballs().get(j).getWidth() * 1.5) - 500,
+                                (float) (this.player2.getScoredballs().get(j).getHeight() * 1.5));
                     }
                 }
             }
         }
+
+
     }
 
 }
