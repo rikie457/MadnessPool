@@ -163,19 +163,6 @@ public class Ball extends Entity {
      * The Collision.
      */
     protected boolean collision = true;
-    /**
-     * The Old x.
-     */
-    protected double oldX, /**
-     * The Old y.
-     */
-    oldY, /**
-     * The New x.
-     */
-    newX, /**
-     * The New y.
-     */
-    newY;
 
 
     /**
