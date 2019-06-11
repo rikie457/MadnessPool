@@ -27,7 +27,7 @@ public class Game extends GameModel {
     /**
      * The constant transparent.
      */
-//Paints
+    //Paint
     static public Paint transparent = new Paint();
     /**
      * The Black paint.
