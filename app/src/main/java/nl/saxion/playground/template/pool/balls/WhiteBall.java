@@ -6,13 +6,9 @@
 
 package nl.saxion.playground.template.pool.balls;
 
-import android.util.Log;
 import android.view.MotionEvent;
-
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Coord;
@@ -34,9 +30,6 @@ public class WhiteBall extends Ball {
     private ShootLine line;
     private ShootLine lineReflection;
     private Cue cue;
-
-    private float newXReversed;
-    private float newYReversed;
 
     private Coord origin, end;
 
