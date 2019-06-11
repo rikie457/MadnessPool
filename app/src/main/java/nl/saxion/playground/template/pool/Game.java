@@ -18,6 +18,8 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.TestPowerup;
 
 /**
  * The type Game.
@@ -45,6 +47,8 @@ public class Game extends GameModel {
      * The Red paint.
      */
     static public Paint redPaint = new Paint();
+
+    static public Paint powerupPaint = new Paint();
     //Players
     private Player player1 = new Player(1);
     private Player player2 = new Player(2);
@@ -59,6 +63,7 @@ public class Game extends GameModel {
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
+    private float powerupsize = 15f;
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -98,6 +103,7 @@ public class Game extends GameModel {
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
+    private PowerupCreator powerupCreator = new PowerupCreator(this, this.ball16, this.balls);
     /**
      * Start eight ball.
      */
@@ -393,6 +399,8 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
+        powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, this.ball16, this.balls));
+
         this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
@@ -432,11 +440,10 @@ public class Game extends GameModel {
 
         // puts the balls in the rack
         rackBalls(this.balls);
-
         addEntity(line);
         addEntity(lineReflection);
         addEntity(cue);
-
+        addEntity(powerupCreator);
         addEntity(ball1);
         addEntity(ball2);
         addEntity(ball3);
