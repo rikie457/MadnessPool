@@ -31,9 +31,6 @@ public class WhiteBall extends Ball {
     private ShootLine lineReflection;
     private Cue cue;
 
-    private float newXReversed;
-    private float newYReversed;
-
     private Coord origin, end;
 
     /**

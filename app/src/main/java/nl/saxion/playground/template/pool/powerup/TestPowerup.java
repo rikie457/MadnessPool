@@ -13,8 +13,4 @@ public class TestPowerup extends Powerup {
         super(game, x, y, ball, balls);
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }
