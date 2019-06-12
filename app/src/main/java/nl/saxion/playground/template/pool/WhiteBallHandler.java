@@ -118,7 +118,6 @@ public class WhiteBallHandler extends Entity {
 
         for (int i = 0; i < this.balls.size(); i++) {
             Ball ball = this.balls.get(i);
-            System.out.println(this.whiteBall);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
                     (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), ball.getVector2().getX(), ball.getVector2().getY());
 
@@ -133,7 +132,7 @@ public class WhiteBallHandler extends Entity {
         for (int i = 0; i < this.holes.size(); i++) {
             Hole hole = this.holes.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (hole.getX() - 18), (hole.getY() - 18));
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (hole.getVector2().getX() - 18), (hole.getVector2().getY() - 18));
 
             if (distSqr <= (this.whiteBall.getRadius() + 20) * (this.whiteBall.getRadius() + 20) && this.whiteBall.getCollision()) {
                 isValid = false;
@@ -150,15 +149,9 @@ public class WhiteBallHandler extends Entity {
     /**
      * Check moving balls.
      */
-    public void checkMovingBalls() {
-        if (game.getMovingBalls().size() == 0) {
+    private void checkMovingBalls() {
+        if (!game.isAllmoving()) {
             game.scoreCueBall();
-        } else {
-            for (int i = 0; i < game.getMovingBalls().size(); i++) {
-                if (game.getMovingBalls().get(i).getId() == 16) {
-                    game.getMovingBalls().remove(i);
-                }
-            }
         }
     }
 

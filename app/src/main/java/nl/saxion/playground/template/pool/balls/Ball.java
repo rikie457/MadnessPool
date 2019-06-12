@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
@@ -39,12 +38,8 @@ import nl.saxion.playground.template.pool.Vector2;
  */
 
 public class Ball extends Entity {
-    protected static int lastisertedid = 0;
-
-    /**
-     * TEACHER: This screams for an array? Why 16 separate variables??
-     */
-    static protected Bitmap[] bitmaps = new Bitmap[16];
+    public static int lastisertedid = 0;
+    static protected Bitmap[] bitmaps;
     protected double speedX,
             speedY;
     protected double mass,
@@ -65,18 +60,14 @@ public class Ball extends Entity {
      * for the collision loop I could imagine balls and holes are all just CollidableEntities.
      */
 
-    protected ArrayList<Ball> balls;
-    protected ArrayList<Hole> holes;
-    protected ArrayList<Player> players;
     protected Game game;
     protected boolean moving;
-    protected boolean shot;
     protected boolean collision = true;
     protected Vector2 vector2;
-    private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
+    private int[] drawables;
 
 
-    public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players, double x, double y, double width, double height, int type) {
+    public Ball(Game game, int[] drawables, double x, double y, double width, double height, int type) {
 
         //TEACHER: having references to every other object is code smell. Why does a ball need all
         //this information? Might be better to have another entity do the collision loop instead
@@ -86,9 +77,6 @@ public class Ball extends Entity {
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
-        this.balls = balls;
-        this.holes = holes;
-        this.players = players;
         this.width = width;
         this.height = height;
         this.radius = width / 2;
@@ -101,6 +89,10 @@ public class Ball extends Entity {
         this.energyloss = .900;
         this.type = type;
         this.vector2 = new Vector2(x, y);
+        this.drawables = drawables;
+        if (bitmaps == null) {
+            bitmaps = new Bitmap[16];
+        }
     }
 
 
@@ -117,9 +109,6 @@ public class Ball extends Entity {
             double ball2x = ball.vector2.getX();
             double ball2y = ball.vector2.getY();
 
-
-            //TEACHER: consider using vector2 instead of separate x.y properties, they make your code much more readable
-            //TEACHER: getDistanceNotSquared is actually returning the SQUARED distance...
             double distSqr = Utility.getDistanceNotSquared(ball1x, ball1y, ball2x, ball2y);
             double xd = ball1x - ball2x;
             double yd = ball1y - ball2y;
@@ -207,12 +196,12 @@ public class Ball extends Entity {
         //TEACHER: Tycho... a couple of things that are wrong with this method:
         //No documentation
         //Ifception: Your nesting goes 7 (SEVEN!!) levels deep!!
-
-        for (int i = 0; i < this.holes.size(); i++) {
-            if (Math.sqrt(Utility.getDistanceNotSquared(x + this.radius, y + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
+        for (int i = 0; i < game.getHoles().size(); i++) {
+            Hole hole = game.getHoles().get(i);
+            if (Math.sqrt(Utility.getDistanceNotSquared(x + this.radius, y + this.radius, hole.getVector2().getX(), hole.getVector2().getY())) - (30) <= 0) {
                 if (this.type != 3 && this.type != 0) {
-                    for (int j = 0; j < this.players.size(); j++) {
-                        Player player = this.players.get(j);
+                    for (int j = 0; j < game.getPlayers().size(); j++) {
+                        Player player = game.getPlayers().get(j);
                         if (game.getCurrentplayer() == player) {
                             if (player.getBalltype() == -1) {
                                 if (this.type == 1) {
@@ -243,22 +232,10 @@ public class Ball extends Entity {
                     //is cue ball
                     game.placeCueBall();
                 }
-
-                //TEACHER: contains is O(n), do you need to keep a separate list for this?
-                //since doing it this way essentially makes your whole loop O(n2)
+                this.moving = false;
                 this.game.removeEntity(this);
-                if (game.getMovingBalls().contains(this)) {
-                    game.getMovingBalls().remove(this);
-                }
-                if (this.id != 16) {
-                    this.balls.remove(this);
-                }
             }
         }
-    }
-
-    public void setCoord(Vector2 vector2) {
-        this.vector2 = vector2;
     }
 
     public int getType() {
@@ -267,13 +244,7 @@ public class Ball extends Entity {
 
 
     private boolean checkMovement() {
-        if (this.speedX == 0 && this.speedY == 0) {
-            if (game.getMovingBalls().contains(this)) {
-                game.getMovingBalls().remove(this);
-            }
-            return false;
-        }
-        return true;
+        return this.speedX != 0 || this.speedY != 0;
     }
 
     @Override
@@ -285,13 +256,9 @@ public class Ball extends Entity {
     public void tick() {
         this.moving = checkMovement();
         checkCollisionWall();
-        checkCollisionBall(this.balls);
+        checkCollisionBall(game.getBalls());
         checkCollisionHole();
-        if (this.getId() == 16) {
-            if (this.isShot()) {
-                game.roundChecker();
-            }
-        }
+
     }
 
     @Override
@@ -300,10 +267,10 @@ public class Ball extends Entity {
         float y = (float) this.vector2.getY();
         Bitmap toDraw = null;
         if (bitmaps[this.id] == null)
-            bitmaps[this.id] = gv.getBitmapFromResource(drawables[this.id]);
+            bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
         toDraw = bitmaps[this.id];
         // draw the ball texture, which is 300x300 pixels, to account for the ball's shadow
-        gv.drawBitmap(toDraw, (float) x - 8 * (1000 / game.getWidth()), (float) y - 8 * (1000 / game.getWidth()), (float) (this.width * 1.5), (float) (this.height * 1.5));
+        gv.drawBitmap(toDraw, x - 8 * (1000 / game.getWidth()), y - 8 * (1000 / game.getWidth()), (float) (this.width * 1.5), (float) (this.height * 1.5));
     }
 
     @Override
@@ -323,6 +290,10 @@ public class Ball extends Entity {
 
     public Vector2 getVector2() {
         return vector2;
+    }
+
+    public void setVector2(Vector2 vector2) {
+        this.vector2 = vector2;
     }
 
     // werkt niet, niet gebruiken
@@ -346,13 +317,6 @@ public class Ball extends Entity {
         return id;
     }
 
-    public boolean isShot() {
-        return shot;
-    }
-
-    public void setShot(boolean shot) {
-        this.shot = shot;
-    }
 
     public boolean isMoving() {
         return moving;
@@ -366,9 +330,6 @@ public class Ball extends Entity {
         this.collision = collision;
     }
 
-    public void resetLastisertedid() {
-        lastisertedid = 1;
-    }
 
     public Bitmap getBitmap(int id) {
 

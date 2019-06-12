@@ -81,15 +81,15 @@ public class Vector2 implements Serializable {
         this.y = y;
     }
 
-    public void addX(double x){
+    public void addX(double x) {
         this.x += x;
     }
 
-    public void addY(double y){
+    public void addY(double y) {
         this.y += y;
     }
 
-    public void add(double x, double y){
+    public void add(double x, double y) {
         this.x += x;
         this.y += y;
     }

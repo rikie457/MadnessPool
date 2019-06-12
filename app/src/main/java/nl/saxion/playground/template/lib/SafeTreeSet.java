@@ -18,7 +18,7 @@ public class SafeTreeSet<T> extends TreeSet<T> {
 
     @Override
     public java.util.Iterator<T> descendingIterator() {
-        return new DescendingIterator<T>( this );
+        return new DescendingIterator<T>(this);
     }
 
     class Iterator<T> implements java.util.Iterator<T> {
@@ -31,13 +31,13 @@ public class SafeTreeSet<T> extends TreeSet<T> {
 
         @Override
         public boolean hasNext() {
-            if (current==null) { // first time
+            if (current == null) { // first time
                 if (tree.isEmpty()) return false;
                 current = tree.first();
                 return true;
             }
             T next = tree.higher(current);
-            if (next==null) return false;
+            if (next == null) return false;
             current = next;
             return true;
         }
@@ -58,13 +58,13 @@ public class SafeTreeSet<T> extends TreeSet<T> {
 
         @Override
         public boolean hasNext() {
-            if (current==null) { // first time
+            if (current == null) { // first time
                 if (tree.isEmpty()) return false;
                 current = tree.last();
                 return true;
             }
             T next = tree.lower(current);
-            if (next==null) return false;
+            if (next == null) return false;
             current = next;
             return true;
         }

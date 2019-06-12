@@ -40,27 +40,12 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.newvector2.getX(), (float) this.newvector2.getY(), game.redPaint);
+            gv.getCanvas().drawLine((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.newvector2.getX(), (float) this.newvector2.getY(), Game.redPaint);
         }
-    }
-
-    /**
-     * Reflect boolean.
-     *
-     * @return the boolean
-     */
-    public boolean reflect() {
-        if (this.newvector2.getX() > game.getPlayWidth() || this.newvector2.getX() <= 0) {
-            return true;
-        }
-        if (this.newvector2.getY() > game.getPlayHeight() || this.newvector2.getY() <= 0) {
-            return true;
-        }
-        return false;
     }
 
     public void setColor(float r, float g, float b) {
-        game.redPaint.setColor(Color.argb(255, (int) r, (int) g, (int) b));
+        Game.redPaint.setColor(Color.argb(255, (int) r, (int) g, (int) b));
     }
 
     public Vector2 getVector2() {

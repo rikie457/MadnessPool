@@ -43,14 +43,14 @@ public class Gui extends Entity {
         this.y = y;
         this.width = width;
         this.height = height;
-        game.whitePaint.setTextSize(20);
+        Game.whitePaint.setTextSize(20);
 
     }
 
     @Override
     public void draw(GameView gv) {
         //THIS IS NOT HOW TO SCALE THE GUI I KNOW!
-        gv.getCanvas().drawRect((float) this.x, (float) this.y, (float) this.width, (float) this.height, game.blackPaint);
+        gv.getCanvas().drawRect((float) this.x, (float) this.y, (float) this.width, (float) this.height, Game.blackPaint);
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.shelf);
         }
@@ -66,13 +66,13 @@ public class Gui extends Entity {
             gv.getCanvas().drawText("<", (float) this.x + 980, (float) this.y + 50, colorCurrentPlayer);
         }
 
-        gv.getCanvas().drawText("Player 1", (float) this.x + 20, (float) this.y + 50, (game.getCurrentplayer() == this.player1) ? colorCurrentPlayer : game.whitePaint);
+        gv.getCanvas().drawText("Player 1", (float) this.x + 20, (float) this.y + 50, (game.getCurrentplayer() == this.player1) ? colorCurrentPlayer : Game.whitePaint);
         gv.drawBitmap(bitmap, (float) this.x + 90, (float) this.y + 25, 230, 50);
-        gv.getCanvas().drawText("Player 2", (float) this.x + 910, (float) this.y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : game.whitePaint);
+        gv.getCanvas().drawText("Player 2", (float) this.x + 910, (float) this.y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : Game.whitePaint);
         gv.drawBitmap(bitmap, (float) this.x + 680, (float) this.y + 25, 230, 50);
 
         // texture_fixes_and_updates_2
-        final float coolNewTexturesNecessaryOffset = - (8 * (1000/game.getWidth()));
+        final float coolNewTexturesNecessaryOffset = -(8 * (1000 / game.getWidth()));
 
         //TEACHER:
         // if statements nested 5 deep!

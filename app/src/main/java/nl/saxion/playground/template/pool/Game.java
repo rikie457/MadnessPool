@@ -7,12 +7,12 @@
 package nl.saxion.playground.template.pool;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
@@ -61,6 +61,7 @@ public class Game extends GameModel {
     //Settings
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
+    private boolean allmoving = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
@@ -70,8 +71,11 @@ public class Game extends GameModel {
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
-    private ArrayList<Ball> movingballs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+
+    //Drawables ball
+    private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
+
 
     //Menu items
     private MenuBackground menuBackground = new MenuBackground(this);
@@ -81,10 +85,7 @@ public class Game extends GameModel {
     private Gui gui;
     private WinMessage winMessage;
     private ShootLine line = new ShootLine(false, this);
-    private ShootLine lineReflection = new ShootLine(false, this);
-    private Cue cue = new Cue(false, this);
 
-    private Context context;
 
     //TEACHER: why not arrays? Or array lists?
     //Balls
@@ -171,12 +172,9 @@ public class Game extends GameModel {
                     +0)
     };
 
-    public Game(Context context) {
-        this.context = context;
-    }
 
-    public Context getContext() {
-        return context;
+    public boolean isAllmoving() {
+        return allmoving;
     }
 
     /**
@@ -267,7 +265,6 @@ public class Game extends GameModel {
 
 
         }
-        System.out.println("Runs:" + runs);
         runs++;
     }
 
@@ -355,10 +352,10 @@ public class Game extends GameModel {
             int randBoolean = getRandIntInRange(0, 1);
 
             // 1st side
-            balls.get(solidBallIndecis.get(currentSolid)).setCoord(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]);
+            balls.get(solidBallIndecis.get(currentSolid)).setVector2(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]);
 
             // 2nd side
-            balls.get(stripedBallIndecis.get(currentStriped)).setCoord(rackPositions[sideBallIndecis[i + randBoolean]]);
+            balls.get(stripedBallIndecis.get(currentStriped)).setVector2(rackPositions[sideBallIndecis[i + randBoolean]]);
         }
 
         // assign positions to these 'normal' balls
@@ -368,17 +365,17 @@ public class Game extends GameModel {
             if (i % 2 == 1) currentBall = balls.get(solidBallIndecis.get(currentSolid));
             else currentBall = balls.get(stripedBallIndecis.get(currentStriped));
 
-            currentBall.setCoord(rackPositions[normalBallIndecis[i]]);
+            currentBall.setVector2(rackPositions[normalBallIndecis[i]]);
 
             if (i % 2 == 1) currentSolid++;
             else currentStriped++;
         }
 
         // initialize the black ball
-        balls.get(blackBallIndex).setCoord(rackPositions[15]);
+        balls.get(blackBallIndex).setVector2(rackPositions[15]);
 
         // initialize the white ball
-        balls.get(whiteBallIndex).setCoord(rackPositions[14]);
+        balls.get(whiteBallIndex).setVector2(rackPositions[14]);
 
         // add the x- and y-offsets to the ball's coords
         for (Ball ball : balls) {
@@ -398,12 +395,12 @@ public class Game extends GameModel {
                 } else if (i < 14) {
                     type = 2;
                 }
-                Ball ball = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
+                Ball ball = new Ball(this, this.drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
                 this.balls.add(ball);
                 addEntity(ball);
 
             } else {
-                WhiteBall ball = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line, this.lineReflection, this.cue);
+                WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
                 this.balls.add(ball);
                 addEntity(ball);
             }
@@ -435,8 +432,35 @@ public class Game extends GameModel {
         // puts the balls in the rack
         //rackBalls(this.balls);
         addEntity(line);
-        addEntity(lineReflection);
-        addEntity(cue);
+    }
+
+    /**
+     * Start madness.
+     */
+    public void startMadness() {
+        removeEntity(menuBackground);
+        removeEntity(eightBallButton);
+        removeEntity(madnessButton);
+
+        initBalls();
+        for (int i = 0; i < this.balls.size(); i++) {
+            if (i == 15) {
+                WhiteBall whiteball = (WhiteBall) this.balls.get(i);
+                //Create powerupcreator for powerup spawning
+                this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
+                //Add powerup to array of spawnable powerups
+                powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball, this.balls));
+
+                this.whiteBallHandler.setWhiteBall(whiteball);
+
+            }
+        }
+
+
+        // puts the balls in the rack
+//        rackBalls(this.balls);
+        addEntity(line);
+        addEntity(powerupCreator);
     }
 
     /**
@@ -480,38 +504,30 @@ public class Game extends GameModel {
     public Boolean checkMovementForAllBalls() {
         for (int i = 0; i < this.balls.size(); i++) {
             if (this.balls.get(i).isMoving()) {
-                if (!this.movingballs.contains(this.balls.get(i))) {
-                    this.movingballs.add(this.balls.get(i));
-                }
-            } else {
-                if (this.movingballs.contains(this.balls.get(i))) {
-                    this.movingballs.remove(this.balls.get(i));
-                }
+                return true;
             }
         }
-        if (this.movingballs.size() == 0) {
-            return false;
-        }
-        return true;
+        return false;
+    }
+
+    public ArrayList<Ball> getBalls() {
+        return balls;
     }
 
     /**
      * Round checker.
      */
-    public void roundChecker() {
-        for (int i = 0; i < this.balls.size(); i++) {
-            if (this.balls.get(i).getId() == 16) {
-                Ball ball = this.balls.get(i);
-                if (!this.checkMovementForAllBalls()) {
-                    if (this.currentplayer == player1) {
-                        setCurrentPlayer(player2);
-                    } else {
-                        setCurrentPlayer(player1);
-                    }
-                    this.movingballs.clear();
-                    ball.setShot(false);
-                }
+    public void roundChecker(WhiteBall ball) {
+        if (!this.checkMovementForAllBalls()) {
+            if (this.currentplayer == player1) {
+                setCurrentPlayer(player2);
+            } else {
+                setCurrentPlayer(player1);
             }
+            this.allmoving = false;
+            ball.setShot(false);
+        } else {
+            this.allmoving = true;
         }
     }
 
@@ -520,10 +536,10 @@ public class Game extends GameModel {
      */
     public void scoreCueBall() {
         this.cueBallScored = true;
-        for (int i = 0; i < this.movingballs.size(); i++) {
-            if (this.movingballs.get(i).getId() == 16) {
-                this.movingballs.get(i).setCollision(false);
-                this.movingballs.remove(i);
+        for (int i = 0; i < this.balls.size(); i++) {
+            WhiteBall whiteBall = (WhiteBall) this.balls.get(i);
+            if (whiteBall.isMoving()) {
+                whiteBall.setCollision(false);
             }
         }
     }
@@ -533,25 +549,6 @@ public class Game extends GameModel {
      */
     public void placeCueBall() {
         addEntity(whiteBallHandler);
-    }
-
-
-    /**
-     * Gets moving balls.
-     *
-     * @return the moving balls
-     */
-    public ArrayList<Ball> getMovingBalls() {
-        return movingballs;
-    }
-
-    /**
-     * Gets all balls.
-     *
-     * @return the all balls
-     */
-    public ArrayList<Ball> getAllBalls() {
-        return this.balls;
     }
 
     /**
@@ -588,37 +585,14 @@ public class Game extends GameModel {
         this.cueBallInHand = cueBallInHand;
     }
 
-
-    /**
-     * Start madness.
-     */
-    public void startMadness() {
-        removeEntity(menuBackground);
-        removeEntity(eightBallButton);
-        removeEntity(madnessButton);
-
-        initBalls();
-        for (int i = 0; i < this.balls.size(); i++) {
-            if (i == 15) {
-                WhiteBall whiteball = (WhiteBall) this.balls.get(i);
-                //Create powerupcreator for powerup spawning
-                this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
-                //Add powerup to array of spawnable powerups
-                powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball, this.balls));
-
-                this.whiteBallHandler.setWhiteBall(whiteball);
-
-            }
-        }
-
-
-        // puts the balls in the rack
-        rackBalls(this.balls);
-        addEntity(line);
-        addEntity(lineReflection);
-        addEntity(cue);
-        addEntity(powerupCreator);
+    public ArrayList<Hole> getHoles() {
+        return holes;
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
 
     /**
      * Winner screen.
@@ -655,7 +629,6 @@ public class Game extends GameModel {
         player2.resetScoredballs();
 
         this.balls.clear();
-        this.movingballs.clear();
 
         resetBalls();
 
@@ -668,6 +641,7 @@ public class Game extends GameModel {
         }
 
         this.gui = null;
+        Ball.lastisertedid = 0;
         start();
     }
 }

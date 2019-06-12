@@ -15,8 +15,7 @@ import nl.saxion.playground.template.lib.GameView;
  * The type Hole.
  */
 public class Hole extends Entity {
-    private double x;
-    private double y;
+    private Vector2 vector2 = new Vector2();
     private double radius;
     private Game game;
 
@@ -30,10 +29,9 @@ public class Hole extends Entity {
      */
     public Hole(Game game, double x, double y, double radius) {
         this.game = game;
-        this.x = x;
-        this.y = y;
+        this.vector2.set(x, y);
         this.radius = radius;
-        game.transparent.setColor(Color.TRANSPARENT);
+        Game.transparent.setColor(Color.TRANSPARENT);
     }
 
     @Override
@@ -41,22 +39,8 @@ public class Hole extends Entity {
         return 1;
     }
 
-    /**
-     * Gets x.
-     *
-     * @return the x
-     */
-    public double getX() {
-        return this.x;
-    }
-
-    /**
-     * Gets y.
-     *
-     * @return the y
-     */
-    public double getY() {
-        return this.y;
+    public Vector2 getVector2() {
+        return vector2;
     }
 
     /**
@@ -70,6 +54,6 @@ public class Hole extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, game.transparent);
+        gv.getCanvas().drawCircle((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.radius, Game.transparent);
     }
 }
