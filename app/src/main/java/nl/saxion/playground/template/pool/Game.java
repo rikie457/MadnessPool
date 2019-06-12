@@ -7,6 +7,7 @@
 package nl.saxion.playground.template.pool;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 
@@ -47,14 +48,17 @@ public class Game extends GameModel {
     static public Paint redPaint = new Paint();
 
     static public Paint powerupPaint = new Paint();
+
+
     //Players
     private Player player1 = new Player(1);
     private Player player2 = new Player(2);
-    //Settings
     private Player currentplayer = player1;
     private ArrayList<Ball> player1balls = new ArrayList<>();
     private Player inactiveplayer = player2;
     private ArrayList<Ball> player2balls = new ArrayList<>();
+
+    //Settings
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
     private float guiHeight = 75f;
@@ -65,7 +69,6 @@ public class Game extends GameModel {
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
-    private ArrayList<Ball> sunkeBalls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Ball> movingballs = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
@@ -81,25 +84,10 @@ public class Game extends GameModel {
     private ShootLine lineReflection = new ShootLine(false, this);
     private Cue cue = new Cue(false, this);
 
-    //TEACHER: why not arrays? Or array lists?
+    private Context context;
 
+    //TEACHER: why not arrays? Or array lists?
     //Balls
-    private Ball ball1;
-    private Ball ball2;
-    private Ball ball3;
-    private Ball ball4;
-    private Ball ball5;
-    private Ball ball6;
-    private Ball ball7;
-    private Ball ball8;
-    private Ball ball9;
-    private Ball ball10;
-    private Ball ball11;
-    private Ball ball12;
-    private Ball ball13;
-    private Ball ball14;
-    private Ball ball15;
-    private WhiteBall ball16;
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
@@ -107,7 +95,6 @@ public class Game extends GameModel {
     /**
      * Start eight ball.
      */
-
     private float padding = (float) 0.84; // factor that determines how much space there is between the racked pool balls (0.9 = tightest possible)
     private float ball_radius = ballsize / 2;
 
@@ -119,70 +106,78 @@ public class Game extends GameModel {
     private float rack_x_offset;
     private float rack_y_offset;
 
-    private Coord[] rackPositions = new Coord[]{
+    private Vector2[] rackPositions = new Vector2[]{
             // 1ST-ROW
-            new Coord(
+            new Vector2(
                     0,
                     0),
 
             // 2ND-ROW
-            new Coord(
+            new Vector2(
                     +x_diff,
                     -y_diff),
-            new Coord(
+            new Vector2(
                     +x_diff,
                     y_diff),
 
             // 3RD-ROW
-            new Coord(
+            new Vector2(
                     +x_diff * 2,
                     -y_diff * 2),
             // actual location of the black ball
-            new Coord(
+            new Vector2(
                     +x_diff * 2,
                     +y_diff * 2),
 
             // 4TH-ROW
-            new Coord(
+            new Vector2(
                     +x_diff * 3,
                     -y_diff * 3),
-            new Coord(
+            new Vector2(
                     +x_diff * 3,
                     -y_diff * 1),
-            new Coord(
+            new Vector2(
                     +x_diff * 3,
                     +y_diff * 1),
-            new Coord(
+            new Vector2(
                     +x_diff * 3,
                     +y_diff * 3),
 
             // 5TH-ROW
-            new Coord(
+            new Vector2(
                     +x_diff * 4,
                     -y_diff * 4),
-            new Coord(
+            new Vector2(
                     +x_diff * 4,
                     -y_diff * 2),
-            new Coord(
+            new Vector2(
                     +x_diff * 4,
                     +0),
-            new Coord(
+            new Vector2(
                     +x_diff * 4,
                     +y_diff * 2),
-            new Coord(
+            new Vector2(
                     +x_diff * 4,
                     +y_diff * 4),
 
             // WHITE-BALL
-            new Coord(
+            new Vector2(
                     -500 + ball_radius,
                     0),
 
             // (BLACK-BALL)
-            new Coord(
+            new Vector2(
                     +x_diff * 2,
                     +0)
     };
+
+    public Game(Context context) {
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
+    }
 
     /**
      * Gets play height.
@@ -341,7 +336,7 @@ public class Game extends GameModel {
             }
         }
 
-        rackPositions[whiteBallIndex] = new Coord(getPlayWidth() / 4, this.rack_y_offset);
+        rackPositions[whiteBallIndex] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
 
         for (int i = 0; i < 7; i++) {
             int a, b;
@@ -388,7 +383,36 @@ public class Game extends GameModel {
         // add the x- and y-offsets to the ball's coords
         for (Ball ball : balls) {
             if (ball.getType() != 0)
-                ball.addCoord(rack_x_offset, rack_y_offset);
+                ball.getVector2().add(rack_x_offset, rack_y_offset);
+        }
+    }
+
+    public void initBalls() {
+        for (int i = 0; i < 16; i++) {
+            int type = -1;
+            if (i != 15) {
+                if (i <= 6) {
+                    type = 1;
+                } else if (i == 7) {
+                    type = 3;
+                } else if (i < 14) {
+                    type = 2;
+                }
+                Ball ball = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
+                this.balls.add(ball);
+                addEntity(ball);
+
+            } else {
+                WhiteBall ball = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line, this.lineReflection, this.cue);
+                this.balls.add(ball);
+                addEntity(ball);
+            }
+        }
+    }
+
+    private void resetBalls() {
+        for (int i = 0; i < this.balls.size(); i++) {
+            this.balls.remove(i);
         }
     }
 
@@ -400,65 +424,19 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        //TEACHER: using an array or list would save you lines (about 30)
-        this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball4 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball5 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball6 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball7 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball8 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 3);
-        this.ball9 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball10 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball11 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball12 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line, this.lineReflection, this.cue);
-
-        this.whiteBallHandler.setWhiteBall(ball16);
-
-        this.ball1.resetLastisertedid();
-        this.balls.add(ball1);
-        this.balls.add(ball2);
-        this.balls.add(ball3);
-        this.balls.add(ball4);
-        this.balls.add(ball5);
-        this.balls.add(ball6);
-        this.balls.add(ball7);
-        this.balls.add(ball9);
-        this.balls.add(ball10);
-        this.balls.add(ball11);
-        this.balls.add(ball12);
-        this.balls.add(ball13);
-        this.balls.add(ball14);
-        this.balls.add(ball15);
-        this.balls.add(ball16);
-        this.balls.add(ball8);
+        initBalls();
+        for (int i = 0; i < this.balls.size(); i++) {
+            if (i == 15) {
+                WhiteBall whiteball = (WhiteBall) this.balls.get(i);
+                this.whiteBallHandler.setWhiteBall(whiteball);
+            }
+        }
 
         // puts the balls in the rack
-        rackBalls(this.balls);
+        //rackBalls(this.balls);
         addEntity(line);
         addEntity(lineReflection);
         addEntity(cue);
-        addEntity(ball1);
-        addEntity(ball2);
-        addEntity(ball3);
-        addEntity(ball4);
-        addEntity(ball5);
-        addEntity(ball6);
-        addEntity(ball7);
-        addEntity(ball8);
-        addEntity(ball9);
-        addEntity(ball10);
-        addEntity(ball11);
-        addEntity(ball12);
-        addEntity(ball13);
-        addEntity(ball14);
-        addEntity(ball15);
-        addEntity(ball16);
     }
 
     /**
@@ -619,48 +597,20 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        //TEACHER: using an array or list would save you lines (I see a pattern here ;))
-        this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball4 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball5 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball6 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball7 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
-        this.ball8 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 3);
-        this.ball9 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball10 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball11 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball12 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball13 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball14 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball15 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 2);
-        this.ball16 = new WhiteBall(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line, this.lineReflection, this.cue);
+        initBalls();
+        for (int i = 0; i < this.balls.size(); i++) {
+            if (i == 15) {
+                WhiteBall whiteball = (WhiteBall) this.balls.get(i);
+                //Create powerupcreator for powerup spawning
+                this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
+                //Add powerup to array of spawnable powerups
+                powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball, this.balls));
 
-        //Create powerupcreator for powerup spawning
-        this.powerupCreator = new PowerupCreator(this, this.ball16, this.balls);
-        //Add powerup to array of spawnable powerups
-        powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, this.ball16, this.balls));
+                this.whiteBallHandler.setWhiteBall(whiteball);
 
-        this.whiteBallHandler.setWhiteBall(ball16);
+            }
+        }
 
-        this.ball1.resetLastisertedid();
-        this.balls.add(ball1);
-        this.balls.add(ball2);
-        this.balls.add(ball3);
-        this.balls.add(ball4);
-        this.balls.add(ball5);
-        this.balls.add(ball6);
-        this.balls.add(ball7);
-        this.balls.add(ball9);
-        this.balls.add(ball10);
-        this.balls.add(ball11);
-        this.balls.add(ball12);
-        this.balls.add(ball13);
-        this.balls.add(ball14);
-        this.balls.add(ball15);
-        this.balls.add(ball16);
-        this.balls.add(ball8);
 
         // puts the balls in the rack
         rackBalls(this.balls);
@@ -668,22 +618,6 @@ public class Game extends GameModel {
         addEntity(lineReflection);
         addEntity(cue);
         addEntity(powerupCreator);
-        addEntity(ball1);
-        addEntity(ball2);
-        addEntity(ball3);
-        addEntity(ball4);
-        addEntity(ball5);
-        addEntity(ball6);
-        addEntity(ball7);
-        addEntity(ball8);
-        addEntity(ball9);
-        addEntity(ball10);
-        addEntity(ball11);
-        addEntity(ball12);
-        addEntity(ball13);
-        addEntity(ball14);
-        addEntity(ball15);
-        addEntity(ball16);
     }
 
     /**
@@ -723,22 +657,7 @@ public class Game extends GameModel {
         this.balls.clear();
         this.movingballs.clear();
 
-        this.ball1 = null;
-        this.ball2 = null;
-        this.ball3 = null;
-        this.ball4 = null;
-        this.ball5 = null;
-        this.ball6 = null;
-        this.ball7 = null;
-        this.ball8 = null;
-        this.ball9 = null;
-        this.ball10 = null;
-        this.ball11 = null;
-        this.ball12 = null;
-        this.ball13 = null;
-        this.ball14 = null;
-        this.ball15 = null;
-        this.ball16 = null;
+        resetBalls();
 
         setCurrentPlayer(player1);
 

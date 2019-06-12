@@ -29,7 +29,7 @@ public abstract class Powerup extends Entity {
     }
 
     private void checkCollisionWithBall() {
-        if (Math.sqrt(Utility.getDistanceNotSquared(this.getX(), this.getY() , this.ball.getX() + this.ball.getRadius(), this.ball.getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
+        if (Math.sqrt(Utility.getDistanceNotSquared(this.getX(), this.getY() , this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
             //Apply properties of power up to all balls. (Needed for functionality)
             game.removeEntity(this);
         }

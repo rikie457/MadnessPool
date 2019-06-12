@@ -81,8 +81,8 @@ public class Gui extends Entity {
             if (this.player1.getBalltype() != -1) {
                 if (this.player1.getBalltype() == 1) {
                     for (int j = 0; j < this.player1.getScoredballs().size(); j++) {
-                        if (this.player1.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(),
+                        if (this.player1.getScoredballs().get(j).getBitmap(j) != null) {
+                            gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(j),
                                     (float) this.x + 60 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
                                     (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
                                     (float) (this.player1.getScoredballs().get(j).getWidth() * 1.5),
@@ -92,8 +92,8 @@ public class Gui extends Entity {
                 }
             } else {
                 for (int j = 0; j < this.player1.getScoredballs().size(); j++) {
-                    if (this.player1.getScoredballs().get(j).getBitmap() != null) {
-                        gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(),
+                    if (this.player1.getScoredballs().get(j).getBitmap(j) != null) {
+                        gv.drawBitmap(this.player1.getScoredballs().get(j).getBitmap(j),
                                 (float) this.x + 650 + this.player1.getScoredballs().get(j).getId() * (float) this.player1.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
                                 (float) this.y + (float) this.player1.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
                                 (float) (this.player1.getScoredballs().get(j).getWidth() * 1.5),
@@ -107,8 +107,8 @@ public class Gui extends Entity {
             if (this.player2.getBalltype() != -1) {
                 if (this.player2.getBalltype() == 2) {
                     for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
-                        if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(),
+                        if (this.player2.getScoredballs().get(j).getBitmap(j) != null) {
+                            gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(j),
                                     (float) this.x + 410 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
                                     (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
                                     (float) (this.player2.getScoredballs().get(j).getWidth() * 1.5) - 500,
@@ -118,8 +118,8 @@ public class Gui extends Entity {
                 }
             } else {
                 for (int j = 0; j < this.player2.getScoredballs().size(); j++) {
-                    if (this.player2.getScoredballs().get(j).getBitmap() != null) {
-                        gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(),
+                    if (this.player2.getScoredballs().get(j).getBitmap(j) != null) {
+                        gv.drawBitmap(this.player2.getScoredballs().get(j).getBitmap(j),
                                 (float) this.x - 180 + this.player2.getScoredballs().get(j).getId() * (float) this.player2.getScoredballs().get(j).getWidth() + 10 + coolNewTexturesNecessaryOffset,
                                 (float) this.y + (float) this.player2.getScoredballs().get(j).getRadius() + 15 + coolNewTexturesNecessaryOffset,
                                 (float) (this.player2.getScoredballs().get(j).getWidth() * 1.5) - 500,

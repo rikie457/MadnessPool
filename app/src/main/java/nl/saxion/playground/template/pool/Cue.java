@@ -31,9 +31,6 @@ public class Cue extends Entity {
 
     }
 
-    private static double prevAngle = 0;
-
-
     @Override
     public void draw(GameView gv) {
         gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.whitePaint);

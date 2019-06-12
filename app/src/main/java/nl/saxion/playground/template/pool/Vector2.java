@@ -15,26 +15,26 @@ import java.io.Serializable;
  */
 
 /**
- * The type Coord.
+ * The type Vector2.
  */
-public class Coord implements Serializable {
-    private float x, y;
+public class Vector2 implements Serializable {
+    private double x, y;
 
     /**
-     * Instantiates a new Coord.
+     * Instantiates a new Vector2.
      *
      * @param x the x
      * @param y the y
      */
-    public Coord(float x, float y) {
+    public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Instantiates a new Coord.
+     * Instantiates a new Vector2.
      */
-    public Coord() {
+    public Vector2() {
 
     }
 
@@ -43,7 +43,7 @@ public class Coord implements Serializable {
      *
      * @return the x
      */
-    public float getX() {
+    public double getX() {
         return this.x;
     }
 
@@ -52,21 +52,17 @@ public class Coord implements Serializable {
      *
      * @param x the x
      */
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void set(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
     /**
      * Gets y.
      *
      * @return the y
      */
 
-    public float getY() {
+    public double getY() {
         return this.y;
     }
 
@@ -75,7 +71,26 @@ public class Coord implements Serializable {
      *
      * @param y the y
      */
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
+    }
+
+
+    public void set(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void addX(double x){
+        this.x += x;
+    }
+
+    public void addY(double y){
+        this.y += y;
+    }
+
+    public void add(double x, double y){
+        this.x += x;
+        this.y += y;
     }
 }

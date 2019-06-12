@@ -85,8 +85,7 @@ public class WhiteBallHandler extends Entity {
         }
 
         if (!this.ballReplaced && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
-            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
             this.whiteBall.setSpeedX(0);
             this.whiteBall.setSpeedY(0);
             this.ballReplaced = true;
@@ -96,8 +95,7 @@ public class WhiteBallHandler extends Entity {
 
         if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
             this.movingBall = true;
-            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
-            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
         }
 
         if (this.ballReplaced && !this.movingBall && !fingerOnhWhiteBall(event) && !game.getCueBallInHand() && event.getAction() == MotionEvent.ACTION_UP) {
@@ -117,9 +115,12 @@ public class WhiteBallHandler extends Entity {
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
+
         for (int i = 0; i < this.balls.size(); i++) {
+            Ball ball = this.balls.get(i);
+            System.out.println(this.whiteBall);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), balls.get(i).getX(), balls.get(i).getY());
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), ball.getVector2().getX(), ball.getVector2().getY());
 
             if (this.whiteBall == balls.get(i)) {
                 continue;
@@ -130,8 +131,9 @@ public class WhiteBallHandler extends Entity {
         }
 
         for (int i = 0; i < this.holes.size(); i++) {
+            Hole hole = this.holes.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (holes.get(i).getX() - 18), (holes.get(i).getY() - 18));
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (hole.getX() - 18), (hole.getY() - 18));
 
             if (distSqr <= (this.whiteBall.getRadius() + 20) * (this.whiteBall.getRadius() + 20) && this.whiteBall.getCollision()) {
                 isValid = false;
@@ -141,8 +143,8 @@ public class WhiteBallHandler extends Entity {
     }
 
     private boolean fingerOnhWhiteBall(MotionEvent event) {
-        return event.getX() > this.whiteBall.getX() - 30 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 30 &&
-                event.getY() > this.whiteBall.getY() - 30 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 30;
+        return event.getX() > this.whiteBall.getVector2().getX() - 30 && event.getX() < this.whiteBall.getVector2().getX() + this.whiteBall.getWidth() + 30 &&
+                event.getY() > this.whiteBall.getVector2().getY() - 30 && event.getY() < this.whiteBall.getVector2().getY() + this.whiteBall.getHeight() + 30;
     }
 
     /**
