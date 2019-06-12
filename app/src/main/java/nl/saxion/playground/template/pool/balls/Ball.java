@@ -21,6 +21,24 @@ import nl.saxion.playground.template.pool.Utility;
 
 
 /**
+ * TEACHER: Overall documenting your code the way it is done in this class is actually detrimental
+ * to the readability of your code. You are constantly documenting the obvious:
+ * //here I created an integer i
+ * int i;
+ *
+ * What IS interesting is WHY you create or need a variable. Check your code you do it the wrong
+ * way constantly:
+ * //the bitmaps
+ * ArrayList<Bitmap> bitmaps;
+ * //the constant insert id
+ * int lastinsert id
+ *
+ * This is worse than having no documentation at all.
+  * I wouldn't mind being able to see who wrote this class without going into git.
+ * Class header documentating missing
+ */
+
+/**
  * The type Ball.
  */
 public class Ball extends Entity {
@@ -37,6 +55,11 @@ public class Ball extends Entity {
      * The constant lastisertedid.
      */
     protected static int lastisertedid = 1;
+
+    /**
+     * TEACHER: This screams for an array? Why 16 separate variables??
+     */
+
     /**
      * The Bitmap 1.
      */
@@ -134,6 +157,13 @@ public class Ball extends Entity {
      * The Type.
      */
     type;
+
+    /**
+     * TEACHER: Having separate lists for balls, holes, players sounds like you are treating them
+     * all differently, which could be the case, we don't know without actual documentation, but
+     * for the collision loop I could imagine balls and holes are all just CollidableEntities.
+     */
+
     /**
      * The Balls.
      */
@@ -179,6 +209,12 @@ public class Ball extends Entity {
      * @param type    the type
      */
     public Ball(Game game, ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Player> players, double x, double y, double width, double height, int type) {
+
+        //TEACHER: having references to every other object is code smell. Why does a ball need all
+        //this information? Might be better to have another entity do the collision loop instead
+        //of giving a ball access to a list of all other balls. In addition, game already gives you
+        //that info.
+
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -203,16 +239,33 @@ public class Ball extends Entity {
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
 
+        //TEACHER: another downside to doing the checks this way is that you are doing twice the
+        //amounts of check that are needed. Given ball1,ball2 you are checking ball1-ball2 from
+        //ball1 and ball2-ball1 from ball1, where one check is enough.
+
         for (int i = 0; i < balls.size(); i++) {
+
+            //TEACHER: instead of doing ball.get(i) a 100 times in one loop, retrieve them once and store them in a local variable
+            //TEACHER: consider using vector2 instead of separate x.y properties, they make your code much more readable
+            //TEACHER: getDistanceNotSquared is actually returning the SQUARED distance...
             double distSqr = Utility.getDistanceNotSquared(this.getX(), this.getY(), balls.get(i).getX(), balls.get(i).getY());
             double xd = this.getX() - balls.get(i).getX();
             double yd = this.getY() - balls.get(i).getY();
 
+            //TEACHER: using the correct collision loop would prevent having checks like this
             if (this == balls.get(i)) {
                 continue;
             }
 
+            //TEACHER: consider self documenting your code eg
+            //bool isColliding = etc
+            //ALSO the radius for each ball is fixed, so you can precompute and store this value once!
             if (distSqr <= (this.getRadius() + balls.get(i).getRadius()) * (this.getRadius() + balls.get(i).getRadius()) && this.collision) {
+
+                //TEACHER: move things like the code below into separate smaller methods
+                //the end result is something like
+                //if (collision (ball1, ball2)) resolveCollision (ball1, ball2);
+                //which is much more readable
                 if (this.speedX == 0 && this.speedY == 0 && balls.get(i).getSpeedX() == 0 && balls.get(i).getSpeedY() == 0) {
                     this.speedY = .5;
                     this.speedX = -.5;
@@ -277,6 +330,10 @@ public class Ball extends Entity {
     }
 
     private void checkCollisionHole() {
+        //TEACHER: Tycho... a couple of things that are wrong with this method:
+        //No documentation
+        //Ifception: Your nesting goes 7 (SEVEN!!) levels deep!!
+
         for (int i = 0; i < this.holes.size(); i++) {
             if (Math.sqrt(Utility.getDistanceNotSquared(this.getX() + this.radius, this.getY() + this.radius, this.holes.get(i).getX(), this.holes.get(i).getY())) - (30) <= 0) {
                 if (this.id != 8 && this.id != 16) {
@@ -313,6 +370,8 @@ public class Ball extends Entity {
                     game.placeCueBall();
                 }
 
+                //TEACHER: contains is O(n), do you need to keep a separate list for this?
+                //since doing it this way essentially makes your whole loop O(n2)
                 this.game.removeEntity(this);
                 if (game.getMovingBalls().contains(this)) {
                     game.getMovingBalls().remove(this);
@@ -380,6 +439,10 @@ public class Ball extends Entity {
     @Override
     public void draw(GameView gv) {
         Bitmap toDraw = null;
+        //TEACHER: this WHOLE method could be replaced by 3 lines of code!
+        //if (bitmaps[id] == null) bitmaps[id] = gv.getBitmapFromResource (getDrawableID(id));
+        //In addition if you get access to the context in a different way you could do this
+        //outside of the draw loop
         switch (this.id) {
             case 1:
                 if (bitmap1 == null) {
@@ -725,6 +788,7 @@ public class Ball extends Entity {
      * @return the bitmap
      */
     public Bitmap getBitmap() {
+        ///TEACHER: replace with return bitmaps[id] ? (1 line)
         switch (this.id) {
             case 1:
                 return bitmap1;

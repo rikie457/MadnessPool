@@ -74,6 +74,9 @@ public class Gui extends Entity {
         // texture_fixes_and_updates_2
         final float coolNewTexturesNecessaryOffset = - (8 * (1000/game.getWidth()));
 
+        //TEACHER:
+        // if statements nested 5 deep!
+        // this.player1.getScoredballs() occurs 17 ! times in the little bit of code below, store it locallly first!
         if (this.player1.getScoredballs().size() != 0) {
             if (this.player1.getBalltype() != -1) {
                 if (this.player1.getBalltype() == 1) {

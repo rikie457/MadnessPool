@@ -21,6 +21,7 @@ import nl.saxion.playground.template.pool.Utility;
 
 import static java.lang.Math.PI;
 
+//TEACHER: nice use of inheritance
 
 /**
  * The type White ball.

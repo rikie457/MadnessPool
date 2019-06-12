@@ -81,6 +81,8 @@ public class Game extends GameModel {
     private ShootLine lineReflection = new ShootLine(false, this);
     private Cue cue = new Cue(false, this);
 
+    //TEACHER: why not arrays? Or array lists?
+
     //Balls
     private Ball ball1;
     private Ball ball2;
@@ -244,6 +246,7 @@ public class Game extends GameModel {
         addEntity(madnessButton);
 
         if (runs < 1) {
+            //TEACHER: using an array or list would save you lines
             Hole hole1 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.12, holesize);
             Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize);
             Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize);
@@ -397,6 +400,7 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
+        //TEACHER: using an array or list would save you lines (about 30)
         this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
@@ -615,7 +619,7 @@ public class Game extends GameModel {
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-
+        //TEACHER: using an array or list would save you lines (I see a pattern here ;))
         this.ball1 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball2 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
         this.ball3 = new Ball(this, this.balls, this.holes, this.players, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 1);
