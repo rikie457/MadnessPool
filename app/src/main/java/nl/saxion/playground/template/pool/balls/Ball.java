@@ -284,6 +284,7 @@ public class Ball extends Entity {
                         Player player = this.players.get(j);
                         if (game.getCurrentplayer() == player) {
                             if (player.getBalltype() == -1) {
+                                game.setPlayerScored(true);
                                 if (this.type == 1) {
                                     player.setBalltype(1);
                                     game.getInactiveplayer().setBalltype(2);
@@ -295,6 +296,7 @@ public class Ball extends Entity {
                             } else {
                                 if (this.type == player.getBalltype()) {
                                     player.getScoredballs().add(this);
+                                    game.setPlayerScored(true);
                                 } else {
                                     game.getInactiveplayer().getScoredballs().add(this);
                                 }

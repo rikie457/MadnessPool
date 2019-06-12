@@ -57,6 +57,7 @@ public class Game extends GameModel {
     private ArrayList<Ball> player2balls = new ArrayList<>();
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
+    private boolean playerScored = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
@@ -521,10 +522,14 @@ public class Game extends GameModel {
             if (this.balls.get(i).getId() == 16) {
                 Ball ball = this.balls.get(i);
                 if (!this.checkMovementForAllBalls()) {
-                    if (this.currentplayer == player1) {
-                        setCurrentPlayer(player2);
+                    if (!this.playerScored) {
+                        if (this.currentplayer == player1) {
+                            setCurrentPlayer(player2);
+                        } else {
+                            setCurrentPlayer(player1);
+                        }
                     } else {
-                        setCurrentPlayer(player1);
+                        setPlayerScored(false);
                     }
                     this.movingballs.clear();
                     ball.setShot(false);
@@ -604,6 +609,10 @@ public class Game extends GameModel {
      */
     public void setCueBallInHand(boolean cueBallInHand) {
         this.cueBallInHand = cueBallInHand;
+    }
+
+    public void setPlayerScored(boolean scored) {
+        this.playerScored = scored;
     }
 
 
