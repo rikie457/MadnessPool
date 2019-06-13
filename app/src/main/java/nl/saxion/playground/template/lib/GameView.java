@@ -89,7 +89,6 @@ public class GameView extends View implements View.OnTouchListener {
 
         while (lastTickTime < System.currentTimeMillis()) {
             lastTickTime += 1000f / gameModel.ticksPerSecond();
-            ;
             for (Entity go : gameModel.entities) go.tick();
         }
     }

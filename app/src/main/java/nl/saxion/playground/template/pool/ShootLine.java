@@ -17,9 +17,9 @@ import nl.saxion.playground.template.lib.GameView;
  */
 public class ShootLine extends Entity {
 
-    private float newX, newY, x, y;
     private boolean visible;
     private Game game;
+    private Vector2 vector2 = new Vector2(), newvector2 = new Vector2();
 
     /**
      * Instantiates a new Shoot line.
@@ -40,54 +40,21 @@ public class ShootLine extends Entity {
     @Override
     public void draw(GameView gv) {
         if (visible) {
-            gv.getCanvas().drawLine(this.x, this.y, this.newX, this.newY, game.redPaint);
+            gv.getCanvas().drawLine((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.newvector2.getX(), (float) this.newvector2.getY(), Game.redPaint);
         }
-    }
-
-    /**
-     * Reflect boolean.
-     *
-     * @return the boolean
-     */
-    public boolean reflect() {
-        if (this.newX > game.getPlayWidth() || this.newX <= 0) {
-            return true;
-        }
-        if (this.newY > game.getPlayHeight() || this.newY <= 0) {
-            return true;
-        }
-        return false;
     }
 
     public void setColor(float r, float g, float b) {
-    game.redPaint.setColor(Color.argb(255, (int)r, (int)g, (int)b));
+        Game.redPaint.setColor(Color.argb(255, (int) r, (int) g, (int) b));
     }
 
-    public float getNewX() {
-        return this.newX;
-    }
-
-    public float getNewY() {
-        return this.newY;
+    public Vector2 getVector2() {
+        return vector2;
     }
 
 
-    /**
-     * Sets x.
-     *
-     * @param x the x
-     */
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    /**
-     * Sets y.
-     *
-     * @param y the y
-     */
-    public void setY(float y) {
-        this.y = y;
+    public Vector2 getNewvector2() {
+        return newvector2;
     }
 
     /**
@@ -108,21 +75,4 @@ public class ShootLine extends Entity {
         this.visible = visible;
     }
 
-    /**
-     * Sets new x.
-     *
-     * @param newX the new x
-     */
-    public void setNewX(float newX) {
-        this.newX = newX;
-    }
-
-    /**
-     * Sets new y.
-     *
-     * @param newY the new y
-     */
-    public void setNewY(float newY) {
-        this.newY = newY;
-    }
 }
