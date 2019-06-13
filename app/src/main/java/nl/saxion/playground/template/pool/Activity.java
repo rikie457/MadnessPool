@@ -65,4 +65,10 @@ public class Activity extends AppCompatActivity {
         super.onPause();
         gameView.setGame(null);
     }
+
+    @Override
+    public void onBackPressed() {
+        ((Game) this.game).reset();
+        super.onBackPressed();
+    }
 }
