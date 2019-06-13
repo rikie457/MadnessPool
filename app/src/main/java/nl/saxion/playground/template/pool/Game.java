@@ -9,12 +9,14 @@ package nl.saxion.playground.template.pool;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
+import nl.saxion.playground.template.pool.balls.Shadows;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
@@ -86,6 +88,8 @@ public class Game extends GameModel {
     private WinMessage winMessage;
     private ShootLine line = new ShootLine(false, this);
 
+    // Shadows
+    private Shadows ball_shadows;
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
@@ -219,7 +223,6 @@ public class Game extends GameModel {
         whitePaint.setColor(Color.argb(255, 255, 255, 255));
         whitePaint.setStrokeWidth(4);
 
-
         this.players.add(player1);
         player1.setScoredballs(this.player1balls);
         this.players.add(player2);
@@ -260,6 +263,14 @@ public class Game extends GameModel {
             addEntity(hole6);
             addEntity(gui);
 
+            // add balls to shadows class
+            this.ball_shadows = new Shadows(this, this.balls);
+
+            // add both player 1 and player 2's
+            // pointers to arrays of their scored balls
+            // to the Shadows Object, so their shadows can be drawn
+            this.ball_shadows.setGUIBalls(this.player1balls, this.player2balls);
+            addEntity(this.ball_shadows);
 
         }
         runs++;
@@ -295,8 +306,10 @@ public class Game extends GameModel {
         // ball at 14 is WHITE BALL (index 14)
         // ball at 15 is BLACK BALL (index 15)
 
+
         this.rack_x_offset = (getPlayWidth() / 4) * 3;
         this.rack_y_offset = (getPlayHeight() / 2);
+        this.rackPositions[14] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
 
         int whiteBallIndex = 0, blackBallIndex = 0;
 
@@ -330,7 +343,10 @@ public class Game extends GameModel {
             }
         }
 
-        rackPositions[whiteBallIndex] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
+        final String tag = "[346]: ";
+        for(int i = 0; i < 16; i++) {
+            Log.e(tag, "pos " + i + ": " + this.rackPositions[i].getX() + ", " + this.rackPositions[i].getY() + "\n");
+        }
 
         for (int i = 0; i < 7; i++) {
             int a, b;
@@ -349,10 +365,10 @@ public class Game extends GameModel {
             int randBoolean = getRandIntInRange(0, 1);
 
             // 1st side
-            balls.get(solidBallIndecis.get(currentSolid)).setVector2(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]);
+            balls.get(solidBallIndecis.get(currentSolid)).setVector2(new Vector2(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]));
 
             // 2nd side
-            balls.get(stripedBallIndecis.get(currentStriped)).setVector2(rackPositions[sideBallIndecis[i + randBoolean]]);
+            balls.get(stripedBallIndecis.get(currentStriped)).setVector2(new Vector2(rackPositions[sideBallIndecis[i + randBoolean]]));
         }
 
         // assign positions to these 'normal' balls
@@ -362,17 +378,17 @@ public class Game extends GameModel {
             if (i % 2 == 1) currentBall = balls.get(solidBallIndecis.get(currentSolid));
             else currentBall = balls.get(stripedBallIndecis.get(currentStriped));
 
-            currentBall.setVector2(rackPositions[normalBallIndecis[i]]);
+            currentBall.setVector2(new Vector2(rackPositions[normalBallIndecis[i]]));
 
             if (i % 2 == 1) currentSolid++;
             else currentStriped++;
         }
 
-        // initialize the black ball
-        balls.get(blackBallIndex).setVector2(rackPositions[15]);
-
         // initialize the white ball
-        balls.get(whiteBallIndex).setVector2(rackPositions[14]);
+        balls.get(whiteBallIndex).setVector2(new Vector2(rackPositions[14]));
+
+        // initialize the black ball
+        balls.get(blackBallIndex).setVector2(new Vector2(rackPositions[15]));
 
         // add the x- and y-offsets to the ball's coords
         for (Ball ball : balls) {
@@ -389,7 +405,7 @@ public class Game extends GameModel {
                     type = 1;
                 } else if (i == 7) {
                     type = 3;
-                } else if (i < 14) {
+                } else if (i <= 14) {
                     type = 2;
                 }
                 Ball ball = new Ball(this, this.drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
@@ -402,9 +418,14 @@ public class Game extends GameModel {
                 addEntity(ball);
             }
         }
+        this.ball_shadows = new Shadows(this, this.balls);
     }
 
     private void resetBalls() {
+        // reset shadows
+        removeEntity(this.ball_shadows);
+        this.ball_shadows = null;
+
         for (int i = 0; i < this.balls.size(); i++) {
             this.balls.remove(i);
         }
@@ -427,7 +448,7 @@ public class Game extends GameModel {
         }
 
         // puts the balls in the rack
-        //rackBalls(this.balls);
+        rackBalls(this.balls);
         addEntity(line);
     }
 
@@ -455,7 +476,7 @@ public class Game extends GameModel {
 
 
         // puts the balls in the rack
-//      rackBalls(this.balls);
+        rackBalls(this.balls);
         addEntity(line);
         addEntity(powerupCreator);
     }
