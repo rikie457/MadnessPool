@@ -32,6 +32,7 @@ public class WhiteBallHandler extends Entity {
     private boolean ballReplaced = false;
     private boolean canContinue = false;
     private boolean movingBall = false;
+    private boolean fingerOnBall = false;
     private int timer = 0;
     private Game game;
     private WhiteBall whiteBall;
@@ -85,8 +86,7 @@ public class WhiteBallHandler extends Entity {
         }
 
         if (!this.ballReplaced && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
-            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
             this.whiteBall.setSpeedX(0);
             this.whiteBall.setSpeedY(0);
             this.ballReplaced = true;
@@ -96,8 +96,12 @@ public class WhiteBallHandler extends Entity {
 
         if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
             this.movingBall = true;
-            this.whiteBall.setX(touch.x - this.whiteBall.getWidth() / 2);
-            this.whiteBall.setY(touch.y - this.whiteBall.getHeight() / 2);
+            this.fingerOnBall = true;
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
+        }
+
+        if (this.ballReplaced && game.getCueBallScored() && this.fingerOnBall && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
         }
 
         if (this.ballReplaced && !this.movingBall && !fingerOnhWhiteBall(event) && !game.getCueBallInHand() && event.getAction() == MotionEvent.ACTION_UP) {
@@ -106,6 +110,7 @@ public class WhiteBallHandler extends Entity {
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
             this.movingBall = false;
+            this.fingerOnBall = false;
         }
     }
 
@@ -117,9 +122,11 @@ public class WhiteBallHandler extends Entity {
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
+
         for (int i = 0; i < this.balls.size(); i++) {
+            Ball ball = this.balls.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), balls.get(i).getX(), balls.get(i).getY());
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), ball.getVector2().getX(), ball.getVector2().getY());
 
             if (this.whiteBall == balls.get(i)) {
                 continue;
@@ -130,33 +137,49 @@ public class WhiteBallHandler extends Entity {
         }
 
         for (int i = 0; i < this.holes.size(); i++) {
+            Hole hole = this.holes.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
-                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (holes.get(i).getX() - 18), (holes.get(i).getY() - 18));
+                    (event.getY() - this.whiteBall.getHeight()) + this.whiteBall.getRadius(), (hole.getVector2().getX() - 18), (hole.getVector2().getY() - 18));
 
             if (distSqr <= (this.whiteBall.getRadius() + 20) * (this.whiteBall.getRadius() + 20) && this.whiteBall.getCollision()) {
                 isValid = false;
             }
         }
+
+        /**
+         *Muren links en rechts
+         */
+
+        if (event.getX() - this.whiteBall.getRadius() < game.getPlayWidth() * 0.07) {
+            isValid = false;
+        } else if (event.getX() + this.whiteBall.getRadius() > game.getPlayWidth() * 0.93) {
+            isValid = false;
+        }
+
+        /**
+         * Muren boven en onder
+         */
+        if (event.getY() - this.whiteBall.getRadius() < game.getPlayHeight() * 0.12) {
+            isValid = false;
+        } else if (event.getY() + this.whiteBall.getRadius() > game.getPlayHeight() * 0.88) {
+            isValid = false;
+        }
+
+
         return isValid;
     }
 
     private boolean fingerOnhWhiteBall(MotionEvent event) {
-        return event.getX() > this.whiteBall.getX() - 30 && event.getX() < this.whiteBall.getX() + this.whiteBall.getWidth() + 30 &&
-                event.getY() > this.whiteBall.getY() - 30 && event.getY() < this.whiteBall.getY() + this.whiteBall.getHeight() + 30;
+        return event.getX() > this.whiteBall.getVector2().getX() - 30 && event.getX() < this.whiteBall.getVector2().getX() + this.whiteBall.getWidth() + 30 &&
+                event.getY() > this.whiteBall.getVector2().getY() - 30 && event.getY() < this.whiteBall.getVector2().getY() + this.whiteBall.getHeight() + 30;
     }
 
     /**
      * Check moving balls.
      */
-    public void checkMovingBalls() {
-        if (game.getMovingBalls().size() == 0) {
+    private void checkMovingBalls() {
+        if (!game.isAllmoving()) {
             game.scoreCueBall();
-        } else {
-            for (int i = 0; i < game.getMovingBalls().size(); i++) {
-                if (game.getMovingBalls().get(i).getId() == 16) {
-                    game.getMovingBalls().remove(i);
-                }
-            }
         }
     }
 

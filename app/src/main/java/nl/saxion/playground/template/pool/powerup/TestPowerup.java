@@ -9,8 +9,8 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 public class TestPowerup extends Powerup {
 
 
-    public TestPowerup(Game game, float x, float y, WhiteBall ball, ArrayList<Ball> balls) {
-        super(game, x, y, ball, balls);
+    public TestPowerup(Game game, double x, double y, WhiteBall ball) {
+        super(game, x, y, ball);
     }
 
 }

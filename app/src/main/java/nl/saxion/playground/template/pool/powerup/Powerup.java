@@ -8,28 +8,28 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 public abstract class Powerup extends Entity {
 
     private Game game;
-    private float x, y, radius;
+    protected Vector2 vector2 = new Vector2();
+    private double radius;
     private WhiteBall ball;
     private ArrayList<Ball> balls;
 
-    public Powerup(Game game, float x, float y, WhiteBall ball, ArrayList<Ball> balls) {
+    public Powerup(Game game, double x, double y, WhiteBall ball) {
         this.game = game;
-        this.x = x;
-        this.y = y;
+        this.vector2.set(x, y);
         this.radius = 15f;
         this.ball = ball;
-        this.balls = balls;
-        game.powerupPaint.setColor(Color.GREEN);
+        Game.powerupPaint.setColor(Color.GREEN);
     }
 
     private void checkCollisionWithBall() {
-        if (Math.sqrt(Utility.getDistanceNotSquared(this.getX(), this.getY() , this.ball.getX() + this.ball.getRadius(), this.ball.getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
+        if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
             //Apply properties of power up to all balls. (Needed for functionality)
             game.removeEntity(this);
         }
@@ -47,17 +47,9 @@ public abstract class Powerup extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        gv.getCanvas().drawCircle((float) this.x, (float) this.y, (float) this.radius, game.powerupPaint);
+        gv.getCanvas().drawCircle((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.radius, Game.powerupPaint);
     }
 
-    public float getX() {
-        return x;
-    }
-
-
-    public float getY() {
-        return y;
-    }
 
     @Override
     public String toString() {

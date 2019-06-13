@@ -9,6 +9,12 @@ import java.util.ArrayList;
 public class GameModel implements Serializable {
 
     /**
+     * The list of current touches. For each update, `Entity.handleTouch` is called.
+     * But `Entity.tick` (and others) are free to manually inspect (or even edit)
+     * this list as well.
+     */
+    public transient ArrayList<Touch> touches = new ArrayList<>();
+    /**
      * Actual width of the current GameView in pixels. These might change during the game,
      * for instance when changing orientation.
      * These should only be used by your `getWidth()` and `getHeight()` implementations,
@@ -17,28 +23,24 @@ public class GameModel implements Serializable {
     protected float actualWidth, actualHeight;
     //Fix for restarting the paused game if started ofcourse;
     protected boolean started = false;
-
     // The ordered list of active game entities.
     SafeTreeSet<Entity> entities = new SafeTreeSet<>();
 
     /**
-     * The list of current touches. For each update, `Entity.handleTouch` is called.
-     * But `Entity.tick` (and others) are free to manually inspect (or even edit)
-     * this list as well.
-     */
-    public transient ArrayList<Touch> touches = new ArrayList<>();
-
-    /**
      * Override to set ticks per second.
+     *
      * @return Number of times per second the `tick` methods should be called.
      * This can be zero (for instance when updates made directly from event handlers,
      * such as may be the case for non-animated board games), in which case
      * `GameModel.event("updated")` should be called when appropriate.
      */
-    public int ticksPerSecond() { return 180; }
+    public int ticksPerSecond() {
+        return 180;
+    }
 
     /**
      * Override this to make use of virtual screen sizes.
+     *
      * @return The desired virtual width for the game. The `GameView` will scale,
      * translate and crop `draw()` output to make the virtual screen fit exactly
      * within the actual view.
@@ -49,6 +51,7 @@ public class GameModel implements Serializable {
 
     /**
      * Override this to make use of virtual screen sizes.
+     *
      * @return The desired virtual height for the game. The `GameView` will scale,
      * translate and crop `draw()` output to make the virtual screen fit exactly
      * within the actual view.
@@ -61,10 +64,12 @@ public class GameModel implements Serializable {
      * Called just before the first `draw()`. At this point, canvas widths are known, so
      * this may be a good time to create initial `Entity`s.
      */
-    public void start() {}
+    public void start() {
+    }
 
     /**
      * Add a game entity to the list.
+     *
      * @param entity The entity to be added.
      */
     public void addEntity(Entity entity) {
@@ -73,6 +78,7 @@ public class GameModel implements Serializable {
 
     /**
      * Remove a game entity from the list.
+     *
      * @param entity The entity to be removed.
      */
     public void removeEntity(Entity entity) {
@@ -82,12 +88,13 @@ public class GameModel implements Serializable {
     /**
      * Get an `ArrayList` of `Entity`s of the specified type. Eg:
      * `ArrayList<MyHero> heroes = game.getEntities(MyHero.class);`
+     *
      * @param type A class object to search for in the list of entities.
      * @return The list of entities of the specified class.
      */
     public <T extends Entity> ArrayList<T> getEntities(Class<T> type) {
         ArrayList<T> results = new ArrayList<>();
-        for(Entity obj : entities) {
+        for (Entity obj : entities) {
             if (type.isInstance(obj)) {
                 results.add(type.cast(obj));
             }
@@ -97,11 +104,12 @@ public class GameModel implements Serializable {
 
     /**
      * Get an `Entity` of the specified type.
+     *
      * @param type A class object to search for in the list of entities.
      * @return A single entity (the first) of the specified type, or null (if none are found).
      */
     public <T extends Entity> T getEntity(Class<T> type) {
-        for(Entity obj : entities) {
+        for (Entity obj : entities) {
             if (type.isInstance(obj)) {
                 return type.cast(obj);
             }
@@ -113,7 +121,7 @@ public class GameModel implements Serializable {
     // They may also choose to scan for ongoing touches in their tick() methods.
     void handleTouch(MotionEvent me) {
         Touch touch = getTouch(me);
-        for(Entity go : entities) {
+        for (Entity go : entities) {
             go.handleTouch(touch, me);
         }
     }
@@ -127,8 +135,8 @@ public class GameModel implements Serializable {
         float x = me.getX(actionIndex);
         float y = me.getY(actionIndex);
 
-        if (action==MotionEvent.ACTION_POINTER_DOWN) action = MotionEvent.ACTION_DOWN;
-        if (action==MotionEvent.ACTION_POINTER_UP) action = MotionEvent.ACTION_UP;
+        if (action == MotionEvent.ACTION_POINTER_DOWN) action = MotionEvent.ACTION_DOWN;
+        if (action == MotionEvent.ACTION_POINTER_UP) action = MotionEvent.ACTION_UP;
 
         for (Touch touch : touches) {
             if (touch.pointerId == pointerId) {
@@ -168,7 +176,7 @@ public class GameModel implements Serializable {
         }
 
         public long getDuration() {
-            return System.currentTimeMillis()-startTime;
+            return System.currentTimeMillis() - startTime;
         }
 
         void setXY(float x, float y) {
