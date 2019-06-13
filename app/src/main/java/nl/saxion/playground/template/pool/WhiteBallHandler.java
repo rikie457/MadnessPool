@@ -32,6 +32,7 @@ public class WhiteBallHandler extends Entity {
     private boolean ballReplaced = false;
     private boolean canContinue = false;
     private boolean movingBall = false;
+    private boolean fingerOnBall = false;
     private int timer = 0;
     private Game game;
     private WhiteBall whiteBall;
@@ -95,6 +96,11 @@ public class WhiteBallHandler extends Entity {
 
         if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
             this.movingBall = true;
+            this.fingerOnBall = true;
+            this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
+        }
+
+        if (this.ballReplaced && game.getCueBallScored() && this.fingerOnBall && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
             this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
         }
 
@@ -104,6 +110,7 @@ public class WhiteBallHandler extends Entity {
 
         if (event.getAction() == MotionEvent.ACTION_UP) {
             this.movingBall = false;
+            this.fingerOnBall = false;
         }
     }
 
@@ -138,6 +145,27 @@ public class WhiteBallHandler extends Entity {
                 isValid = false;
             }
         }
+
+        /**
+         *Muren links en rechts
+         */
+
+        if (event.getX() - this.whiteBall.getRadius() < game.getPlayWidth() * 0.07) {
+            isValid = false;
+        } else if (event.getX() + this.whiteBall.getRadius() > game.getPlayWidth() * 0.93) {
+            isValid = false;
+        }
+
+        /**
+         * Muren boven en onder
+         */
+        if (event.getY() - this.whiteBall.getRadius() < game.getPlayHeight() * 0.12) {
+            isValid = false;
+        } else if (event.getY() + this.whiteBall.getRadius() > game.getPlayHeight() * 0.88) {
+            isValid = false;
+        }
+
+
         return isValid;
     }
 

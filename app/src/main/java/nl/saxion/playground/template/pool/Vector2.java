@@ -9,12 +9,6 @@ package nl.saxion.playground.template.pool;
 import java.io.Serializable;
 
 /**
- * TEACHER: I think you would make your own life easier if you add methods such as
- * add, subtract, scale, normalize, reflect, distance, distanceSqr etc to this class so you
- * don't have to do all that stuff in your normal classes.
- */
-
-/**
  * The type Vector2.
  */
 public class Vector2 implements Serializable {

@@ -18,62 +18,21 @@ import nl.saxion.playground.template.pool.Player;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Vector2;
 
-
-/**
- * TEACHER: Overall documenting your code the way it is done in this class is actually detrimental
- * to the readability of your code. You are constantly documenting the obvious:
- * //here I created an integer i
- * int i;
- * <p>
- * What IS interesting is WHY you create or need a variable. Check your code you do it the wrong
- * way constantly:
- * //the bitmaps
- * ArrayList<Bitmap> bitmaps;
- * //the constant insert id
- * int lastinsert id
- * <p>
- * This is worse than having no documentation at all.
- * I wouldn't mind being able to see who wrote this class without going into git.
- * Class header documentating missing
- */
-
 public class Ball extends Entity {
     public static int lastisertedid = 0;
-    static protected Bitmap[] bitmaps;
-    protected double speedX,
-            speedY;
-    protected double mass,
-            width,
-            height,
-            radius,
-            bx,
-            by,
-            friction,
-            energyloss;
-    protected int color,
-            id,
-            type;
 
-    /**
-     * TEACHER: Having separate lists for balls, holes, players sounds like you are treating them
-     * all differently, which could be the case, we don't know without actual documentation, but
-     * for the collision loop I could imagine balls and holes are all just CollidableEntities.
-     */
-
-    protected Game game;
-    protected boolean moving;
-    protected boolean collision = true;
+    protected double speedX, speedY, mass, width, height, radius, bx, by, friction, energyloss;
     protected Vector2 vector2;
+    protected Game game;
+
+    private static Bitmap[] bitmaps;
+    private int id, type;
+    private boolean moving;
+    private boolean collision = true;
     private int[] drawables;
 
 
     public Ball(Game game, int[] drawables, double x, double y, double width, double height, int type) {
-
-        //TEACHER: having references to every other object is code smell. Why does a ball need all
-        //this information? Might be better to have another entity do the collision loop instead
-        //of giving a ball access to a list of all other balls. In addition, game already gives you
-        //that info.
-
         this.id = lastisertedid;
         lastisertedid++;
         this.game = game;
@@ -97,12 +56,7 @@ public class Ball extends Entity {
 
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
-
-        //TEACHER: another downside to doing the checks this way is that you are doing twice the
-        //amounts of check that are needed. Given ball1,ball2 you are checking ball1-ball2 from
-        //ball1 and ball2-ball1 from ball1, where one check is enough.
-
-        for (int i = 0; i < balls.size(); i++) {
+        for (int i = this.id + 1; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             double ball1x = this.vector2.getX();
             double ball1y = this.vector2.getY();
@@ -113,19 +67,9 @@ public class Ball extends Entity {
             double xd = ball1x - ball2x;
             double yd = ball1y - ball2y;
 
-            //TEACHER: using the correct collision loop would prevent having checks like this
-            if (this == ball) {
-                continue;
-            }
+            boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
+            if (colliding) {
 
-            //TEACHER: consider self documenting your code eg
-            //bool isColliding = etc
-            if (distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision) {
-
-                //TEACHER: move things like the code below into separate smaller methods
-                //the end result is something like
-                //if (collision (ball1, ball2)) resolveCollision (ball1, ball2);
-                //which is much more readable
                 if (this.speedX == 0 && this.speedY == 0 && ball.speedX == 0 && ball.speedY == 0) {
                     this.speedY = .5;
                     this.speedX = -.5;
@@ -153,7 +97,6 @@ public class Ball extends Entity {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
         this.vector2.set(x += this.speedX, y += this.speedY);
-
         /**
          * muren rechts en links
          */
@@ -193,48 +136,45 @@ public class Ball extends Entity {
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
-        //TEACHER: Tycho... a couple of things that are wrong with this method:
-        //No documentation
-        //Ifception: Your nesting goes 7 (SEVEN!!) levels deep!!
-        for (int i = 0; i < game.getHoles().size(); i++) {
-            Hole hole = game.getHoles().get(i);
-            if (Math.sqrt(Utility.getDistanceNotSquared(x + this.radius, y + this.radius, hole.getVector2().getX(), hole.getVector2().getY())) - (30) <= 0) {
-                if (this.type != 3 && this.type != 0) {
-                    for (int j = 0; j < game.getPlayers().size(); j++) {
-                        Player player = game.getPlayers().get(j);
-                        if (game.getCurrentplayer() == player) {
-                            if (player.getBalltype() == -1) {
-                                if (this.type == 1) {
-                                    player.setBalltype(1);
-                                    game.getInactiveplayer().setBalltype(2);
-                                } else if (this.type == 2) {
-                                    player.setBalltype(2);
-                                    game.getInactiveplayer().setBalltype(1);
-                                }
-                                player.getScoredballs().add(this);
-                            } else {
-                                if (this.type == player.getBalltype()) {
-                                    player.getScoredballs().add(this);
-                                } else {
-                                    game.getInactiveplayer().getScoredballs().add(this);
-                                }
-                            }
-                        }
-                    }
-                } else if (this.type == 3) {
-                    //is 8 ball
-                    if (game.getCurrentplayer().getScoredballs().size() < 7) {
-                        game.winnerScreen(game.getInactiveplayer().getPlayerId());
-                    } else {
-                        game.winnerScreen(game.getCurrentplayer().getPlayerId());
-                    }
-                } else if (this.type == 0) {
-                    //is cue ball
-                    game.placeCueBall();
+
+        for (Hole hole : game.getHoles()) {
+
+            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius, y + this.radius, hole.getVector2().getX(), hole.getVector2().getY()));
+            if (distance > this.radius) continue; // no collision
+
+            // The ball hit the pocket!
+
+            if (this.type == 3) {
+                //is 8 ball
+                if (game.getCurrentplayer().getScoredballs().size() < 7) {
+                    game.winnerScreen(game.getInactiveplayer().getPlayerId());
+                } else {
+                    game.winnerScreen(game.getCurrentplayer().getPlayerId());
                 }
-                this.moving = false;
-                this.game.removeEntity(this);
+            } else if (this.type == 0) {
+                //is cue ball
+                game.placeCueBall();
+
+            } else {
+                // A regular ball
+                Player player = game.getCurrentplayer();
+                if (player.getBalltype() == -1) {
+                    // The first pocket ball
+                    player.setBalltype(this.type);
+                    game.getInactiveplayer().setBalltype(this.type == 1 ? 2 : 1);
+                    player.getScoredballs().add(this);
+                } else {
+                    if (this.type == player.getBalltype()) {
+                        // Right colored ball pocket
+                        player.getScoredballs().add(this);
+                    } else {
+                        // Opponents ball pocketed
+                        game.getInactiveplayer().getScoredballs().add(this);
+                    }
+                }
             }
+            this.moving = false;
+            this.game.removeEntity(this);
         }
     }
 
@@ -254,6 +194,7 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
+
         this.moving = checkMovement();
         checkCollisionWall();
         checkCollisionBall(game.getBalls());

@@ -87,9 +87,6 @@ public class Game extends GameModel {
     private ShootLine line = new ShootLine(false, this);
 
 
-    //TEACHER: why not arrays? Or array lists?
-    //Balls
-
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
     private PowerupCreator powerupCreator;
@@ -239,7 +236,7 @@ public class Game extends GameModel {
         addEntity(madnessButton);
 
         if (runs < 1) {
-            //TEACHER: using an array or list would save you lines
+            //Cant use array because of different coordinates
             Hole hole1 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.12, holesize);
             Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize);
             Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize);
@@ -449,7 +446,7 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-                powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball, this.balls));
+                powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
 
@@ -458,7 +455,7 @@ public class Game extends GameModel {
 
 
         // puts the balls in the rack
-//        rackBalls(this.balls);
+//      rackBalls(this.balls);
         addEntity(line);
         addEntity(powerupCreator);
     }
@@ -537,9 +534,11 @@ public class Game extends GameModel {
     public void scoreCueBall() {
         this.cueBallScored = true;
         for (int i = 0; i < this.balls.size(); i++) {
-            WhiteBall whiteBall = (WhiteBall) this.balls.get(i);
-            if (whiteBall.isMoving()) {
-                whiteBall.setCollision(false);
+            if (this.balls.get(i).getType() == 0) {
+                WhiteBall whiteBall = (WhiteBall) this.balls.get(i);
+                if (whiteBall.isMoving()) {
+                    whiteBall.setCollision(false);
+                }
             }
         }
     }
@@ -629,9 +628,7 @@ public class Game extends GameModel {
         player2.resetScoredballs();
 
         this.balls.clear();
-
         resetBalls();
-
         setCurrentPlayer(player1);
 
         removeEntity(menuBackground);
