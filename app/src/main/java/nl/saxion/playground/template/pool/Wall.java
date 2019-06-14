@@ -1,55 +1,51 @@
 package nl.saxion.playground.template.pool;
 
-import android.view.MotionEvent;
-
-import java.util.ArrayList;
+import android.graphics.Color;
 
 import nl.saxion.playground.template.lib.Entity;
-import nl.saxion.playground.template.pool.balls.Ball;
+import nl.saxion.playground.template.lib.GameView;
 
 public class Wall extends Entity {
-    private double x, y;
-    private double width, height;
-    private int wallId;
 
-    private static int wallIdCreate = 1;
+    private Vector2 vector2 = new Vector2();
+    private double height, width;
 
-    ArrayList<Ball> balls;
-    ArrayList<Hole> holes;
-
-    public Wall (ArrayList<Ball> balls, ArrayList<Hole> holes) {
-        this.balls = balls;
-        this.holes = holes;
-        this.wallId = this.wallIdCreate;
-
-        this.wallIdCreate++;
+    public Wall(double x, double y) {
+        this.vector2.set(x, y);
+        Game.grayPaint.setColor(Color.GRAY);
     }
 
-    public double getX() {
-        return x;
+    @Override
+    public void tick() {
+        super.tick();
     }
 
-    public void setX(double x) {
-        this.x = x;
+    @Override
+    public void draw(GameView gv) {
+        super.draw(gv);
     }
 
-    public double getY() {
-        return y;
-    }
+    public void checkCollisionBalls() {
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getWidth() {
-        return width;
     }
 
     public double getHeight() {
         return height;
     }
 
-    public int getWallId() {
-        return wallId;
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public Vector2 getVector2() {
+        return vector2;
     }
 }

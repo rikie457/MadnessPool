@@ -25,10 +25,7 @@ public class MadnessButton extends Entity {
      * The A val.
      */
     float aVal;
-    private Game game;
-
-    private boolean buttonPressed = false;
-    private int timer;
+    private Game game;;
 
     /**
      * Instantiates a new Madness button.
@@ -44,16 +41,6 @@ public class MadnessButton extends Entity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (buttonPressed) {
-            buttonPressed = false;
-            game.startMadness();
-        }
-    }
-
-    @Override
     public void draw(GameView gv) {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.madnessbutton);
@@ -65,6 +52,6 @@ public class MadnessButton extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
         if (event.getX() > game.getWidth() / 2 - 300 && event.getX() < game.getWidth() / 2 + 300 && event.getY() > game.getHeight() / 2 + 70 && event.getY() < game.getHeight() / 2 + 130 && event.getAction() == MotionEvent.ACTION_UP)
-            buttonPressed = true;
+            game.startMadness();
     }
 }

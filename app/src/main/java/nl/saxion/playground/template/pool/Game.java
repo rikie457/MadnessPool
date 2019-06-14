@@ -39,6 +39,10 @@ public class Game extends GameModel {
      */
     static public Paint whitePaint = new Paint();
     /**
+     * The Gray paint
+     */
+    static public Paint grayPaint = new Paint();
+    /**
      * The Gray paint reflection.
      */
     static public Paint grayPaintReflection = new Paint();
@@ -62,6 +66,8 @@ public class Game extends GameModel {
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
     private boolean allmoving = false;
+    private boolean playerScored = false;
+    private boolean isMadness = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
@@ -89,6 +95,7 @@ public class Game extends GameModel {
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
+    private WallHandler wallHandler = new WallHandler(this.balls, this.holes, this);
     private PowerupCreator powerupCreator;
     /**
      * Start eight ball.
@@ -210,6 +217,8 @@ public class Game extends GameModel {
         // shootLine reflection colors
         grayPaintReflection.setColor(Color.argb(255, 50, 50, 50));
         grayPaintReflection.setStrokeWidth(2);
+
+        // wall colors
 
         // shootLine colors
         redPaint.setColor(Color.argb(255, 255, 0, 0));
@@ -435,6 +444,7 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
+        this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
@@ -515,16 +525,20 @@ public class Game extends GameModel {
      * Round checker.
      */
     public void roundChecker(WhiteBall ball) {
-        if (!this.checkMovementForAllBalls()) {
-            if (this.currentplayer == player1) {
-                setCurrentPlayer(player2);
+        if (!this.playerScored) {
+            if (!this.checkMovementForAllBalls()) {
+                if (this.currentplayer == player1) {
+                    setCurrentPlayer(player2);
+                } else {
+                    setCurrentPlayer(player1);
+                }
+                this.allmoving = false;
+                ball.setShot(false);
             } else {
-                setCurrentPlayer(player1);
+                this.allmoving = true;
             }
-            this.allmoving = false;
-            ball.setShot(false);
         } else {
-            this.allmoving = true;
+            this.playerScored = false;
         }
     }
 
@@ -592,6 +606,10 @@ public class Game extends GameModel {
         return players;
     }
 
+    public void setPlayerScored (boolean scored) {
+        this.playerScored = scored;
+    }
+
 
     /**
      * Winner screen.
@@ -638,6 +656,7 @@ public class Game extends GameModel {
         }
 
         this.gui = null;
+        this.isMadness = false;
         Ball.lastisertedid = 0;
         start();
     }
