@@ -164,11 +164,17 @@ public class Ball extends Entity {
                     game.getInactiveplayer().setBalltype(this.type == 1 ? 2 : 1);
                     player.getScoredballs().add(this);
                     game.setPlayerScored(true);
+                    if (game.getMadness()) {
+                        game.startPlacingWall();
+                    }
                 } else {
                     if (this.type == player.getBalltype()) {
                         // Right colored ball pocket
                         player.getScoredballs().add(this);
                         game.setPlayerScored(true);
+                        if (game.getMadness()) {
+                            game.startPlacingWall();
+                        }
                     } else {
                         // Opponents ball pocketed
                         game.getInactiveplayer().getScoredballs().add(this);

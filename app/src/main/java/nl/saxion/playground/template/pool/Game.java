@@ -68,6 +68,7 @@ public class Game extends GameModel {
     private boolean allmoving = false;
     private boolean playerScored = false;
     private boolean isMadness = false;
+    private boolean placingWall = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
@@ -78,6 +79,7 @@ public class Game extends GameModel {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Wall> walls = new ArrayList<>();
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
@@ -95,7 +97,7 @@ public class Game extends GameModel {
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
-    private WallHandler wallHandler = new WallHandler(this.balls, this.holes, this);
+    private WallHandler wallHandler = new WallHandler(this.balls, this.holes, this.walls, this);
     private PowerupCreator powerupCreator;
     /**
      * Start eight ball.
@@ -217,8 +219,6 @@ public class Game extends GameModel {
         // shootLine reflection colors
         grayPaintReflection.setColor(Color.argb(255, 50, 50, 50));
         grayPaintReflection.setStrokeWidth(2);
-
-        // wall colors
 
         // shootLine colors
         redPaint.setColor(Color.argb(255, 255, 0, 0));
@@ -537,6 +537,13 @@ public class Game extends GameModel {
             } else {
                 this.allmoving = true;
             }
+
+            if (this.walls.size() > 0) {
+                for (int i = 0; i < this.walls.size(); i++) {
+                    removeEntity(this.walls.get(i));
+                }
+                this.walls.clear();
+            }
         } else {
             this.playerScored = false;
         }
@@ -555,6 +562,29 @@ public class Game extends GameModel {
                 }
             }
         }
+    }
+
+    /**
+     * starts the placement of walls
+     */
+    public void startPlacingWall() {
+        this.placingWall = true;
+        addEntity(wallHandler);
+    }
+
+    /**
+     * Stops the placement of walls
+     */
+    public void stopPlacingWall() {
+        this.placingWall = false;
+    }
+
+    /**
+     * checks if a wall is being placed.
+     * @return placingWall boolean.
+     */
+    public boolean getPlacingWall() {
+        return this.placingWall;
     }
 
     /**
@@ -610,6 +640,10 @@ public class Game extends GameModel {
         this.playerScored = scored;
     }
 
+    public boolean getMadness() {
+        return this.isMadness;
+    }
+
 
     /**
      * Winner screen.
@@ -639,7 +673,6 @@ public class Game extends GameModel {
      * Reset.
      */
     public void reset() {
-
         player1.setBalltype(-1);
         player1.resetScoredballs();
         player2.setBalltype(-1);
