@@ -174,6 +174,7 @@ public class Ball extends Entity {
                         game.setPlayerScored(true);
                         if (game.getMadness()) {
                             game.startPlacingWall();
+                            System.out.println("test");
                         }
                     } else {
                         // Opponents ball pocketed

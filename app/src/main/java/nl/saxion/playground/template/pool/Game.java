@@ -678,6 +678,13 @@ public class Game extends GameModel {
         player2.setBalltype(-1);
         player2.resetScoredballs();
 
+        if (this.walls.size() != 0) {
+            for (int i = 0; i < this.walls.size(); i++) {
+                removeEntity(this.walls.get(i));
+            }
+            this.walls.clear();
+        }
+
         this.balls.clear();
         resetBalls();
         setCurrentPlayer(player1);

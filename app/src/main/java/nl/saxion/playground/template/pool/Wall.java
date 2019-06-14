@@ -15,8 +15,6 @@ public class Wall extends Entity {
     private double radius;
     private Rect rect = new Rect();
 
-    private static Bitmap bitmap;
-
     public Wall() {
         Game.grayPaint.setColor(Color.GRAY);
         this.height = 40f;

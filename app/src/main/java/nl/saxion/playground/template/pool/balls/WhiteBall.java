@@ -46,28 +46,26 @@ public class WhiteBall extends Ball {
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (!game.getPlacingWall()) {
-            if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    this.line.setVisible(true);
+        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored() && !game.getPlacingWall()) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                this.line.setVisible(true);
+                initOriginAndEnd(touch);
+
+            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                if (!this.line.getVisible()) {
                     initOriginAndEnd(touch);
-
-                } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    if (!this.line.getVisible()) {
-                        initOriginAndEnd(touch);
-                        this.line.setVisible(true);
-                    }
-
-                    updateEnd(touch);
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    double mag = Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y)) * 2;
-                    this.line.setVisible(false);
-
-                    this.speedX = 0.00001 * (this.vector2.getX() + mag * Math.cos(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
-                    this.speedY = 0.00001 * (this.vector2.getX() + mag * Math.sin(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
-                    this.shot = true;
+                    this.line.setVisible(true);
                 }
+
+                updateEnd(touch);
+
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                double mag = Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y)) * 2;
+                this.line.setVisible(false);
+
+                this.speedX = 0.00001 * (this.vector2.getX() + mag * Math.cos(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
+                this.speedY = 0.00001 * (this.vector2.getX() + mag * Math.sin(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
+                this.shot = true;
             }
         }
     }

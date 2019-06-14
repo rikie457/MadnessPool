@@ -34,8 +34,6 @@ public class WallHandler extends Entity {
         super.tick();
         checkMovingBalls();
 
-        System.out.println("spawned");
-
         if (this.walls.size() >= 3) {
             game.removeEntity(this);
         } else {
@@ -47,9 +45,7 @@ public class WallHandler extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
 
-        if (!this.wallPlaced && !this.overWallLimit && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
-
-            System.out.println("touch");
+        if (!this.wallPlaced && !this.overWallLimit && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
             Wall newWall = new Wall();
             this.wall = newWall;
             this.vector2 = this.wall.getVector2();
