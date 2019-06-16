@@ -525,27 +525,23 @@ public class Game extends GameModel {
      * Round checker.
      */
     public void roundChecker(WhiteBall ball) {
-        if (!this.playerScored) {
-            if (!this.checkMovementForAllBalls()) {
-                if (this.currentplayer == player1) {
-                    setCurrentPlayer(player2);
-                } else {
-                    setCurrentPlayer(player1);
-                }
-                this.allmoving = false;
-                ball.setShot(false);
-            } else {
-                this.allmoving = true;
+        if (!this.checkMovementForAllBalls()) {
+            if (this.currentplayer == player1 && !this.playerScored) {
+                setCurrentPlayer(player2);
+            } else if (!this.playerScored){
+                setCurrentPlayer(player1);
             }
-
-            if (this.walls.size() > 0) {
-                for (int i = 0; i < this.walls.size(); i++) {
-                    removeEntity(this.walls.get(i));
-                }
-                this.walls.clear();
-            }
-        } else {
+            this.allmoving = false;
+            ball.setShot(false);
             this.playerScored = false;
+        } else {
+            this.allmoving = true;
+        }
+        if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
+            for (int i = 0; i < this.walls.size(); i++) {
+                removeEntity(this.walls.get(i));
+            }
+            this.walls.clear();
         }
     }
 
@@ -640,6 +636,10 @@ public class Game extends GameModel {
         this.playerScored = scored;
     }
 
+    public boolean hasPlayerScored() {
+        return playerScored;
+    }
+
     public boolean getMadness() {
         return this.isMadness;
     }
@@ -652,6 +652,7 @@ public class Game extends GameModel {
      */
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
+        removeEntity(wallHandler);
         for (int i = 0; i < balls.size(); i++) {
             removeEntity(this.balls.get(i));
         }
