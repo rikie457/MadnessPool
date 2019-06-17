@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.pool.balls.Ball;
-import nl.saxion.playground.template.pool.balls.Shadows;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.powerup.TestPowerup;
+import nl.saxion.playground.template.pool.powerup.Wormhole;
 
 /**
  * The type Game.
@@ -68,7 +68,8 @@ public class Game extends GameModel {
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
-    private float powerupsize = 15f;
+    private float powerupsize = 30f;
+    private int turns;
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -307,7 +308,7 @@ public class Game extends GameModel {
         // ball at 15 is BLACK BALL (index 15)
 
 
-        this.rack_x_offset = (getPlayWidth() / 4) * 3;
+        this.rack_x_offset = (getPlayWidth() / 3) * 2;
         this.rack_y_offset = (getPlayHeight() / 2);
         this.rackPositions[14] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
 
@@ -344,9 +345,6 @@ public class Game extends GameModel {
         }
 
         final String tag = "[346]: ";
-        for(int i = 0; i < 16; i++) {
-            Log.e(tag, "pos " + i + ": " + this.rackPositions[i].getX() + ", " + this.rackPositions[i].getY() + "\n");
-        }
 
         for (int i = 0; i < 7; i++) {
             int a, b;
@@ -409,7 +407,12 @@ public class Game extends GameModel {
                     type = 2;
                 }
                 Ball ball = new Ball(this, this.drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
-                this.balls.add(ball);
+//                if (type == 1){
+//                   this.player1balls.add(ball);
+//                }else if(type == 2){
+//                    this.player2balls.add(ball);
+//                }
+                    this.balls.add(ball);
                 addEntity(ball);
             } else {
                 WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
@@ -467,6 +470,7 @@ public class Game extends GameModel {
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
                 powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
 
@@ -495,6 +499,10 @@ public class Game extends GameModel {
         }
     }
 
+    public int getTurns() {
+        return turns;
+    }
+
     /**
      * Gets currentplayer.
      *
@@ -511,6 +519,10 @@ public class Game extends GameModel {
      */
     public Player getInactiveplayer() {
         return inactiveplayer;
+    }
+
+    public float getPowerupsize() {
+        return powerupsize;
     }
 
     /**
@@ -537,8 +549,12 @@ public class Game extends GameModel {
     public void roundChecker(WhiteBall ball) {
         if (!this.checkMovementForAllBalls()) {
             if (this.currentplayer == player1) {
+                turns++;
+                System.out.println(turns);
                 setCurrentPlayer(player2);
             } else {
+                turns++;
+                System.out.println(turns);
                 setCurrentPlayer(player1);
             }
             this.allmoving = false;

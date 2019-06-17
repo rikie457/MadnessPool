@@ -30,7 +30,7 @@ public abstract class Powerup extends Entity {
 
     private void checkCollisionWithBall() {
         if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
-            //Apply properties of power up to all balls. (Needed for functionality)
+            resolveColission();
             game.removeEntity(this);
         }
     }
@@ -43,6 +43,10 @@ public abstract class Powerup extends Entity {
     @Override
     public void tick() {
         checkCollisionWithBall();
+    }
+
+    public void resolveColission(){
+
     }
 
     @Override

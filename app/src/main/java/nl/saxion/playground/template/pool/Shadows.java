@@ -1,4 +1,4 @@
-package nl.saxion.playground.template.pool.balls;
+package nl.saxion.playground.template.pool;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -10,6 +10,7 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Vector2;
+import nl.saxion.playground.template.pool.balls.Ball;
 
 public class Shadows extends Entity {
     private static Bitmap outer_shadow_bitmap = null;
