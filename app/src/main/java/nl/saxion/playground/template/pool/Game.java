@@ -9,7 +9,6 @@ package nl.saxion.playground.template.pool;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
-import nl.saxion.playground.template.pool.powerup.TestPowerup;
+import nl.saxion.playground.template.pool.powerup.Powerup;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
 
 /**
@@ -76,6 +75,7 @@ public class Game extends GameModel {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Powerup> powerups = new ArrayList<>();
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
@@ -208,6 +208,11 @@ public class Game extends GameModel {
         // Height fills actual screen size, but is based on width scaling.
         return (float) (actualHeight / (double) actualWidth * getWidth());
     }
+
+    public ArrayList<Powerup> getPowerups() {
+        return powerups;
+    }
+
 
     @Override
     public void start() {
@@ -434,6 +439,15 @@ public class Game extends GameModel {
         }
     }
 
+    private void resetPowerups() {
+        for (int i = 0; i < this.getPowerups().size(); i++) {
+            Powerup powerup = this.getPowerups().get(i);
+            removeEntity(powerup);
+            this.getPowerups().remove(i);
+        }
+
+    }
+
     /**
      * Start eight ball.
      */
@@ -470,8 +484,7 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-                //powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
-               // powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
@@ -664,6 +677,7 @@ public class Game extends GameModel {
         this.balls.clear();
         resetBalls();
         setCurrentPlayer(player1);
+        resetPowerups();
 
         removeEntity(menuBackground);
         if (powerupCreator != null) {

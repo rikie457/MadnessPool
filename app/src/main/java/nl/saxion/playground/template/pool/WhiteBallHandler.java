@@ -178,7 +178,7 @@ public class WhiteBallHandler extends Entity {
      * Check moving balls.
      */
     private void checkMovingBalls() {
-        if (!game.isAllmoving()) {
+        if (!game.checkMovementForAllBalls()) {
             game.scoreCueBall();
         }
     }

@@ -6,7 +6,6 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
-import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
@@ -28,11 +27,11 @@ public class Wormhole extends Powerup {
     @Override
     public void tick() {
         super.tick();
-        if (this.collected) {
-            this.currentturn = game.getTurns();
-            if (this.intialturn + 2 == this.currentturn) {
-                game.removeEntity(this);
-            } else {
+        this.currentturn = game.getTurns();
+        if (this.intialturn + 2 == this.currentturn) {
+            game.removeEntity(this);
+        } else {
+            if (this.collected) {
                 teleport();
             }
         }
@@ -64,6 +63,8 @@ public class Wormhole extends Powerup {
 
     @Override
     public void createPowerUp() {
-        game.addEntity(new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall));
+        Wormhole wormhole = new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        game.getPowerups().add(wormhole);
+        game.addEntity(wormhole);
     }
 }

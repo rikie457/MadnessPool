@@ -2,14 +2,11 @@ package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Color;
 
-import java.util.ArrayList;
-
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Vector2;
-import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 public abstract class Powerup extends Entity {
@@ -52,7 +49,9 @@ public abstract class Powerup extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        gv.getCanvas().drawCircle((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.radius, Game.powerupPaint);
+        if (!invisable) {
+            gv.getCanvas().drawCircle((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.radius, Game.powerupPaint);
+        }
     }
 
 

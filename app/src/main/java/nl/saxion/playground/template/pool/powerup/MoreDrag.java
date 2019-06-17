@@ -51,6 +51,7 @@ public class MoreDrag extends Powerup {
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
+            double friction = ball.getFriction();
             ball.setFriction(.9965);
         }
     }
@@ -75,6 +76,8 @@ public class MoreDrag extends Powerup {
 
     @Override
     public void createPowerUp() {
-        game.addEntity(new MoreDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall));
+        MoreDrag moredrag = new MoreDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        game.getPowerups().add(moredrag);
+        game.addEntity(moredrag);
     }
 }
