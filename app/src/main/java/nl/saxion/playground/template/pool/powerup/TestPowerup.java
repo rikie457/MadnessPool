@@ -11,10 +11,16 @@ public class TestPowerup extends Powerup {
 
     public TestPowerup(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
+        this.game = game;
+        this.whiteBall = ball;
     }
 
-
     public void createPowerUp() {
-        new TestPowerup(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        game.addEntity(new TestPowerup(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall));
+    }
+
+    @Override
+    public void resolveColission() {
+        System.out.println("SPECIAL ONE");
     }
 }

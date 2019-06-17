@@ -6,7 +6,6 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.powerup.Powerup;
-import nl.saxion.playground.template.pool.powerup.TestPowerup;
 
 public class PowerupCreator extends Entity {
     private Game game;
