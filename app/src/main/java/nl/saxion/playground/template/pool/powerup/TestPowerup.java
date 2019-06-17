@@ -21,6 +21,6 @@ public class TestPowerup extends Powerup {
 
     @Override
     public void resolveColission() {
-        System.out.println("SPECIAL ONE");
+        game.removeEntity(this);
     }
 }

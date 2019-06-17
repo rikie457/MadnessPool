@@ -7,6 +7,7 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Vector2;
+import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 public class Wormhole extends Powerup {
@@ -29,17 +30,30 @@ public class Wormhole extends Powerup {
     @Override
     public void tick() {
         super.tick();
-        this.currentturn = game.getTurns();
-        if(collected){
-            if(this.intialturn + 2 == this.currentturn){
+        if (collected) {
+            this.currentturn = game.getTurns();
+            if (this.intialturn + 2 == this.currentturn) {
                 game.removeEntity(this);
+            } else {
+                teleport();
+            }
+        }
+    }
+
+    public void teleport() {
+
+        for (int i = 0; i < game.getBalls().size(); i++) {
+            Ball ball = game.getBalls().get(i);
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), ball.getVector2().getX() + ball.getRadius(), ball.getVector2().getY() + ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
+                ball.getVector2().set(Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100));
             }
         }
     }
 
     @Override
     public void resolveColission() {
-       this.intialturn = game.getTurns();
+        this.intialturn = game.getTurns();
+        this.collected = true;
     }
 
 
