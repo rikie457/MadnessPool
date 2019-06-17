@@ -32,11 +32,7 @@ public class PowerupCreator extends Entity {
             if (random == 2) {
                 int poweruptype = (int) Utility.randomDoubleFromRange(0, this.powerups.size() - 1);
                 Powerup powerup = this.powerups.get(poweruptype);
-                //check which class is chosen
-                if (powerup instanceof TestPowerup) {
-                    //generate a new powerup.
-                    game.addEntity(new TestPowerup(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteball));
-                }
+                powerup.createPowerUp();
             }
 
         }

@@ -55,4 +55,7 @@ public abstract class Powerup extends Entity {
     public String toString() {
         return super.toString();
     }
+
+    public void createPowerUp() {
+    }
 }

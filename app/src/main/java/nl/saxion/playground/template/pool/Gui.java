@@ -79,7 +79,6 @@ public class Gui extends Entity {
         // texture_fixes_and_updates_2
         final float coolNewTexturesNecessaryOffset = -(8 * (1000 / game.getWidth()));
 
-        // this.player1.getScoredballs() occurs 17 ! times in the little bit of code below, store it locallly first!
         ArrayList<Ball> player1balls = this.player1.getScoredballs();
         ArrayList<Ball> player2balls = this.player2.getScoredballs();
 

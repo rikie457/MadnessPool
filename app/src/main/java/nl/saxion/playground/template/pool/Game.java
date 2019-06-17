@@ -395,7 +395,6 @@ public class Game extends GameModel {
                 Ball ball = new Ball(this, this.drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
                 this.balls.add(ball);
                 addEntity(ball);
-
             } else {
                 WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
                 this.balls.add(ball);
