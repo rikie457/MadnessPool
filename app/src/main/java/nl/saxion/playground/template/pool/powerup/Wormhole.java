@@ -15,7 +15,8 @@ public class Wormhole extends Powerup {
     private Game game;
     private WhiteBall whiteBall;
     private Vector2 vector2 = new Vector2();
-    private int currentturn;
+    private int currentturn, intialturn;
+    private boolean collected;
 
 
     public Wormhole(Game game, double x, double y, WhiteBall ball) {
@@ -29,14 +30,16 @@ public class Wormhole extends Powerup {
     public void tick() {
         super.tick();
         this.currentturn = game.getTurns();
+        if(collected){
+            if(this.intialturn + 2 == this.currentturn){
+                game.removeEntity(this);
+            }
+        }
     }
 
     @Override
     public void resolveColission() {
-       int intialturn = game.getTurns();
-       if(intialturn + 2 == this.currentturn){
-           game.removeEntity(this);
-       }
+       this.intialturn = game.getTurns();
     }
 
 
