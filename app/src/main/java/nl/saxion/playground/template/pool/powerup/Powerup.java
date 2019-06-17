@@ -18,7 +18,7 @@ public abstract class Powerup extends Entity {
     protected Vector2 vector2 = new Vector2();
     private double radius;
     private WhiteBall ball;
-    private ArrayList<Ball> balls;
+    protected boolean invisable = false, collected = false;
 
     public Powerup(Game game, double x, double y, WhiteBall ball) {
         this.game = game;
@@ -29,8 +29,10 @@ public abstract class Powerup extends Entity {
     }
 
     private void checkCollisionWithBall() {
-        if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
-            resolveColission();
+        if(!invisable) {
+            if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
+                resolveColission();
+            }
         }
     }
 

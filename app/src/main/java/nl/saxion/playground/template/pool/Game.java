@@ -19,6 +19,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.TestPowerup;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
 
@@ -469,11 +470,10 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-              //  powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
-                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
-
+                //powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
+               // powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
                 this.whiteBallHandler.setWhiteBall(whiteball);
-
             }
         }
 
@@ -550,11 +550,9 @@ public class Game extends GameModel {
         if (!this.checkMovementForAllBalls()) {
             if (this.currentplayer == player1) {
                 turns++;
-                System.out.println(turns);
                 setCurrentPlayer(player2);
             } else {
                 turns++;
-                System.out.println(turns);
                 setCurrentPlayer(player1);
             }
             this.allmoving = false;
