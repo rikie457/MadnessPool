@@ -259,6 +259,14 @@ public class Ball extends Entity {
         this.speedY = ySpeed;
     }
 
+    public double getFriction() {
+        return friction;
+    }
+
+    public void setFriction(double friction) {
+        this.friction = friction;
+    }
+
     public double getRadius() {
         return this.radius;
     }

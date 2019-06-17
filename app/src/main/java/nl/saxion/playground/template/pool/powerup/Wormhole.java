@@ -15,9 +15,7 @@ public class Wormhole extends Powerup {
     static Bitmap bitmap;
     private Game game;
     private WhiteBall whiteBall;
-    private Vector2 vector2 = new Vector2();
     private int currentturn, intialturn;
-    private boolean collected;
 
 
     public Wormhole(Game game, double x, double y, WhiteBall ball) {
@@ -30,7 +28,7 @@ public class Wormhole extends Powerup {
     @Override
     public void tick() {
         super.tick();
-        if (collected) {
+        if (this.collected) {
             this.currentturn = game.getTurns();
             if (this.intialturn + 2 == this.currentturn) {
                 game.removeEntity(this);
@@ -41,7 +39,6 @@ public class Wormhole extends Powerup {
     }
 
     public void teleport() {
-
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
             if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), ball.getVector2().getX() + ball.getRadius(), ball.getVector2().getY() + ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
