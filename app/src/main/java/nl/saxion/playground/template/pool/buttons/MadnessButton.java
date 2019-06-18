@@ -25,7 +25,7 @@ public class MadnessButton extends Entity {
      * The A val.
      */
     float aVal;
-    private Game game;;
+    private Game game;
 
     /**
      * Instantiates a new Madness button.

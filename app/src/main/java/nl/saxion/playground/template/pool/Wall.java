@@ -12,9 +12,11 @@ import nl.saxion.playground.template.lib.GameView;
 
 public class Wall extends Entity {
 
-    private Vector2 vector2 = new Vector2();
+    private Vector2 wallOrigin = new Vector2();
+    private Vector2 wallOpposite = new Vector2();
     private float height, width, rotationOffsetX, rotationOffsetY, currentY;
     private double radius;
+    private Vector2 vector2 = new Vector2();
 
     public Wall() {
         Game.grayPaint.setColor(Color.GRAY);
@@ -32,6 +34,13 @@ public class Wall extends Entity {
     @Override
     public void draw(GameView gv) {
         gv.getCanvas().drawLine((float) vector2.getX() - 20 + rotationOffsetX, (float) vector2.getY() - this.rotationOffsetY, (float) vector2.getX() + 20 - rotationOffsetX, (float) vector2.getY() + this.rotationOffsetY, Game.grayPaint);
+
+//        gv.getCanvas().drawLine(
+//                (float) wallOrigin.getX(),
+//                (float) wallOrigin.getY(),
+//                (float) wallOpposite.getX(),
+//                (float) wallOpposite.getY(),
+//                Game.grayPaint);
     }
 
     //TODO
@@ -39,8 +48,27 @@ public class Wall extends Entity {
 
     }
 
+    public void setWallOrigin(Vector2 v) {
+        this.wallOrigin.set(v.getX(), v.getY());
+    }
+
+    private void setWallOpposite(Vector2 v) {
+        this.wallOpposite.set(v.getX(), v.getY());
+    }
+
     //TODO
     public void rotate(GameModel.Touch touch) {
+
+        if (touch.y - this.currentY > 45) {
+            this.rotationOffsetX = 45;
+            this.rotationOffsetY = 45;
+        } else if (touch.y - this.currentY < -45) {
+            this.rotationOffsetX = -45;
+            this.rotationOffsetY = -45;
+        } else {
+            this.rotationOffsetX = touch.y - (this.rotationOffsetX - this.currentY);
+            this.rotationOffsetY = touch.y - (this.rotationOffsetY - this.currentY);
+        }
 
     }
 
