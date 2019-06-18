@@ -632,6 +632,10 @@ public class Game extends GameModel {
         return players;
     }
 
+    public ArrayList<Wall> getWalls () {
+        return this.walls;
+    }
+
     public void setPlayerScored (boolean scored) {
         this.playerScored = scored;
     }
@@ -643,7 +647,6 @@ public class Game extends GameModel {
     public boolean getMadness() {
         return this.isMadness;
     }
-
 
     /**
      * Winner screen.

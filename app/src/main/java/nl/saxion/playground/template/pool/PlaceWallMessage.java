@@ -11,6 +11,8 @@ import nl.saxion.playground.template.lib.GameView;
  */
 public class PlaceWallMessage extends Entity {
 
+    private int timer = 0;
+
     static private Bitmap bitmap;
     /**
      * The A val.
@@ -29,6 +31,20 @@ public class PlaceWallMessage extends Entity {
 
     public int getLayer() {
         return 2;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (timer < 480) {
+            timer++;
+        }
+
+        if (timer == 480) {
+            timer = 0;
+            game.removeEntity(this);
+        }
     }
 
     @Override

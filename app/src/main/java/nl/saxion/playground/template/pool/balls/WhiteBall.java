@@ -34,6 +34,9 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
+
+        getAngleMovement();
+
         if (this.isShot()) {
             game.roundChecker(this);
         }
