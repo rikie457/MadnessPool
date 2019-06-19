@@ -37,21 +37,43 @@ public class Vector2 implements Serializable {
 
     }
 
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
     public double getX() {
         return this.x;
     }
 
+    /**
+     * Sets x.
+     *
+     * @param x the x
+     */
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
+
     public double getY() {
         return this.y;
     }
+
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
+    public void setY(double y) {
+        this.y = y;
+    }
+
 
     public void set(double x, double y) {
         this.x = x;
@@ -71,10 +93,6 @@ public class Vector2 implements Serializable {
         this.y += y;
     }
 
-    /**
-     *
-      * @param xy the value to be added to both of these x and ys
-     */
     public void add(double xy) {
         this.x += xy;
         this.y += xy;
