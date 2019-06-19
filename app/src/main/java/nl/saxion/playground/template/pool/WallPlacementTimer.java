@@ -13,6 +13,7 @@ import nl.saxion.playground.template.lib.GameView;
 public class WallPlacementTimer extends Entity {
 
     private double timer;
+    private int tickCount;
     private float timerOffset;
     private Game game;
     private WallHandler wallHandler;
@@ -35,11 +36,7 @@ public class WallPlacementTimer extends Entity {
     @Override
     public void tick() {
 
-    }
-
-    @Override
-    public void draw(GameView gv) {
-        this.timer -= 0.04;
+        this.timer -= (float) tickCount / game.ticksPerSecond();
 
         if (this.timer < 0) {
             this.timer = 0;
@@ -55,6 +52,11 @@ public class WallPlacementTimer extends Entity {
         } else {
             this.timerOffset = 12;
         }
+
+    }
+
+    @Override
+    public void draw(GameView gv) {
 
         gv.getCanvas().drawText(String.valueOf(formatter.format(timer)), game.getWidth() / 2 - this.timerOffset, game.getHeight() - 25, Game.whitePaint);
     }
