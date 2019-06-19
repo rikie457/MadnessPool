@@ -25,11 +25,11 @@ public class WallHandler extends Entity {
 
     private int timer = 0;
     private int messageTimer = 0;
-    private int placementTimer = 0;
 
     private Game game;
     private Wall wall;
     private PlaceWallMessage placeWallMessage;
+    private WallPlacementTimer wallPlacementTimer;
 
     ArrayList<Ball> balls;
     ArrayList<Hole> holes;
@@ -48,6 +48,7 @@ public class WallHandler extends Entity {
         this.walls = walls;
         this.game = game;
         this.placeWallMessage = new PlaceWallMessage(game);
+        this.wallPlacementTimer = new WallPlacementTimer(game, this);
     }
 
     @Override
@@ -55,16 +56,15 @@ public class WallHandler extends Entity {
         super.tick();
         checkMovingBalls();
 
-        if (this.placementTimer < 5000) {
-            this.placementTimer++;
-        }
-
-        if (this.placementTimer == 5000) {
-            this.canContinue = true;
+        if (!this.wallMade) {
+            Wall newWall = new Wall();
+            this.wall = newWall;
+            this.wallMade = true;
         }
 
         if (this.canStartPlacing && this.walls.size() < 3) {
             game.addEntity(placeWallMessage);
+            game.addEntity(wallPlacementTimer);
             this.messageShown = true;
         }
 
@@ -90,7 +90,8 @@ public class WallHandler extends Entity {
             this.wallMade = false;
             this.timer = 0;
             this.messageTimer = 0;
-            this.placementTimer = 0;
+            this.wallPlacementTimer.resetTimer();
+            game.removeEntity(wallPlacementTimer);
             game.stopPlacingWall();
             game.removeEntity(placeWallMessage);
             game.removeEntity(this);
@@ -107,18 +108,11 @@ public class WallHandler extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
 
-        if (!this.wallPlaced && !this.overWallLimit && this.canStartPlacing && !game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (!this.wallMade) {
-                Wall newWall = new Wall();
-                this.wall = newWall;
-                this.wallMade = true;
-            }
-            if (isValidPosition(event)) {
-                this.wall.placeWall(touch);
-                this.wallPlaced = true;
-                game.addEntity(this.wall);
-                this.walls.add(this.wall);
-            }
+        if (!this.wallPlaced && !this.overWallLimit && this.canStartPlacing && isValidPosition(event) && !game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
+            this.wall.placeWall(touch);
+            this.wallPlaced = true;
+            game.addEntity(this.wall);
+            this.walls.add(this.wall);
         }
 
         if (this.wallPlaced && !this.rotatingWall && fingerOnWall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -227,5 +221,9 @@ public class WallHandler extends Entity {
         if (!game.checkMovementForAllBalls()) {
             this.canStartPlacing = true;
         }
+    }
+
+    public void setCanContinue(boolean canContinue) {
+        this.canContinue = canContinue;
     }
 }
