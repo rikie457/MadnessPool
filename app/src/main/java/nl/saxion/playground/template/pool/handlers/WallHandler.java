@@ -1,16 +1,17 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.handlers;
 
-import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
-import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.Wall;
 import nl.saxion.playground.template.pool.balls.Ball;
+import nl.saxion.playground.template.pool.messages.PlaceWallMessage;
 
 public class WallHandler extends Entity {
     private boolean overWallLimit = true;
@@ -109,7 +110,7 @@ public class WallHandler extends Entity {
 
         if (!this.wallPlaced && !this.overWallLimit && this.canStartPlacing && !game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
             if (!this.wallMade) {
-                Wall newWall = new Wall();
+                Wall newWall = new Wall(game);
                 this.wall = newWall;
                 this.wallMade = true;
             }

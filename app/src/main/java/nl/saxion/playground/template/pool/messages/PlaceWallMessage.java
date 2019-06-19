@@ -1,10 +1,11 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.messages;
 
 import android.graphics.Bitmap;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
 
 /**
  * The type PlaceWallMEssage.

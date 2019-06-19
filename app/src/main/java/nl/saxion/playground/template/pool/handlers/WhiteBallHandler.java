@@ -4,7 +4,7 @@
  * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
  */
 
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.handlers;
 
 import android.view.MotionEvent;
 
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 

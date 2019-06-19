@@ -18,6 +18,9 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.handlers.WallHandler;
+import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
+import nl.saxion.playground.template.pool.messages.WinMessage;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
@@ -427,7 +430,7 @@ public class Game extends GameModel {
 //                }else if(type == 2){
 //                    this.player2balls.add(ball);
 //                }
-                    this.balls.add(ball);
+                this.balls.add(ball);
                 addEntity(ball);
             } else {
                 WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
@@ -574,9 +577,9 @@ public class Game extends GameModel {
             if (this.currentplayer == player1 && !this.playerScored) {
                 setCurrentPlayer(player2);
                 turns++;
-            } else if (!this.playerScored){
+            } else if (!this.playerScored) {
                 setCurrentPlayer(player1);
-                      turns++;
+                turns++;
             }
             this.allmoving = false;
             ball.setShot(false);
@@ -585,10 +588,10 @@ public class Game extends GameModel {
             this.allmoving = true;
         }
         if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
-            for (int i = 0; i < this.walls.size(); i++) {
-                removeEntity(this.walls.get(i));
-            }
-            this.walls.clear();
+//            for (int i = 0; i < this.walls.size(); i++) {
+//                removeEntity(this.walls.get(i));
+//            }
+//            this.walls.clear();
         }
     }
 
@@ -624,6 +627,7 @@ public class Game extends GameModel {
 
     /**
      * checks if a wall is being placed.
+     *
      * @return placingWall boolean.
      */
     public boolean getPlacingWall() {
@@ -679,11 +683,11 @@ public class Game extends GameModel {
         return players;
     }
 
-    public ArrayList<Wall> getWalls () {
+    public ArrayList<Wall> getWalls() {
         return this.walls;
     }
 
-    public void setPlayerScored (boolean scored) {
+    public void setPlayerScored(boolean scored) {
         this.playerScored = scored;
     }
 

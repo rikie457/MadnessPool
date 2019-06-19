@@ -6,6 +6,8 @@
 
 package nl.saxion.playground.template.pool;
 
+import nl.saxion.playground.template.pool.balls.Ball;
+
 /**
  * The type Utility.
  */
@@ -35,6 +37,54 @@ public class Utility {
      */
     public static double randomDoubleFromRange(double min, double max) {
         return (Math.random() * (max - min + 1) + min);
+    }
+
+    public static Vector2 getClosestPoint(Wall wall, Ball ball) {
+        double x1 = wall.getVector2().getX();
+        double y1 = wall.getVector2().getY();
+        double x2 = wall.getEndVector2().getX();
+        double y2 = wall.getEndVector2().getY();
+        double bx = ball.getVector2().getX() + ball.getRadius();
+        double by = ball.getVector2().getY() + ball.getRadius();
+
+        double A = bx - x1;
+        double B = by - y1;
+        double C = x2 - x1;
+        double D = y2 - y1;
+
+        double dot = (A * C) + (B * D);
+        double len_sqrt = (C * C) + (D * D);
+        double param = -1;
+
+        if (len_sqrt != 0) {
+            param = dot / len_sqrt;
+        }
+
+        double cx = 0;
+        double cy = 0;
+
+        if (param < 0) {
+            cx = x1;
+            cy = y1;
+        } else if (param > 1) {
+            cx = x2;
+            cy = y2;
+        } else {
+            cx = x1 + param * C;
+            cy = y1 + param * D;
+        }
+        return new Vector2(cx, cy);
+    }
+
+
+    public static double getDistanceFromClosestPoint(Vector2 closestpoint, Ball ball) {
+        double bx = ball.getVector2().getX();
+        double by = ball.getVector2().getY();
+        double cx = closestpoint.getX();
+        double cy = closestpoint.getY();
+        double xx = bx - cx;
+        double yy = by - cy;
+        return Math.sqrt(xx * xx + yy * yy);
     }
 
 
