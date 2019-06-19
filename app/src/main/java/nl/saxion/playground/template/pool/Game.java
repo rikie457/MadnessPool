@@ -588,10 +588,10 @@ public class Game extends GameModel {
             this.allmoving = true;
         }
         if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
-//            for (int i = 0; i < this.walls.size(); i++) {
-//                removeEntity(this.walls.get(i));
-//            }
-//            this.walls.clear();
+            for (int i = 0; i < this.walls.size(); i++) {
+                removeEntity(this.walls.get(i));
+            }
+            this.walls.clear();
         }
     }
 

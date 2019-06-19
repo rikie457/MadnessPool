@@ -53,7 +53,6 @@ public class WallHandler extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
         checkMovingBalls();
 
         if (this.placementTimer < 5000) {
