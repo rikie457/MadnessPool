@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
@@ -24,6 +25,7 @@ public class WallHandler extends Entity {
 
     private int timer = 0;
     private int messageTimer = 0;
+    private int placementTimer = 0;
 
     private Game game;
     private Wall wall;
@@ -53,6 +55,14 @@ public class WallHandler extends Entity {
         super.tick();
         checkMovingBalls();
 
+        if (this.placementTimer < 5000) {
+            this.placementTimer++;
+        }
+
+        if (this.placementTimer == 5000) {
+            this.canContinue = true;
+        }
+
         if (this.canStartPlacing && this.walls.size() < 3) {
             game.addEntity(placeWallMessage);
             this.messageShown = true;
@@ -80,6 +90,7 @@ public class WallHandler extends Entity {
             this.wallMade = false;
             this.timer = 0;
             this.messageTimer = 0;
+            this.placementTimer = 0;
             game.stopPlacingWall();
             game.removeEntity(placeWallMessage);
             game.removeEntity(this);

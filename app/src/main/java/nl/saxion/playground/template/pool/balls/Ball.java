@@ -26,6 +26,7 @@ public class Ball extends Entity {
 
     protected double speedX, speedY, mass, width, height, radius, bx, by, friction, energyloss;
     protected Vector2 vector2;
+    protected Vector2 madnessWallVector;
     protected Game game;
 
     private static Bitmap[] bitmaps;
@@ -51,6 +52,7 @@ public class Ball extends Entity {
         this.energyloss = .900;
         this.type = type;
         this.vector2 = new Vector2(x, y);
+        this.madnessWallVector = new Vector2();
         this.drawables = drawables;
         if (bitmaps == null) {
             bitmaps = new Bitmap[16];
@@ -190,41 +192,62 @@ public class Ball extends Entity {
     }
 
     /**
-     * Gives effect to speed of ball when hitting a wall.
+     * Sends the ball in the right direction on hitting the wall.
      */
     private void checkCollisionPlaceableWalls() {
-        double oldSpeedX = this.speedX;
-        double oldSpeedY = this.speedY;
-//        double transferSpeedCalc = 2.222222;
-//        double turnSpeedCalc = 2.222222;
+        double totalVelocity = this.speedX + this.speedY;
+        double totalCordDiff, xCordDiff, yCofdDiff, newSpeedXCalc, newSpeedYCalc;
+        double angleDifference;
+
         Wall wall;
+
 
         for (int i = 0; i < game.getWalls().size(); i++) {
             wall = game.getWalls().get(i);
             if (collisionBallWall(game.getWalls().get(i))) {
-//                if (getAngleMovement() + wall.getLineAngle() == 180 || getAngleMovement() + wall.getLineAngle() == 0 || getAngleMovement() + wall.getLineAngle() == -180) {
-//                    this.speedX = -this.speedX;
-//                    this.speedY = -this.speedY;
-//                } else {
-//
-//                    if (getAngleMovement() + wall.getLineAngle() < 45 || getAngleMovement() + wall.getLineAngle() > -45) {
-//
-//                        this.speedX = oldSpeedY * (transferSpeedCalc * getAngleMovement() + wall.getLineAngle()) + oldSpeedX * (100 - turnSpeedCalc * turnSpeedCalc);
-//                        this.speedY = oldSpeedX * (transferSpeedCalc * getAngleMovement() + wall.getLineAngle()) + oldSpeedY * (100 - turnSpeedCalc * turnSpeedCalc);
-//                    } else if (getAngleMovement() + wall.getLineAngle() > 45 && getAngleMovement() + wall.getLineAngle() < 90 || getAngleMovement() + wall.getLineAngle() < -45 && getAngleMovement() + wall.getLineAngle() > -90){
-//                        this.speedX = oldSpeedY * (100 - transferSpeedCalc * getAngleMovement() + wall.getLineAngle());
-//                        this.speedY = oldSpeedX * (100 - transferSpeedCalc * getAngleMovement() + wall.getLineAngle());
-//                    } else if (getAngleMovement() + wall.getLineAngle() > 90 && getAngleMovement() + wall.getLineAngle() < 135 || getAngleMovement() + wall.getLineAngle() < -90 && getAngleMovement() + wall.getLineAngle() > -135) {
-//                        this.speedX = oldSpeedY * (transferSpeedCalc * getAngleMovement() + wall.getLineAngle()) + oldSpeedX * (turnSpeedCalc * turnSpeedCalc);
-//                        this.speedY = oldSpeedX * (transferSpeedCalc * getAngleMovement() + wall.getLineAngle()) + oldSpeedY * (turnSpeedCalc * turnSpeedCalc);
-//                    } else {
-//                        this.speedX = oldSpeedY * (100 - transferSpeedCalc * getAngleMovement() + wall.getLineAngle() + oldSpeedX);
-//                        this.speedY = oldSpeedX * (100 - transferSpeedCalc * getAngleMovement() + wall.getLineAngle()) + oldSpeedY;
-//                    }
-//                }
+
+
+                if (wall.getLineAngle() > getAngleMovement()) {
+                    angleDifference = wall.getLineAngle() - getAngleMovement();
+                } else {
+                    angleDifference = getAngleMovement() - wall.getLineAngle();
+                }
+
+                if (angleDifference > 180) {
+                    angleDifference -= 180;
+                }
+
+                //Ball up = min, ball down = plus, ball right = 0, ball left = 180
+                //wall measured from the line end
+                //line end right side = 180, line end left side = 0, line end up = plus, line end down = min
+
+                //Opposite angle line = movementAngle + 180 + 2 * angleDifference
+
+                //this.endVector2.set(this.middleX + this.radius * Math.cos(this.lineRotation), this.middleY + this.radius * Math.sin(Math.sin(this.lineRotation)));
+
+                this.madnessWallVector.set(this.vector2.getX() + 20 * Math.cos(getAngleMovement() + angleDifference * 2), this.vector2.getY() + 20 * Math.sin(Math.sin(getAngleMovement() + angleDifference * 2)));
+
+                xCordDiff = this.vector2.getX() - this.madnessWallVector.getX();
+                yCofdDiff = this.vector2.getY() - this.madnessWallVector.getY();
+
+                if (xCordDiff < 0 && yCofdDiff > 0) {
+                    totalCordDiff = -1 * xCordDiff + yCofdDiff;
+                } else if (xCordDiff < 0 && yCofdDiff < 0) {
+                    totalCordDiff = -1 * xCordDiff + -1 * yCofdDiff;
+                } else if (xCordDiff > 0 && yCofdDiff < 0) {
+                    totalCordDiff = xCordDiff + -1 * yCofdDiff;
+                } else {
+                    totalCordDiff = xCordDiff + yCofdDiff;
+                }
+
+                newSpeedXCalc = xCordDiff / totalCordDiff;
+                newSpeedYCalc = yCofdDiff / totalCordDiff;
+                this.speedX = newSpeedXCalc * totalVelocity;
+                this.speedY = newSpeedYCalc * totalVelocity;
             }
         }
     }
+
 
     /**
      * Checks if there is collion with a wall.
@@ -233,7 +256,7 @@ public class Ball extends Entity {
      */
     public boolean collisionBallWall(Wall wall){
 
-        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(),2)); // That's the pythagoras theoram If I can spell it right
+        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(),2));
 
         double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(),2));
 
@@ -246,12 +269,12 @@ public class Ball extends Entity {
 
         double angle2 = Math.atan2( wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY() );
 
-        if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2) // Making sure if any angle is an obtuse one and Math.PI / 2 = 90 deg
+        if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
             return false;
 
         double semiperimeter = (side1 + side2 + base) / 2;
 
-        double areaOfTriangle = Math.sqrt( semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base) ); // Heron's formula for the area
+        double areaOfTriangle = Math.sqrt( semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base) );
 
         double height = 2*areaOfTriangle/base;
 

@@ -37,14 +37,6 @@ public class Wall extends Entity {
         gv.getCanvas().drawLine((float) vector2.getX(), (float) vector2.getY(), (float) endVector2.getX(), (float) endVector2.getY(), Game.grayPaint);
     }
 
-    //TODO
-    /**
-     * checks for collision with balls
-     */
-    public void checkCollisionBalls() {
-
-    }
-
     /**
      * Sets the cords where the wall will spawn.
      * @param touch
