@@ -12,6 +12,7 @@ import android.renderscript.Sampler;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 
+import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
@@ -29,7 +30,10 @@ public class Ball extends Entity {
     protected Vector2 madnessWallVector;
     protected Game game;
 
+    private boolean hasShadow = true;
+
     private static Bitmap[] bitmaps;
+    private static Bitmap ball_inner_shadow;
     private int id, type;
     private boolean moving;
     private boolean collision = true;
@@ -138,6 +142,11 @@ public class Ball extends Entity {
         }
     }
 
+    private void removeBall() {
+        this.game.removeEntity(this);
+        this.hasShadow = false;
+    }
+
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -187,7 +196,7 @@ public class Ball extends Entity {
                 }
             }
             this.moving = false;
-            this.game.removeEntity(this);
+            removeBall();
         }
     }
 
@@ -307,7 +316,7 @@ public class Ball extends Entity {
 
     @Override
     public String toString() {
-        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.vector2.getX() + ", " + this.vector2.getY() + ", MOVING: " + this.moving;
+        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.vector2.getX() + ", " + this.vector2.getY() + ", MOVING: " + this.moving + ", HAS_SHADOW: " + this.hasShadow;
     }
 
     @Override
@@ -328,12 +337,13 @@ public class Ball extends Entity {
     public void draw(GameView gv) {
         float x = (float) this.vector2.getX();
         float y = (float) this.vector2.getY();
-        Bitmap toDraw = null;
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        toDraw = bitmaps[this.id];
-        // draw the ball texture, which is 300x300 pixels, to account for the ball's shadow
-        gv.drawBitmap(toDraw, x - 8 * (1000 / game.getWidth()), y - 8 * (1000 / game.getWidth()), (float) (this.width * 1.5), (float) (this.height * 1.5));
+        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height);
+
+        if(this.ball_inner_shadow == null)
+            this.ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
+        gv.drawBitmap(this.ball_inner_shadow, x, y, (float) width, (float) height);
     }
 
     @Override
@@ -345,6 +355,13 @@ public class Ball extends Entity {
         return this.mass;
     }
 
+    public void setHasShadow(boolean val) {
+        this.hasShadow = val;
+    }
+
+    public boolean hasShadow() {
+        return this.hasShadow;
+    }
 
     // werkt niet, niet gebruiken
     public void setSpeedX(float xSpeed) {
@@ -362,6 +379,14 @@ public class Ball extends Entity {
     // werkt niet, niet gebruiken
     public void setSpeedY(float ySpeed) {
         this.speedY = ySpeed;
+    }
+
+    public double getFriction() {
+        return friction;
+    }
+
+    public void setFriction(double friction) {
+        this.friction = friction;
     }
 
     public double getRadius() {

@@ -22,6 +22,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
  */
 public class Gui extends Entity {
     static private Bitmap bitmap;
+    private static Bitmap ball_inner_shadow, ball_outer_shadow;
     private double width, height;
     private Vector2 vector2 = new Vector2();
     private Game game;
@@ -76,10 +77,16 @@ public class Gui extends Entity {
         gv.getCanvas().drawText("Player 2", (float) x + 910, (float) y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : Game.whitePaint);
         gv.drawBitmap(bitmap, (float) x + 680, (float) y + 25, 230, 50);
 
-        // texture_fixes_and_updates_2
-        final float coolNewTexturesNecessaryOffset = -(8 * (1000 / game.getWidth()));
+        if(this.ball_inner_shadow == null) {
+            this.ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
+        }
+        if(this.ball_outer_shadow == null) {
+            this.ball_outer_shadow = gv.getBitmapFromResource(R.drawable.ball_shadow);
+        }
 
-        // this.player1.getScoredballs() occurs 17 ! times in the little bit of code below, store it locallly first!
+        // texture_fixes_and_updates_2
+        final float shadow_offset = -(8 * (1000 / game.getWidth())), shadow_multiplier = (float)1.5;
+
         ArrayList<Ball> player1balls = this.player1.getScoredballs();
         ArrayList<Ball> player2balls = this.player2.getScoredballs();
 
@@ -88,18 +95,38 @@ public class Gui extends Entity {
                 Ball ball = player1balls.get(j);
                 if (ball.getBitmap(j) != null) {
                     if (this.player1.getBalltype() == 1) {
+                        gv.drawBitmap(ball_outer_shadow,
+                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
+                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
+                                (float) (ball.getWidth() * shadow_multiplier),
+                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10 + coolNewTexturesNecessaryOffset,
-                                (float) y + (float) ball.getRadius() + 15 + coolNewTexturesNecessaryOffset,
-                                (float) (ball.getWidth() * 1.5),
-                                (float) (ball.getHeight() * 1.5));
+                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()),
+                                (float) (ball.getHeight()));
+                        gv.drawBitmap(ball_inner_shadow,
+                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()),
+                                (float) (ball.getHeight()));
                     } else {
                         if (ball.getBitmap(j) != null) {
+                            gv.drawBitmap(ball_outer_shadow,
+                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
+                                    (float) y + (float) ball.getRadius() + 15 + shadow_offset,
+                                    (float) (ball.getWidth() * shadow_multiplier),
+                                    (float) (ball.getHeight() * shadow_multiplier));
                             gv.drawBitmap(ball.getBitmap(j),
-                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10 + coolNewTexturesNecessaryOffset,
-                                    (float) y + (float) ball.getRadius() + 15 + coolNewTexturesNecessaryOffset,
-                                    (float) (ball.getWidth() * 1.5),
-                                    (float) (ball.getHeight() * 1.5));
+                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10,
+                                    (float) y + (float) ball.getRadius() + 15,
+                                    (float) (ball.getWidth()),
+                                    (float) (ball.getHeight()));
+                            gv.drawBitmap(ball_inner_shadow,
+                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10,
+                                    (float) y + (float) ball.getRadius() + 15,
+                                    (float) (ball.getWidth()),
+                                    (float) (ball.getHeight()));
                         }
                     }
                 }
@@ -111,19 +138,39 @@ public class Gui extends Entity {
                 Ball ball = player2balls.get(j);
                 if (this.player2.getBalltype() == 2) {
                     if (ball.getBitmap(j) != null) {
+                        gv.drawBitmap(ball_outer_shadow,
+                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
+                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
+                                (float) (ball.getWidth() * shadow_multiplier) - 500,
+                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10 + coolNewTexturesNecessaryOffset,
-                                (float) y + (float) ball.getRadius() + 15 + coolNewTexturesNecessaryOffset,
-                                (float) (ball.getWidth() * 1.5) - 500,
-                                (float) (ball.getHeight() * 1.5));
+                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()) - 500,
+                                (float) (ball.getHeight()));
+                        gv.drawBitmap(ball_inner_shadow,
+                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()) - 500,
+                                (float) (ball.getHeight()));
                     }
                 } else {
                     if (ball.getBitmap(j) != null) {
+                        gv.drawBitmap(ball_outer_shadow,
+                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
+                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
+                                (float) (ball.getWidth() * shadow_multiplier) - 500,
+                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10 + coolNewTexturesNecessaryOffset,
-                                (float) y + (float) ball.getRadius() + 15 + coolNewTexturesNecessaryOffset,
-                                (float) (ball.getWidth() * 1.5) - 500,
-                                (float) (ball.getHeight() * 1.5));
+                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()) - 500,
+                                (float) (ball.getHeight()));
+                        gv.drawBitmap(ball_inner_shadow,
+                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10,
+                                (float) y + (float) ball.getRadius() + 15,
+                                (float) (ball.getWidth()) - 500,
+                                (float) (ball.getHeight()));
                     }
                 }
             }
