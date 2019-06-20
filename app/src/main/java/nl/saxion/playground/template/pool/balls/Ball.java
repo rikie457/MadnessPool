@@ -103,6 +103,7 @@ public class Ball extends Entity {
     private void checkCollisionWall() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
+        this.vector2.set(x += this.speedX, y += this.speedY);
         /**
          * muren rechts en links
          */
@@ -347,16 +348,18 @@ public class Ball extends Entity {
         this.speedY = ySpeed;
     }
 
-    public double getFriction() {
-        return friction;
+
+
+    public double getRadius() {
+        return this.radius;
     }
 
     public void setFriction(double friction) {
         this.friction = friction;
     }
 
-    public double getRadius() {
-        return this.radius;
+    public double getFriction() {
+        return friction;
     }
 
     public double getWidth() {
@@ -371,6 +374,13 @@ public class Ball extends Entity {
         return id;
     }
 
+    public double getSpeedX() {
+        return speedX;
+    }
+
+    public double getSpeedY() {
+        return speedY;
+    }
 
     public boolean isMoving() {
         return moving;

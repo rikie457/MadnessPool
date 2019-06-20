@@ -15,6 +15,7 @@ public abstract class Powerup extends Entity {
     protected Vector2 vector2 = new Vector2();
     private double radius;
     private WhiteBall ball;
+
     protected boolean invisable = false, collected = false;
 
     public Powerup(Game game, double x, double y, WhiteBall ball) {
@@ -43,10 +44,6 @@ public abstract class Powerup extends Entity {
         checkCollisionWithBall();
     }
 
-    public void resolveColission(){
-
-    }
-
     @Override
     public void draw(GameView gv) {
         if (!invisable) {
@@ -54,6 +51,8 @@ public abstract class Powerup extends Entity {
         }
     }
 
+    public void resolveColission(){
+    }
 
     @Override
     public String toString() {

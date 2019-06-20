@@ -22,7 +22,12 @@ import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
 import nl.saxion.playground.template.pool.powerup.AddWall;
+import nl.saxion.playground.template.pool.powerup.MoreDrag;
+import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.SpeedBoost;
+import nl.saxion.playground.template.pool.powerup.Wormhole;
+
 
 /**
  * The type Game.
@@ -84,8 +89,11 @@ public class Game extends GameModel {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+<<<<<<< app/src/main/java/nl/saxion/playground/template/pool/Game.java
     private ArrayList<Wall> walls = new ArrayList<>();
+=======
     private ArrayList<Powerup> powerups = new ArrayList<>();
+>>>>>>> app/src/main/java/nl/saxion/playground/template/pool/Game.java
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
@@ -429,7 +437,7 @@ public class Game extends GameModel {
 //                }else if(type == 2){
 //                    this.player2balls.add(ball);
 //                }
-                this.balls.add(ball);
+                    this.balls.add(ball);
                 addEntity(ball);
             } else {
                 WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
@@ -496,8 +504,10 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-//                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
-//                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new AddWall(this, 250, 250, whiteball));
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
@@ -525,6 +535,12 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * Gets currentplayer.
+     *
+     * @return the currentplayer
+     */
+
     public int getTurns() {
         return turns;
     }
@@ -537,6 +553,8 @@ public class Game extends GameModel {
     public Player getCurrentplayer() {
         return this.currentplayer;
     }
+
+
 
     /**
      * Gets inactiveplayer.
@@ -595,6 +613,7 @@ public class Game extends GameModel {
         }
     }
 
+
     /**
      * Score cue ball.
      */
@@ -627,7 +646,6 @@ public class Game extends GameModel {
 
     /**
      * checks if a wall is being placed.
-     *
      * @return placingWall boolean.
      */
     public boolean getPlacingWall() {

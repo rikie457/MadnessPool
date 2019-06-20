@@ -9,17 +9,21 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
-public class MoreDrag extends Powerup {
-    static Bitmap bitmap;
-    private Game game;
+public class NoDrag extends Powerup {
     private WhiteBall whiteBall;
+    static private Bitmap bitmap;
+    private Game game;
+    private double x, y, radius;
     private int currentturn, intialturn;
     private boolean applied;
 
-    public MoreDrag(Game game, double x, double y, WhiteBall ball) {
+    public NoDrag(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
+        this.x = x;
+        this.y = y;
+        this.radius = 30f;
     }
 
     @Override
@@ -28,54 +32,57 @@ public class MoreDrag extends Powerup {
         this.currentturn = game.getTurns();
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
-                removeDrag();
+                applyDrag();
                 game.removeEntity(this);
             } else {
                 if (!this.applied) {
-                    applyDrag();
+                    removeDrag();
                     this.applied = true;
                 }
             }
         }
     }
 
+
+    @Override
+    public int getLayer() {
+        return 1;
+    }
+
     public void applyDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
             double friction = ball.getFriction();
-            ball.setFriction(friction * .999);
+            ball.setFriction(friction * .9965);
         }
     }
 
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
-            ball.setFriction(.9965);
+            ball.setFriction(.9999);
         }
     }
 
-    @Override
-    public void draw(GameView gv) {
-        if(!invisable) {
-            if (bitmap == null) {
-                bitmap = gv.getBitmapFromResource(R.drawable.drag);
-            }
-            gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
-        }
-    }
-
-    @Override
     public void resolveColission() {
         this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
 
+    public void draw(GameView gameView) {
+        if (!invisable) {
+            if (bitmap == null) {
+                bitmap = gameView.getBitmapFromResource(R.drawable.nodrag);
+            }
+            gameView.drawBitmap(bitmap, (float) x, (float) y, (float) this.radius, (float) this.radius);
+        }
+    }
 
     @Override
     public void createPowerUp() {
-        MoreDrag moredrag = new MoreDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
-        game.getPowerups().add(moredrag);
-        game.addEntity(moredrag);
+        NoDrag noDrag = new NoDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        game.getPowerups().add(noDrag);
+        game.addEntity(noDrag);
     }
 }
