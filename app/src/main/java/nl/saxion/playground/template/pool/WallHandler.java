@@ -62,7 +62,7 @@ public class WallHandler extends Entity {
             this.wallMade = true;
         }
 
-        if (this.canStartPlacing && this.walls.size() < 3) {
+        if (this.canStartPlacing && this.walls.size() < 3 && !this.messageShown) {
             game.addEntity(placeWallMessage);
             game.addEntity(wallPlacementTimer);
             this.messageShown = true;

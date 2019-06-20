@@ -12,13 +12,11 @@ import nl.saxion.playground.template.lib.GameView;
 
 public class WallPlacementTimer extends Entity {
 
-    private double timer;
-    private int tickCount;
+    private int timer = 30;
+    private int tickCounter;
     private float timerOffset;
     private Game game;
     private WallHandler wallHandler;
-
-    NumberFormat formatter = new DecimalFormat("#0");
 
     /**
      * Instantiates a new WallPlacementTimer.
@@ -26,7 +24,6 @@ public class WallPlacementTimer extends Entity {
     public WallPlacementTimer(Game game, WallHandler wallHandler) {
         this.game = game;
         this.wallHandler = wallHandler;
-        this.timer = 30;
     }
 
     public int getLayer() {
@@ -36,21 +33,14 @@ public class WallPlacementTimer extends Entity {
     @Override
     public void tick() {
 
-        this.timer -= (float) tickCount / game.ticksPerSecond();
+        this.tickCounter++;
 
-        if (this.timer < 0) {
-            this.timer = 0;
+        if (this.tickCounter % game.ticksPerSecond() == 0) {
+            this.timer--;
         }
 
         if (this.timer <= 0) {
-            wallHandler.setCanContinue(true);
             removeThisEntity();
-        }
-
-        if (this.timer < 10) {
-            this.timerOffset = 6;
-        } else {
-            this.timerOffset = 12;
         }
 
     }
@@ -58,7 +48,17 @@ public class WallPlacementTimer extends Entity {
     @Override
     public void draw(GameView gv) {
 
-        gv.getCanvas().drawText(String.valueOf(formatter.format(timer)), game.getWidth() / 2 - this.timerOffset, game.getHeight() - 25, Game.whitePaint);
+        if (this.timer < 10) {
+            this.timerOffset = 6;
+        } else {
+            this.timerOffset = 12;
+        }
+
+        if (this.timer < 0) {
+            this.timer = 0;
+        }
+
+        gv.getCanvas().drawText(String.valueOf(timer), game.getWidth() / 2 - this.timerOffset, game.getHeight() - 25, Game.whitePaint);
     }
 
     /**
@@ -69,7 +69,11 @@ public class WallPlacementTimer extends Entity {
         game.removeEntity(this);
     }
 
+    /**
+     * Resets the timer.
+     */
     public void resetTimer() {
         this.timer = 30;
+        this.tickCounter = 0;
     }
 }
