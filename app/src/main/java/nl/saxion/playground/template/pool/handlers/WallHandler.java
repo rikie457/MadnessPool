@@ -10,6 +10,7 @@ import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Hole;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Wall;
+import nl.saxion.playground.template.pool.WallPlacementTimer;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.messages.PlaceWallMessage;
 
@@ -56,7 +57,7 @@ public class WallHandler extends Entity {
         checkMovingBalls();
 
         if (!this.wallMade) {
-            Wall newWall = new Wall();
+            Wall newWall = new Wall(game);
             this.wall = newWall;
             this.wallMade = true;
         }

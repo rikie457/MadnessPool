@@ -89,11 +89,9 @@ public class Game extends GameModel {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
-<<<<<<< app/src/main/java/nl/saxion/playground/template/pool/Game.java
     private ArrayList<Wall> walls = new ArrayList<>();
-=======
     private ArrayList<Powerup> powerups = new ArrayList<>();
->>>>>>> app/src/main/java/nl/saxion/playground/template/pool/Game.java
+
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
