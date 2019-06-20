@@ -19,7 +19,6 @@ public class PlaceWallMessage extends Entity {
      * The A val.
      */
     float aVal;
-    private int entryType;
     private Game game;
 
     /**
@@ -52,20 +51,12 @@ public class PlaceWallMessage extends Entity {
     @Override
     public void draw(GameView gv) {
         if (bitmap == null) {
-            if (game.getCurrentplayer().getPlayerId() == 1 && this.entryType == 1) {
+            if (game.getCurrentplayer().getPlayerId() == 1) {
                 bitmap = gv.getBitmapFromResource(R.drawable.playertwowall);
-            } else if (game.getCurrentplayer().getPlayerId() == 2 && this.entryType == 1){
+            } else {
                 bitmap = gv.getBitmapFromResource(R.drawable.playeronewall);
-            } else if (game.getCurrentplayer().getPlayerId() == 1 && this.entryType == 2) {
-                bitmap = gv.getBitmapFromResource(R.drawable.playeronewall);
-            } else if (game.getCurrentplayer().getPlayerId() == 2 && this.entryType == 2) {
-                bitmap = gv.getBitmapFromResource(R.drawable.playertwowall);
             }
         }
         gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
-    }
-
-    public void setEntryType(int entryType) {
-        this.entryType = entryType;
     }
 }

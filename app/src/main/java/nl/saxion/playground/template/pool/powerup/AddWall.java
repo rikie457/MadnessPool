@@ -15,6 +15,7 @@ public class AddWall extends Powerup {
     private Game game;
     private WhiteBall whiteBall;
     private WallHandler wallHandler;
+    private boolean effectApplied = false;
     private int currentturn;
     private int intialturn;
     static Bitmap bitmap;
@@ -33,8 +34,9 @@ public class AddWall extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 game.removeEntity(this);
-            } else {
+            } else if (!this.effectApplied){
                     applyEffect();
+                    this.effectApplied = true;
             }
         }
     }
@@ -42,12 +44,12 @@ public class AddWall extends Powerup {
     @Override
     public void resolveColission() {
         this.collected = true;
+        this.invisable = true;
         this.intialturn = game.getTurns();
     }
 
     public void applyEffect(){
-        this.wallHandler.setEntryType(2);
-        game.addEntity(wallHandler);
+        game.startPlacingWall();
     }
 
     @Override

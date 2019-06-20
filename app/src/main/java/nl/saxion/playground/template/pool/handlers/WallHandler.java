@@ -27,7 +27,6 @@ public class WallHandler extends Entity {
     private int timer = 0;
     private int messageTimer = 0;
     private int placementTimer = 0;
-    private int entryType = 1;
 
     private Game game;
     private Wall wall;
@@ -65,7 +64,6 @@ public class WallHandler extends Entity {
         }
 
         if (this.canStartPlacing && this.walls.size() < 3) {
-            this.placeWallMessage.setEntryType(entryType);
             game.addEntity(placeWallMessage);
             this.messageShown = true;
         }
@@ -93,7 +91,6 @@ public class WallHandler extends Entity {
             this.timer = 0;
             this.messageTimer = 0;
             this.placementTimer = 0;
-            this.entryType = 1;
             game.stopPlacingWall();
             game.removeEntity(placeWallMessage);
             game.removeEntity(this);
@@ -230,9 +227,5 @@ public class WallHandler extends Entity {
         if (!game.checkMovementForAllBalls()) {
             this.canStartPlacing = true;
         }
-    }
-
-    public void setEntryType(int entryType) {
-        this.entryType = entryType;
     }
 }
