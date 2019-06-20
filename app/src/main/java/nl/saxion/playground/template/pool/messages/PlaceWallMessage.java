@@ -14,7 +14,8 @@ public class PlaceWallMessage extends Entity {
 
     private int timer = 0;
 
-    static private Bitmap bitmap;
+    static private Bitmap bitmap1;
+    static private Bitmap bitmap2;
     /**
      * The A val.
      */
@@ -50,13 +51,18 @@ public class PlaceWallMessage extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        if (bitmap == null) {
-            if (game.getCurrentplayer().getPlayerId() == 1) {
-                bitmap = gv.getBitmapFromResource(R.drawable.playertwowall);
-            } else {
-                bitmap = gv.getBitmapFromResource(R.drawable.playeronewall);
-            }
+        if (bitmap1 == null) {
+            bitmap1 = gv.getBitmapFromResource(R.drawable.playertwowall);
         }
-        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
+
+        if (bitmap2 == null){
+            bitmap2 = gv.getBitmapFromResource(R.drawable.playeronewall);
+        }
+
+        if (game.getCurrentplayer().getPlayerId() == 1) {
+            gv.drawBitmap(bitmap1, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
+        } else {
+            gv.drawBitmap(bitmap2, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
+        }
     }
 }
