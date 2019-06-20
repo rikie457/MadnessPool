@@ -205,12 +205,31 @@ public class Ball extends Entity {
             if (this.id == 15) {
                 Wall wall = game.getWalls().get(i);
                 Vector2 closestpoint = Utility.getClosestPoint(wall, this);
-                if (Utility.getDistanceFromClosestPoint(closestpoint, this) - radius <= radius) {
+                if (Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius) <= this.radius) {
+
                     //collision
                     double x1 = wall.getVector2().getX();
                     double y1 = wall.getVector2().getY();
                     double x2 = wall.getEndVector2().getX();
                     double y2 = wall.getEndVector2().getY();
+
+                    if (closestpoint.getX() == x1 && closestpoint.getY() == y1) {
+                        this.vector2.setX(x1 + this.radius);
+                        this.vector2.setY(y1 + this.radius);
+                        this.speedX = -this.speedX;
+                        this.speedY = -this.speedY;
+                        this.speedX *= this.energyloss;
+                        this.speedY *= this.energyloss;
+                    } else if (closestpoint.getX() == x2 && closestpoint.getY() == y2) {
+                        this.vector2.setX(x2 + this.radius);
+                        this.vector2.setY(y2 + this.radius);
+                        this.speedX = -this.speedX;
+                        this.speedY = -this.speedY;
+                        this.speedX *= this.energyloss;
+                        this.speedY *= this.energyloss;
+
+                    }
+
 
                     Vector2 line = new Vector2();
                     Vector2 normal = new Vector2();
@@ -220,6 +239,7 @@ public class Ball extends Entity {
                     normal.setX(-line.getY());
                     normal.setY(line.getX());
 
+
                     double lenthofnormal = Math.sqrt((normal.getX() * normal.getX()) + (normal.getY() * normal.getY()));
                     normal.setX(normal.getX() / lenthofnormal);
                     normal.setY(normal.getY() / lenthofnormal);
@@ -228,7 +248,7 @@ public class Ball extends Entity {
                     this.speedX -= 2.0 * distanceAlongNormal * normal.getX();
                     this.speedX *= this.energyloss;
                     this.speedY -= 2.0 * distanceAlongNormal * normal.getY();
-                    this.speedY *= this.friction;
+                    this.speedY *= this.energyloss;
 
 
                 }

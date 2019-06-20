@@ -44,8 +44,9 @@ public class Utility {
         double y1 = wall.getVector2().getY();
         double x2 = wall.getEndVector2().getX();
         double y2 = wall.getEndVector2().getY();
-        double bx = ball.getVector2().getX() + ball.getRadius();
-        double by = ball.getVector2().getY() + ball.getRadius();
+        double bx = ball.getVector2().getX();
+        double by = ball.getVector2().getY();
+
 
         double A = bx - x1;
         double B = by - y1;
@@ -80,12 +81,15 @@ public class Utility {
     public static double getDistanceFromClosestPoint(Vector2 closestpoint, Ball ball) {
         double bx = ball.getVector2().getX();
         double by = ball.getVector2().getY();
-        double cx = closestpoint.getX();
-        double cy = closestpoint.getY();
+        double cx = closestpoint.getX() - 10;
+        double cy = closestpoint.getY() - 10;
         double xx = bx - cx;
         double yy = by - cy;
-        return Math.sqrt(xx * xx + yy * yy);
+        return Math.sqrt((xx * xx) + (yy * yy));
     }
 
+    public static double clamp(double val, double min, double max) {
+        return Math.max(min, Math.min(max, val));
+    }
 
 }

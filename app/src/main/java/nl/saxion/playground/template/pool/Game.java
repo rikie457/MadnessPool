@@ -22,9 +22,7 @@ import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
 import nl.saxion.playground.template.pool.powerup.AddWall;
-import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
-import nl.saxion.playground.template.pool.powerup.Wormhole;
 
 /**
  * The type Game.
@@ -498,8 +496,8 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
-                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+//                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
+//                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new AddWall(this, 250, 250, whiteball));
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
@@ -590,10 +588,10 @@ public class Game extends GameModel {
             this.allmoving = true;
         }
         if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
-            for (int i = 0; i < this.walls.size(); i++) {
-                removeEntity(this.walls.get(i));
-            }
-            this.walls.clear();
+//            for (int i = 0; i < this.walls.size(); i++) {
+//                removeEntity(this.walls.get(i));
+//            }
+//            this.walls.clear();
         }
     }
 

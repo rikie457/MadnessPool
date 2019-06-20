@@ -43,6 +43,8 @@ public class Wall extends Entity {
      * @param touch
      */
     public void placeWall(GameModel.Touch touch) {
+
+
         this.vector2.set(touch.x - 20, touch.y);
         this.endVector2.set(touch.x + 20, touch.y);
         this.middleX = touch.x;
@@ -78,6 +80,7 @@ public class Wall extends Entity {
         double xDiff = touch.x / 3 - this.middleX;
         double yDiff = touch.y / 3 - this.middleY;
         this.lineRotation = Math.toDegrees(Math.atan2(yDiff, xDiff));
+
         this.endVector2.set(this.middleX + this.radius * Math.cos(this.lineRotation), this.middleY + this.radius * Math.sin(Math.sin(this.lineRotation)));
         this.vector2.set(this.middleX - (this.endVector2.getX() - this.middleX), this.middleY - (this.endVector2.getY() - this.middleY));
     }
