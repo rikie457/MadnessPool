@@ -1,5 +1,9 @@
 package nl.saxion.playground.template.pool.powerup;
 
+import android.graphics.Bitmap;
+
+import nl.saxion.playground.template.R;
+import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
@@ -13,6 +17,7 @@ public class AddWall extends Powerup {
     private WallHandler wallHandler;
     private int currentturn;
     private int intialturn;
+    static Bitmap bitmap;
 
     public AddWall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
@@ -43,6 +48,14 @@ public class AddWall extends Powerup {
     public void applyEffect(){
         this.wallHandler.setEntryType(2);
         game.addEntity(wallHandler);
+    }
+
+    @Override
+    public void draw(GameView gv) {
+        if (bitmap == null) {
+            bitmap = gv.getBitmapFromResource(R.drawable.addwall);
+        }
+        gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
     }
 
     @Override
