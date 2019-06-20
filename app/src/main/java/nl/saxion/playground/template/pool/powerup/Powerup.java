@@ -19,6 +19,9 @@ public abstract class Powerup extends Entity {
     private double radius;
     private WhiteBall ball;
     private ArrayList<Ball> balls;
+    protected boolean invisable = false, collected = false;
+
+
 
     public Powerup(Game game, double x, double y, WhiteBall ball) {
         this.game = game;
@@ -32,6 +35,7 @@ public abstract class Powerup extends Entity {
         if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
             //Apply properties of power up to all balls. (Needed for functionality)
             game.removeEntity(this);
+            resolveColission();
         }
     }
 
@@ -50,6 +54,8 @@ public abstract class Powerup extends Entity {
         gv.getCanvas().drawCircle((float) this.vector2.getX(), (float) this.vector2.getY(), (float) this.radius, Game.powerupPaint);
     }
 
+    public void resolveColission(){
+    }
 
     @Override
     public String toString() {

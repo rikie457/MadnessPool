@@ -18,6 +18,8 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.powerup.NoDrag;
+import nl.saxion.playground.template.pool.powerup.SpeedBoost;
 import nl.saxion.playground.template.pool.powerup.TestPowerup;
 
 /**
@@ -67,6 +69,8 @@ public class Game extends GameModel {
     private float ballsize = 30f;
     private float holesize = 20f;
     private float powerupsize = 15f;
+    private int turns;
+
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
@@ -447,6 +451,9 @@ public class Game extends GameModel {
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
                 powerupCreator.getPowerups().add(new TestPowerup(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
+
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
 
@@ -480,9 +487,21 @@ public class Game extends GameModel {
      *
      * @return the currentplayer
      */
+
+    public int getTurns() {
+        return turns;
+    }
+
+    /**
+     * Gets currentplayer.
+     *
+     * @return the currentplayer
+     */
     public Player getCurrentplayer() {
         return this.currentplayer;
     }
+
+
 
     /**
      * Gets inactiveplayer.
@@ -517,8 +536,10 @@ public class Game extends GameModel {
     public void roundChecker(WhiteBall ball) {
         if (!this.checkMovementForAllBalls()) {
             if (this.currentplayer == player1) {
+                turns++;
                 setCurrentPlayer(player2);
             } else {
+                turns++;
                 setCurrentPlayer(player1);
             }
             this.allmoving = false;
@@ -527,6 +548,7 @@ public class Game extends GameModel {
             this.allmoving = true;
         }
     }
+
 
     /**
      * Score cue ball.

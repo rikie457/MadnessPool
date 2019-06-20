@@ -246,6 +246,14 @@ public class Ball extends Entity {
         return this.radius;
     }
 
+    public void setFriction(double friction) {
+        this.friction = friction;
+    }
+
+    public double getFriction() {
+        return friction;
+    }
+
     public double getWidth() {
         return width;
     }
@@ -258,6 +266,13 @@ public class Ball extends Entity {
         return id;
     }
 
+    public double getSpeedX() {
+        return speedX;
+    }
+
+    public double getSpeedY() {
+        return speedY;
+    }
 
     public boolean isMoving() {
         return moving;
