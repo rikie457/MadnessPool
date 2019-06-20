@@ -16,7 +16,6 @@ public abstract class Powerup extends Entity {
     private double radius;
     private WhiteBall ball;
 
-    private ArrayList<Ball> balls;
     protected boolean invisable = false, collected = false;
 
     public Powerup(Game game, double x, double y, WhiteBall ball) {
@@ -43,10 +42,6 @@ public abstract class Powerup extends Entity {
     @Override
     public void tick() {
         checkCollisionWithBall();
-    }
-
-    public void resolveColission(){
-
     }
 
     @Override

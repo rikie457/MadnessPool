@@ -20,7 +20,6 @@ public class MoreDrag extends Powerup {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
-
     }
 
     @Override
@@ -51,7 +50,6 @@ public class MoreDrag extends Powerup {
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
-            double friction = ball.getFriction();
             ball.setFriction(.9965);
         }
     }

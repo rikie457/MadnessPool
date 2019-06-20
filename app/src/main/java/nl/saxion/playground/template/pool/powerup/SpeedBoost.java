@@ -1,20 +1,16 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
-import android.os.CountDownTimer;
-
-import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
-import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 public class SpeedBoost extends Powerup {
-    private WhiteBall ball;
+    private WhiteBall whiteBall;
     static private Bitmap bitmap;
     private Game game;
     private double x,y,radius,maxspeed = 2;
@@ -24,7 +20,7 @@ public class SpeedBoost extends Powerup {
     public SpeedBoost(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
-        this.ball = ball;
+        this.whiteBall = ball;
         this.x = x;
         this.y = y;
         this.radius = 30f;
@@ -41,7 +37,6 @@ public class SpeedBoost extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 game.removeEntity(this);
-
                 removeSpeedBoost();
             } else {
                 if (!this.speedBoost) {
@@ -77,15 +72,24 @@ public class SpeedBoost extends Powerup {
     }
 
     public void draw(GameView gameView) {
-        if (bitmap == null) {
-            bitmap = gameView.getBitmapFromResource(R.drawable.speedboost);
+        if (!invisable) {
+            if (bitmap == null) {
+                bitmap = gameView.getBitmapFromResource(R.drawable.speedboost);
+            }
+            gameView.drawBitmap(bitmap, (float) x, (float) y, (float) this.radius, (float) this.radius);
         }
-        gameView.drawBitmap(bitmap, (float) x, (float) y,(float) this.radius,(float) this.radius);
     }
 
     public void resolveColission() {
         this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
+    }
+
+    @Override
+    public void createPowerUp() {
+        SpeedBoost speedBoost = new SpeedBoost(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        game.getPowerups().add(speedBoost);
+        game.addEntity(speedBoost);
     }
 }

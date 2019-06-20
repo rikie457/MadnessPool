@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
-import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
-import nl.saxion.playground.template.pool.powerup.SpeedBoost;
-import nl.saxion.playground.template.pool.powerup.TestPowerup;
 
 public class PowerupCreator extends Entity {
     private Game game;
@@ -34,15 +31,6 @@ public class PowerupCreator extends Entity {
             if (random == 2) {
                 int poweruptype = (int) Utility.randomDoubleFromRange(0, this.powerups.size() - 1);
                 Powerup powerup = this.powerups.get(poweruptype);
-                //check which class is chosen
-                if (powerup instanceof TestPowerup) {
-                    //generate a new powerup.
-                    game.addEntity(new TestPowerup(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteball));
-                } else if (powerup instanceof SpeedBoost) {
-                    game.addEntity(new SpeedBoost(game,(float) Utility.randomDoubleFromRange(100, game.getPlayWidth() -100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteball));
-                }else if (powerup instanceof NoDrag) {
-                    game.addEntity(new NoDrag(game,(float) Utility.randomDoubleFromRange(100, game.getPlayWidth() -100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteball));
-                }
                 powerup.createPowerUp();
             }
 

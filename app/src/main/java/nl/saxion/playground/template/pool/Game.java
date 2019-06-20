@@ -18,11 +18,10 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
-import nl.saxion.playground.template.pool.powerup.NoDrag;
-import nl.saxion.playground.template.pool.powerup.SpeedBoost;
-import nl.saxion.playground.template.pool.powerup.TestPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
+import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.SpeedBoost;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
 
 
@@ -528,10 +527,6 @@ public class Game extends GameModel {
             this.currentplayer = player2;
             this.inactiveplayer = player1;
         }
-    }
-
-    public int getTurns() {
-        return turns;
     }
 
     /**

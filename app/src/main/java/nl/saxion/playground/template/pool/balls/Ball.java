@@ -7,9 +7,7 @@
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
-import android.renderscript.Sampler;
 
-import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
@@ -287,10 +285,7 @@ public class Ball extends Entity {
 
         double height = 2*areaOfTriangle/base;
 
-        if( height < this.radius + this.width/2 )
-            return true;
-        else
-            return false;
+        return height < this.radius + this.width / 2;
 
     }
 
@@ -341,9 +336,9 @@ public class Ball extends Entity {
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
         gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height);
 
-        if(this.ball_inner_shadow == null)
-            this.ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
-        gv.drawBitmap(this.ball_inner_shadow, x, y, (float) width, (float) height);
+        if (ball_inner_shadow == null)
+            ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
+        gv.drawBitmap(ball_inner_shadow, x, y, (float) width, (float) height);
     }
 
     @Override
@@ -381,13 +376,7 @@ public class Ball extends Entity {
         this.speedY = ySpeed;
     }
 
-    public double getFriction() {
-        return friction;
-    }
 
-    public void setFriction(double friction) {
-        this.friction = friction;
-    }
 
     public double getRadius() {
         return this.radius;
