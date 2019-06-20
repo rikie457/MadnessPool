@@ -21,6 +21,7 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
+import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
@@ -499,6 +500,7 @@ public class Game extends GameModel {
                 //Add powerup to array of spawnable powerups
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new AddWall(this, 250, 250, whiteball));
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
         }
@@ -693,6 +695,10 @@ public class Game extends GameModel {
 
     public boolean hasPlayerScored() {
         return playerScored;
+    }
+
+    public WallHandler getWallHandler() {
+        return this.wallHandler;
     }
 
     public boolean getMadness() {
