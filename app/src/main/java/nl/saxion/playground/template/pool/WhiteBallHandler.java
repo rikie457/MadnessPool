@@ -122,6 +122,7 @@ public class WhiteBallHandler extends Entity {
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
+        double ballRadius;
 
         for (int i = 0; i < this.balls.size(); i++) {
             Ball ball = this.balls.get(i);
@@ -131,7 +132,8 @@ public class WhiteBallHandler extends Entity {
             if (this.whiteBall == balls.get(i)) {
                 continue;
             }
-            if (distSqr <= (this.whiteBall.getRadius() + balls.get(i).getRadius()) * (this.whiteBall.getRadius() + balls.get(i).getRadius()) && this.whiteBall.getCollision()) {
+            ballRadius = balls.get(i).getRadius();
+            if (distSqr <= (this.whiteBall.getRadius() + ballRadius) * (this.whiteBall.getRadius() + ballRadius) && this.whiteBall.getCollision()) {
                 isValid = false;
             }
         }
@@ -178,7 +180,7 @@ public class WhiteBallHandler extends Entity {
      * Check moving balls.
      */
     private void checkMovingBalls() {
-        if (!game.isAllmoving()) {
+        if (!game.checkMovementForAllBalls()) {
             game.scoreCueBall();
         }
     }

@@ -27,9 +27,6 @@ public class EightBallButton extends Entity {
     float aVal;
     private Game game;
 
-    private boolean buttonPressed = false;
-    private int timer = 0;
-
     /**
      * Instantiates a new Eight ball button.
      *
@@ -44,16 +41,6 @@ public class EightBallButton extends Entity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (buttonPressed) {
-            buttonPressed = false;
-            game.startEightBall();
-        }
-    }
-
-    @Override
     public void draw(GameView gv) {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.eightballbutton);
@@ -65,6 +52,6 @@ public class EightBallButton extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
         if (event.getX() > game.getWidth() / 2 - 300 && event.getX() < game.getWidth() / 2 + 300 && event.getY() > game.getHeight() / 2 - 130 && event.getY() < game.getHeight() / 2 - 70 && event.getAction() == MotionEvent.ACTION_UP)
-            buttonPressed = true;
+            game.startEightBall();
     }
 }

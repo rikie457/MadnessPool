@@ -24,7 +24,7 @@ public class WhiteBall extends Ball {
 
     private ShootLine line;
     private boolean shot;
-    private Vector2 origin, end;
+    private Vector2 origin = new Vector2(), end = new Vector2();
 
     public WhiteBall(Game game, int[] drawables, double x, double y, double width, double height, int type, ShootLine line) {
         super(game, drawables, x, y, width, height, type);
@@ -34,6 +34,9 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
+
+        getAngleMovement();
+
         if (this.isShot()) {
             game.roundChecker(this);
         }
@@ -46,7 +49,7 @@ public class WhiteBall extends Ball {
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
+        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored() && !game.getPlacingWall()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 initOriginAndEnd(touch);
@@ -74,8 +77,8 @@ public class WhiteBall extends Ball {
      * @param touch has all information about the initial touch
      */
     private void initOriginAndEnd(GameModel.Touch touch) {
-        this.origin = new Vector2(touch.x, touch.y);
-        this.end = new Vector2(touch.x, touch.y);
+        this.origin.set(touch.x, touch.y);
+        this.end.set(touch.x, touch.y);
 
         // init drawable shootLine
         this.line.getVector2().set(this.vector2.getX() + this.radius, this.vector2.getY() + this.radius);

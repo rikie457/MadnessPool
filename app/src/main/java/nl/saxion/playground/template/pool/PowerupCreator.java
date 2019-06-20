@@ -26,8 +26,8 @@ public class PowerupCreator extends Entity {
     @Override
     public void tick() {
         float gameTime = (float) ++tickCount / game.ticksPerSecond();
-        //Every 1 minute a new powerup
-        if (gameTime == 1) {
+        //Every 1 minute a new powerup 1 = 1 sec 60 = 60 sec
+        if (gameTime == 5) {
             this.tickCount = 0;
             int random = (int) Utility.randomDoubleFromRange(1, 2);
             //50% chance of spawning
@@ -43,6 +43,7 @@ public class PowerupCreator extends Entity {
                 }else if (powerup instanceof NoDrag) {
                     game.addEntity(new NoDrag(game,(float) Utility.randomDoubleFromRange(100, game.getPlayWidth() -100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteball));
                 }
+                powerup.createPowerUp();
             }
 
         }
