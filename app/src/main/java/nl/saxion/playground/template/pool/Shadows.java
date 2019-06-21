@@ -13,7 +13,8 @@ import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.Ball;
 
 public class Shadows extends Entity {
-    private static Bitmap outer_shadow_bitmap = null;
+    private static Bitmap outer_shadow_bitmap = null,
+                            pooltafel_topview_overlay_bitmap = null;
     private ArrayList<Ball> balls, player1Balls, player2Balls;
     private Game game;
     private static float shadowOffset;
@@ -26,18 +27,32 @@ public class Shadows extends Entity {
         // shadow offset, the shadow image is larger,
         // so it will be moved slightly to the top left,
         // so it aligns with the ball perfectly
-        this.shadowOffset = -(8 * (1000/game.getPlayWidth()));
+        this.shadowOffset = -(float)(14 * (1000/game.getPlayWidth()));
     }
 
     @Override
     public void draw(GameView gameView) {
-        if(this.outer_shadow_bitmap == null) this.outer_shadow_bitmap = gameView.getBitmapFromResource(R.drawable.ball_shadow);
+        if(this.outer_shadow_bitmap == null)
+        this.outer_shadow_bitmap = gameView.getBitmapFromResource(R.drawable.ball_shadow);
+
+        if(this.pooltafel_topview_overlay_bitmap == null)
+        this.pooltafel_topview_overlay_bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview_overlay);
 
         // draw shadows for all visible balls on the pool table
         drawNormalBallShadows(gameView);
 
         // draw shadows for all the balls on the gui screen
         drawGUIBallShadows(gameView);
+
+        // draw the overlay of the pool table (the edges), after all the ball's shadows have been drawn
+        // so they wont be drawn on top of it
+        gameView.drawBitmap(
+                this.pooltafel_topview_overlay_bitmap,
+                0,
+                0,
+                this.game.getPlayWidth(),
+                this.game.getPlayHeight()
+        );
     }
 
     /**
@@ -57,8 +72,8 @@ public class Shadows extends Entity {
 
             location.add(this.shadowOffset);
 
-            width = (float) (this.player1Balls.get(i).getWidth() * 1.5);
-            height = (float) (this.player1Balls.get(i).getHeight() * 1.5);
+            width = (float) (this.player1Balls.get(i).getWidth() * 1.95);
+            height = (float) (this.player1Balls.get(i).getHeight() * 1.95);
 
             gameView.drawBitmap(
                     this.outer_shadow_bitmap,
@@ -77,8 +92,8 @@ public class Shadows extends Entity {
 
             location.add(this.shadowOffset);
 
-            width = (float)(this.player2Balls.get(i).getWidth() * 1.5);
-            height = (float)(this.player2Balls.get(i).getHeight() * 1.5);
+            width = (float)(this.player2Balls.get(i).getWidth() * 1.95);
+            height = (float)(this.player2Balls.get(i).getHeight() * 1.95);
 
             gameView.drawBitmap(
                     this.outer_shadow_bitmap,
@@ -107,8 +122,8 @@ public class Shadows extends Entity {
             location = new Vector2(this.balls.get(i).getVector2());
             location.add(this.shadowOffset);
 
-            width = (float)(this.balls.get(i).getWidth() * 1.5);
-            height = (float)(this.balls.get(i).getHeight() * 1.5);
+            width = (float)(this.balls.get(i).getWidth() * 1.95);
+            height = (float)(this.balls.get(i).getHeight() * 1.95);
 
             gameView.drawBitmap(
                     this.outer_shadow_bitmap,

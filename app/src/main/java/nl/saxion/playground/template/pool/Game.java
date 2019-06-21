@@ -58,6 +58,7 @@ public class Game extends GameModel {
 
     static public Paint powerupPaint = new Paint();
 
+    static public GameMode gameMode = null;
 
     //Players
     private Player player1 = new Player(1);
@@ -296,10 +297,6 @@ public class Game extends GameModel {
         runs++;
     }
 
-    private int getRandIntInRange(int left, int right) {
-        return (int) (left + (Math.random() * (right - left + 1)));
-    }
-
     /**
      * Swap.
      *
@@ -307,7 +304,7 @@ public class Game extends GameModel {
      * @param a        the a
      * @param b        the b
      */
-// swaps the elements at loc a and b in array 'arrayInt'
+    // swaps the elements at loc a and b in array 'arrayInt'
     public void swap(ArrayList<Integer> arrayInt, int a, int b) {
         if (a == b) return;
         int temp = arrayInt.get(a);
@@ -327,8 +324,8 @@ public class Game extends GameModel {
         // ball at 15 is BLACK BALL (index 15)
 
 
-        this.rack_x_offset = (getPlayWidth() / 3) * 2;
-        this.rack_y_offset = (getPlayHeight() / 2);
+        this.rack_x_offset = (getPlayWidth() / 3) * 2 - ball_radius;
+        this.rack_y_offset = (getPlayHeight() / 2) - ball_radius;
         this.rackPositions[14] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
 
         int whiteBallIndex = 0, blackBallIndex = 0;
@@ -363,23 +360,21 @@ public class Game extends GameModel {
             }
         }
 
-        final String tag = "[346]: ";
-
         for (int i = 0; i < 7; i++) {
             int a, b;
-            a = getRandIntInRange(0, 6);
-            b = getRandIntInRange(0, 6);
+            a = Utility.getRandIntInRange(0, 6);
+            b = Utility.getRandIntInRange(0, 6);
             swap(solidBallIndecis, a, b);
 
-            a = getRandIntInRange(0, 6);
-            b = getRandIntInRange(0, 6);
+            a = Utility.getRandIntInRange(0, 6);
+            b = Utility.getRandIntInRange(0, 6);
             swap(stripedBallIndecis, a, b);
         }
 
         int currentSolid = 0, currentStriped = 0;
 
         for (int i = 0; i < sideBallIndecis.length; i += 2, currentSolid++, currentStriped++) {
-            int randBoolean = getRandIntInRange(0, 1);
+            int randBoolean = Utility.getRandIntInRange(0, 1);
 
             // 1st side
             balls.get(solidBallIndecis.get(currentSolid)).setVector2(new Vector2(rackPositions[sideBallIndecis[i + (1 - randBoolean)]]));
@@ -465,6 +460,8 @@ public class Game extends GameModel {
      * Start eight ball.
      */
     public void startEightBall() {
+        this.gameMode = GameMode.EIGHT_BALL;
+
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
@@ -486,6 +483,8 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
+        this.gameMode = GameMode.MADDNESS;
+
         this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
@@ -768,4 +767,11 @@ public class Game extends GameModel {
         Ball.lastisertedid = 0;
         start();
     }
+
+    enum GameMode {
+        MADDNESS,
+        EIGHT_BALL
+    };
 }
+
+

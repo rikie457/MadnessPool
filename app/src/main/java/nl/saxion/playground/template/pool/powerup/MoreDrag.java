@@ -1,6 +1,7 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
@@ -58,6 +59,7 @@ public class MoreDrag extends Powerup {
     public void draw(GameView gv) {
         if(!invisable) {
             if (bitmap == null) {
+                Log.e("Loading Bitmap", " - drag");
                 bitmap = gv.getBitmapFromResource(R.drawable.drag);
             }
             gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
