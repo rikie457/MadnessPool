@@ -32,7 +32,6 @@ public class PowerupCreator extends Entity {
                 int poweruptype = (int) Utility.randomDoubleFromRange(0, this.powerups.size() - 1);
                 Powerup powerup = this.powerups.get(poweruptype);
                 powerup.createPowerUp();
-
             }
 
         }

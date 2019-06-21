@@ -34,6 +34,9 @@ public class WhiteBall extends Ball {
     @Override
     public void tick() {
         super.tick();
+
+        getAngleMovement();
+
         if (this.isShot()) {
             game.roundChecker(this);
         }
@@ -46,7 +49,7 @@ public class WhiteBall extends Ball {
 
     @Override
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
-        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored()) {
+        if (this.line != null && !game.checkMovementForAllBalls() && !game.getCueBallScored() && !game.getPlacingWall()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 this.line.setVisible(true);
                 initOriginAndEnd(touch);

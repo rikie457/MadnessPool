@@ -19,8 +19,11 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
+import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.SpeedBoost;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
+
 
 /**
  * The type Game.
@@ -40,6 +43,10 @@ public class Game extends GameModel {
      * The White paint.
      */
     static public Paint whitePaint = new Paint();
+    /**
+     * The Gray paint
+     */
+    static public Paint grayPaint = new Paint();
     /**
      * The Gray paint reflection.
      */
@@ -64,17 +71,22 @@ public class Game extends GameModel {
     private boolean cueBallScored = false;
     private boolean cueBallInHand = false;
     private boolean allmoving = false;
+    private boolean playerScored = false;
+    private boolean isMadness = false;
+    private boolean placingWall = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
-    private float powerupsize = 30f;
+    private float powerupsize = 15f;
     private int turns;
+
 
     // ArrayLists
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<Hole> holes = new ArrayList<>();
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Wall> walls = new ArrayList<>();
     private ArrayList<Powerup> powerups = new ArrayList<>();
 
     //Drawables ball
@@ -95,6 +107,7 @@ public class Game extends GameModel {
 
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
+    private WallHandler wallHandler = new WallHandler(this.balls, this.holes, this.walls, this);
     private PowerupCreator powerupCreator;
     /**
      * Start eight ball.
@@ -473,6 +486,7 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
+        this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
@@ -484,8 +498,11 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
+                powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
         }
@@ -512,6 +529,12 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * Gets currentplayer.
+     *
+     * @return the currentplayer
+     */
+
     public int getTurns() {
         return turns;
     }
@@ -524,6 +547,8 @@ public class Game extends GameModel {
     public Player getCurrentplayer() {
         return this.currentplayer;
     }
+
+
 
     /**
      * Gets inactiveplayer.
@@ -561,19 +586,27 @@ public class Game extends GameModel {
      */
     public void roundChecker(WhiteBall ball) {
         if (!this.checkMovementForAllBalls()) {
-            if (this.currentplayer == player1) {
-                turns++;
+            if (this.currentplayer == player1 && !this.playerScored) {
                 setCurrentPlayer(player2);
-            } else {
                 turns++;
+            } else if (!this.playerScored){
                 setCurrentPlayer(player1);
+                      turns++;
             }
             this.allmoving = false;
             ball.setShot(false);
+            this.playerScored = false;
         } else {
             this.allmoving = true;
         }
+        if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
+            for (int i = 0; i < this.walls.size(); i++) {
+                removeEntity(this.walls.get(i));
+            }
+            this.walls.clear();
+        }
     }
+
 
     /**
      * Score cue ball.
@@ -588,6 +621,29 @@ public class Game extends GameModel {
                 }
             }
         }
+    }
+
+    /**
+     * starts the placement of walls
+     */
+    public void startPlacingWall() {
+        this.placingWall = true;
+        addEntity(wallHandler);
+    }
+
+    /**
+     * Stops the placement of walls
+     */
+    public void stopPlacingWall() {
+        this.placingWall = false;
+    }
+
+    /**
+     * checks if a wall is being placed.
+     * @return placingWall boolean.
+     */
+    public boolean getPlacingWall() {
+        return this.placingWall;
     }
 
     /**
@@ -639,6 +695,21 @@ public class Game extends GameModel {
         return players;
     }
 
+    public ArrayList<Wall> getWalls () {
+        return this.walls;
+    }
+
+    public void setPlayerScored (boolean scored) {
+        this.playerScored = scored;
+    }
+
+    public boolean hasPlayerScored() {
+        return playerScored;
+    }
+
+    public boolean getMadness() {
+        return this.isMadness;
+    }
 
     /**
      * Winner screen.
@@ -647,6 +718,7 @@ public class Game extends GameModel {
      */
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
+        removeEntity(wallHandler);
         for (int i = 0; i < balls.size(); i++) {
             removeEntity(this.balls.get(i));
         }
@@ -668,11 +740,17 @@ public class Game extends GameModel {
      * Reset.
      */
     public void reset() {
-
         player1.setBalltype(-1);
         player1.resetScoredballs();
         player2.setBalltype(-1);
         player2.resetScoredballs();
+
+        if (this.walls.size() != 0) {
+            for (int i = 0; i < this.walls.size(); i++) {
+                removeEntity(this.walls.get(i));
+            }
+            this.walls.clear();
+        }
 
         this.balls.clear();
         resetBalls();
@@ -686,6 +764,7 @@ public class Game extends GameModel {
         }
 
         this.gui = null;
+        this.isMadness = false;
         Ball.lastisertedid = 0;
         start();
     }
