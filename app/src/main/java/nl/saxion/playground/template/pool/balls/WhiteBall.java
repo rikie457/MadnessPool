@@ -25,10 +25,14 @@ public class WhiteBall extends Ball {
     private ShootLine line;
     private boolean shot;
     private Vector2 origin = new Vector2(), end = new Vector2();
+    private Shadow shadow;
+    private boolean visible = true;
 
     public WhiteBall(Game game, int[] drawables, double x, double y, double width, double height, int type, ShootLine line) {
         super(game, drawables, x, y, width, height, type);
         this.line = line;
+        this.shadow = new Shadow(this, game);
+        game.addEntity(shadow);
     }
 
     @Override
@@ -44,7 +48,22 @@ public class WhiteBall extends Ball {
 
     @Override
     public void draw(GameView gv) {
-        super.draw(gv);
+        if(this.visible) {
+            super.draw(gv);
+        }
+    }
+
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    @Override
+    public void removeBall() {
+        this.visible = false;
     }
 
     @Override
@@ -63,6 +82,8 @@ public class WhiteBall extends Ball {
                 updateEnd(touch);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                this.startLikingGravityBroAndInviteYourFriends();
+
                 double mag = Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y)) * 2;
                 this.line.setVisible(false);
 

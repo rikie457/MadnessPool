@@ -30,14 +30,17 @@ public class Ball extends Entity {
     protected Game game;
     private int i = 0;
 
-    private boolean hasShadow = true;
-
     private static Bitmap[] bitmaps;
-    private static Bitmap ball_inner_shadow;
+    private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
     private int id, type;
     private boolean moving;
     private boolean collision = true;
     private int[] drawables;
+
+    private double gravityPullsHad = 0;
+
+    // the shadow
+    private Shadow shadow;
 
 
     public Ball(Game game, int[] drawables, double x, double y, double width, double height, int type) {
@@ -60,6 +63,10 @@ public class Ball extends Entity {
         this.drawables = drawables;
         if (bitmaps == null) {
             bitmaps = new Bitmap[16];
+        }
+        if(this.type != 0) {
+            this.shadow = new Shadow(this, game);
+            game.addEntity(shadow);
         }
     }
 
@@ -108,10 +115,6 @@ public class Ball extends Entity {
 
         this.vector2.set(x += this.speedX, y += this.speedY);
 
-        if(this.i == 0) {
-         Log.e("vector2", this.speedX + ", " + this.speedY);
-            i++;
-        }
         /**
          * muren rechts en links
          */
@@ -148,9 +151,21 @@ public class Ball extends Entity {
         }
     }
 
-    private void removeBall() {
+    public boolean stoppedLikingTheGravity(int maxPulls) {
+        if(this.gravityPullsHad > maxPulls) return true;
+        return false;
+    }
+
+    public void startLikingGravityBroAndInviteYourFriends() {
+        // ok, sure, np
+        for(Ball ball : game.getBalls()) {
+            ball.gravityPullsHad = 0;
+        }
+    }
+
+    public void removeBall() {
         this.game.removeEntity(this);
-        this.hasShadow = false;
+        if(shadow != null) this.game.removeEntity(shadow);
     }
 
     private void checkCollisionHole() {
@@ -174,6 +189,7 @@ public class Ball extends Entity {
             } else if (this.type == 0) {
                 //is cue ball
                 game.placeCueBall();
+                removeBall();
 
             } else {
                 // A regular ball
@@ -319,7 +335,7 @@ public class Ball extends Entity {
 
     @Override
     public String toString() {
-        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.vector2.getX() + ", " + this.vector2.getY() + ", MOVING: " + this.moving + ", HAS_SHADOW: " + this.hasShadow;
+        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.vector2.getX() + ", " + this.vector2.getY() + ", MOVING: " + this.moving;
     }
 
     @Override
@@ -336,17 +352,33 @@ public class Ball extends Entity {
 
     }
 
+    private float lastAngle = (float)(Math.random() * 360);
+
+    private float getNewRandomAngle() {
+        if (moving) {
+            float angleSpeed = ((float) ((Math.abs(this.speedX * this.speedY) * 500)) % 360);
+            this.lastAngle += ((this.speedX < 0) ? -angleSpeed : angleSpeed);
+            return this.lastAngle;
+        } else return this.lastAngle;
+    }
+
     @Override
     public void draw(GameView gv) {
         float x = (float) this.vector2.getX();
         float y = (float) this.vector2.getY();
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height);
+        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, getNewRandomAngle());
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
-        gv.drawBitmap(ball_inner_shadow, x, y, (float) width, (float) height);
+        if(ball_inner_shadow_madness == null)
+            ball_inner_shadow_madness = gv.getBitmapFromResource(R.drawable.ball_inner_shadow_madness);
+
+        if(Game.gameMode == Game.GameMode.MADNESS)
+            gv.drawBitmap(ball_inner_shadow_madness, (float)(x / 1.0005), (float)(y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
+        else
+            gv.drawBitmap(ball_inner_shadow, (float)(x / 1.0005), (float)(y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
     }
 
     @Override
@@ -358,14 +390,6 @@ public class Ball extends Entity {
         return this.mass;
     }
 
-    public void setHasShadow(boolean val) {
-        this.hasShadow = val;
-    }
-
-    public boolean hasShadow() {
-        return this.hasShadow;
-    }
-
     // werkt niet, niet gebruiken
     public void setSpeedX(float xSpeed) {
         this.speedX = xSpeed;
@@ -373,6 +397,13 @@ public class Ball extends Entity {
 
     public Vector2 getVector2() {
         return vector2;
+    }
+
+    public void applyForce(Vector2 vector2) {
+        this.speedX += vector2.getX();
+        this.speedY += vector2.getY();
+        this.gravityPullsHad++;
+        Log.e("gravityPullsHad for", this.id + ": " + this.gravityPullsHad);
     }
 
     public void setVector2(Vector2 vector2) {

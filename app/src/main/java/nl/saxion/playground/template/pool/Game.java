@@ -106,9 +106,6 @@ public class Game extends GameModel {
     private WinMessage winMessage;
     private ShootLine line = new ShootLine(false, this);
 
-    // Shadows
-    private Shadows ball_shadows;
-
     private int runs = 0;
     private WhiteBallHandler whiteBallHandler = new WhiteBallHandler(this, this.balls, this.holes);
     private WallHandler wallHandler = new WallHandler(this.balls, this.holes, this.walls, this);
@@ -288,13 +285,13 @@ public class Game extends GameModel {
             addEntity(gui);
 
             // add balls to shadows class
-            this.ball_shadows = new Shadows(this, this.balls);
+            //this.ball_shadows = new Shadows(this, this.balls);
 
             // add both player 1 and player 2's
             // pointers to arrays of their scored balls
             // to the Shadows Object, so their shadows can be drawn
-            this.ball_shadows.setGUIBalls(this.player1balls, this.player2balls);
-            addEntity(this.ball_shadows);
+            //this.ball_shadows.setGUIBalls(this.player1balls, this.player2balls);
+            //addEntity(this.ball_shadows);
 
         }
         runs++;
@@ -325,7 +322,6 @@ public class Game extends GameModel {
         // balls 7 through 13 are STRIPED BALLS (0 t/m 13)
         // ball at 14 is WHITE BALL (index 14)
         // ball at 15 is BLACK BALL (index 15)
-
 
         this.rack_x_offset = (getPlayWidth() / 3) * 2 - ball_radius;
         this.rack_y_offset = (getPlayHeight() / 2) - ball_radius;
@@ -437,14 +433,10 @@ public class Game extends GameModel {
                 addEntity(ball);
             }
         }
-        this.ball_shadows = new Shadows(this, this.balls);
+        //this.ball_shadows = new Shadows(this, this.balls);
     }
 
     private void resetBalls() {
-        // reset shadows
-        removeEntity(this.ball_shadows);
-        this.ball_shadows = null;
-
         for (int i = 0; i < this.balls.size(); i++) {
             this.balls.remove(i);
         }
@@ -491,7 +483,7 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
-        this.gameMode = GameMode.MADDNESS;
+        this.gameMode = GameMode.MADNESS;
 
         this.isMadness = true;
         removeEntity(menuBackground);
@@ -514,8 +506,7 @@ public class Game extends GameModel {
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
-                powerupCreator.getPowerups().add(new GravityWell(this, 250, 250, whiteball));
-
+                powerupCreator.getPowerups().add(new GravityWell(this, 250, 250, whiteball, balls));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
@@ -665,6 +656,7 @@ public class Game extends GameModel {
      */
     public void placeCueBall() {
         addEntity(whiteBallHandler);
+
     }
 
     /**
@@ -733,10 +725,9 @@ public class Game extends GameModel {
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
         removeEntity(wallHandler);
-        removeEntity(ball_shadows);
         removeEntity(powerupCreator);
         for (int i = 0; i < balls.size(); i++) {
-            removeEntity(this.balls.get(i));
+            this.balls.get(i).removeBall();
         }
         this.setWinMessage(new WinMessage(this, winnerId));
         addEntity(menuBackground);
@@ -785,8 +776,8 @@ public class Game extends GameModel {
         start();
     }
 
-    enum GameMode {
-        MADDNESS,
+    public enum GameMode {
+        MADNESS,
         EIGHT_BALL
     };
 }
