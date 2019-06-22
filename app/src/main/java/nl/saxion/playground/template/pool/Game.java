@@ -21,6 +21,7 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.RemoveBall;
 import nl.saxion.playground.template.pool.powerup.SpeedBoost;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
 
@@ -502,6 +503,7 @@ public class Game extends GameModel {
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new RemoveBall(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }

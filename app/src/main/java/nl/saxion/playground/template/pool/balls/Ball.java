@@ -140,7 +140,7 @@ public class Ball extends Entity {
         }
     }
 
-    private void removeBall() {
+    public void removeBall() {
         this.game.removeEntity(this);
         this.hasShadow = false;
     }
@@ -412,6 +412,10 @@ public class Ball extends Entity {
 
     public boolean isMoving() {
         return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
     }
 
     public boolean getCollision() {
