@@ -1,6 +1,7 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;

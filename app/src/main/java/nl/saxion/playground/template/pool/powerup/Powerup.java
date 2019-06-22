@@ -34,9 +34,11 @@ public abstract class Powerup extends Entity {
         }
     }
 
+    // the only powerup that is on a lower layer than this, is not really a powerup, it is the gravity well
+    // and it resides on layer 1, because they look ugly as sin when they're painted over anything else than the background
     @Override
     public int getLayer() {
-        return 1;
+        return 5;
     }
 
     @Override
