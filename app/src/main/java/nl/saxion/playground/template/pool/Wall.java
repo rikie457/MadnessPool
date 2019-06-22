@@ -24,6 +24,11 @@ public class Wall extends Entity {
     }
 
     @Override
+    public int getLayer() {
+        return 4;
+    }
+
+    @Override
     public void tick() {
         super.tick();
 

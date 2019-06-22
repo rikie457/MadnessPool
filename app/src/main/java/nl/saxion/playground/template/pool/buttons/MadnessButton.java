@@ -37,7 +37,7 @@ public class MadnessButton extends Entity {
     }
 
     public int getLayer() {
-        return 2;
+        return 9;
     }
 
     @Override

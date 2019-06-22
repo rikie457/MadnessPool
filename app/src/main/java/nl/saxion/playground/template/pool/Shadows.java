@@ -13,8 +13,7 @@ import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.Ball;
 
 public class Shadows extends Entity {
-    private static Bitmap outer_shadow_bitmap = null,
-                            pooltafel_topview_overlay_bitmap = null;
+    private static Bitmap outer_shadow_bitmap = null;
     private ArrayList<Ball> balls, player1Balls, player2Balls;
     private Game game;
     private static float shadowOffset;
@@ -31,28 +30,20 @@ public class Shadows extends Entity {
     }
 
     @Override
+    public int getLayer() {
+        return 2;
+    }
+
+    @Override
     public void draw(GameView gameView) {
         if(this.outer_shadow_bitmap == null)
         this.outer_shadow_bitmap = gameView.getBitmapFromResource(R.drawable.ball_shadow);
-
-        if(this.pooltafel_topview_overlay_bitmap == null)
-        this.pooltafel_topview_overlay_bitmap = gameView.getBitmapFromResource(R.drawable.pooltafel_topview_overlay);
 
         // draw shadows for all visible balls on the pool table
         drawNormalBallShadows(gameView);
 
         // draw shadows for all the balls on the gui screen
         drawGUIBallShadows(gameView);
-
-        // draw the overlay of the pool table (the edges), after all the ball's shadows have been drawn
-        // so they wont be drawn on top of it
-        gameView.drawBitmap(
-                this.pooltafel_topview_overlay_bitmap,
-                0,
-                0,
-                this.game.getPlayWidth(),
-                this.game.getPlayHeight()
-        );
     }
 
     /**

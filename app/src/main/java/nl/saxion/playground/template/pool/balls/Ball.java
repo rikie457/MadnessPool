@@ -7,6 +7,7 @@
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class Ball extends Entity {
     protected Vector2 vector2;
     protected Vector2 madnessWallVector;
     protected Game game;
+    private int i = 0;
 
     private boolean hasShadow = true;
 
@@ -103,7 +105,13 @@ public class Ball extends Entity {
     private void checkCollisionWall() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
+
         this.vector2.set(x += this.speedX, y += this.speedY);
+
+        if(this.i == 0) {
+         Log.e("vector2", this.speedX + ", " + this.speedY);
+            i++;
+        }
         /**
          * muren rechts en links
          */
@@ -343,7 +351,7 @@ public class Ball extends Entity {
 
     @Override
     public int getLayer() {
-        return 1;
+        return 7;
     }
 
     public double getMass() {

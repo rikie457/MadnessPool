@@ -51,6 +51,13 @@ public class Gui extends Entity {
 
     }
 
+    // layer 0, because this is a different area on the screen so we don't have to account for anything but the shootLine
+    // which should be drawn over this anyway
+    // the wall placement timer shall be drawn on layer 1
+    public int getLayer() {
+        return 0;
+    }
+
     @Override
     public void draw(GameView gv) {
         float x = (float) this.vector2.getX();
@@ -80,12 +87,6 @@ public class Gui extends Entity {
         if(this.ball_inner_shadow == null) {
             this.ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
         }
-        if(this.ball_outer_shadow == null) {
-            this.ball_outer_shadow = gv.getBitmapFromResource(R.drawable.ball_shadow);
-        }
-
-        // texture_fixes_and_updates_2
-        final float shadow_offset = -(8 * (1000 / game.getWidth())), shadow_multiplier = (float)1.5;
 
         ArrayList<Ball> player1balls = this.player1.getScoredballs();
         ArrayList<Ball> player2balls = this.player2.getScoredballs();
@@ -95,11 +96,6 @@ public class Gui extends Entity {
                 Ball ball = player1balls.get(j);
                 if (ball.getBitmap(j) != null) {
                     if (this.player1.getBalltype() == 1) {
-                        gv.drawBitmap(ball_outer_shadow,
-                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
-                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
-                                (float) (ball.getWidth() * shadow_multiplier),
-                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
                                 (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10,
                                 (float) y + (float) ball.getRadius() + 15,
@@ -112,11 +108,6 @@ public class Gui extends Entity {
                                 (float) (ball.getHeight()));
                     } else {
                         if (ball.getBitmap(j) != null) {
-                            gv.drawBitmap(ball_outer_shadow,
-                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
-                                    (float) y + (float) ball.getRadius() + 15 + shadow_offset,
-                                    (float) (ball.getWidth() * shadow_multiplier),
-                                    (float) (ball.getHeight() * shadow_multiplier));
                             gv.drawBitmap(ball.getBitmap(j),
                                     (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10,
                                     (float) y + (float) ball.getRadius() + 15,
@@ -138,11 +129,6 @@ public class Gui extends Entity {
                 Ball ball = player2balls.get(j);
                 if (this.player2.getBalltype() == 2) {
                     if (ball.getBitmap(j) != null) {
-                        gv.drawBitmap(ball_outer_shadow,
-                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
-                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
-                                (float) (ball.getWidth() * shadow_multiplier) - 500,
-                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
                                 (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10,
                                 (float) y + (float) ball.getRadius() + 15,
@@ -156,11 +142,6 @@ public class Gui extends Entity {
                     }
                 } else {
                     if (ball.getBitmap(j) != null) {
-                        gv.drawBitmap(ball_outer_shadow,
-                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10 + shadow_offset,
-                                (float) y + (float) ball.getRadius() + 15 + shadow_offset,
-                                (float) (ball.getWidth() * shadow_multiplier) - 500,
-                                (float) (ball.getHeight() * shadow_multiplier));
                         gv.drawBitmap(ball.getBitmap(j),
                                 (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10,
                                 (float) y + (float) ball.getRadius() + 15,

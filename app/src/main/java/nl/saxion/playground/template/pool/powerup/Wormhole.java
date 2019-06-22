@@ -56,11 +56,10 @@ public class Wormhole extends Powerup {
 
     @Override
     public void draw(GameView gv) {
-        if (bitmap == null) {
-            Log.e("Loading Bitmap", " - wormhole");
-            bitmap = gv.getBitmapFromResource(R.drawable.wormhole);
-        }
-        gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
+//        if (bitmap == null) {
+//            bitmap = gv.getBitmapFromResource(R.drawable.wormhole);
+//        }
+//        gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
     }
 
     @Override

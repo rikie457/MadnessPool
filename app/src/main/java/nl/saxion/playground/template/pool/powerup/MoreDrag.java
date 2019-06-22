@@ -57,13 +57,12 @@ public class MoreDrag extends Powerup {
 
     @Override
     public void draw(GameView gv) {
-        if(!invisable) {
-            if (bitmap == null) {
-                Log.e("Loading Bitmap", " - drag");
-                bitmap = gv.getBitmapFromResource(R.drawable.drag);
-            }
-            gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
-        }
+//        if(!invisable) {
+//            if (bitmap == null) {
+//                bitmap = gv.getBitmapFromResource(R.drawable.drag);
+//            }
+//            gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
+//        }
     }
 
     @Override

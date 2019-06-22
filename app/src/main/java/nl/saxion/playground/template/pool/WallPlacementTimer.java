@@ -27,7 +27,7 @@ public class WallPlacementTimer extends Entity {
     }
 
     public int getLayer() {
-        return 2;
+        return 8;
     }
 
     @Override
