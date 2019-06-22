@@ -290,6 +290,36 @@ public class Ball extends Entity {
     }
 
     /**
+     * Checks if a ball is in the gravity field of a hole when the
+     * GravityPocket powerup is active.
+     */
+    public void collisionPocketGravity() {
+        double x = this.vector2.getX();
+        double y = this.vector2.getY();
+
+        for (Hole hole : game.getHoles()) {
+
+            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 150, y + this.radius + 150, hole.getVector2().getX(), hole.getVector2().getY()));
+            if (distance > this.radius) { System.out.println("no collision"); } else {System.out.println("collision");}
+            if (distance > this.radius) continue; // no collision
+
+            // The ball is in a gravity field
+
+            if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
+                this.speedX += 0.01;
+            } else {
+                this.speedX -= 0.01;
+            }
+
+            if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
+                this.speedY += 0.01;
+            } else {
+                this.speedY -= 0.01;
+            }
+        }
+    }
+
+    /**
      * Gets the angle at which the ball is moving.
      * @return
      */
@@ -324,6 +354,9 @@ public class Ball extends Entity {
 
         if (game.getMadness()) {
             checkCollisionPlaceableWalls();
+            if (game.isPocketGravity()) {
+                collisionPocketGravity();
+            }
         }
 
     }
