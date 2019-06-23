@@ -18,6 +18,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.powerup.GravityPocket;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
@@ -77,6 +78,7 @@ public class Game extends GameModel {
     private boolean playerScored = false;
     private boolean isMadness = false;
     private boolean placingWall = false;
+    private boolean pocketGravity = false;
     private float guiHeight = 75f;
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
@@ -507,6 +509,7 @@ public class Game extends GameModel {
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new GravityPocket(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new RemoveBall(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new GravityWellPowerup(this, 250, 250, whiteball));
 
@@ -719,6 +722,14 @@ public class Game extends GameModel {
         return this.isMadness;
     }
 
+    public boolean isPocketGravity() {
+        return pocketGravity;
+    }
+
+    public void setPocketGravity(boolean pocketGravity) {
+        this.pocketGravity = pocketGravity;
+    }
+
     /**
      * Winner screen.
      *
@@ -774,6 +785,7 @@ public class Game extends GameModel {
 
         this.gui = null;
         this.isMadness = false;
+        this.pocketGravity = false;
         Ball.lastisertedid = 0;
         start();
     }
