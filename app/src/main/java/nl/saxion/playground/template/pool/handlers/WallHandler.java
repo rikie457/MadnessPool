@@ -50,6 +50,7 @@ public class WallHandler extends Entity {
         this.walls = walls;
         this.game = game;
         this.placeWallMessage = new PlaceWallMessage(game);
+        this.wallPlacementTimer = new WallPlacementTimer(game, this);
     }
 
     @Override
@@ -187,9 +188,9 @@ public class WallHandler extends Entity {
          *Muren links en rechts
          */
 
-        if (event.getX() - this.wall.getRadius() < game.getPlayWidth() * 0.07) {
+        if (event.getX() - this.wall.getRadius() < game.getWidth() * 0.07) {
             isValid = false;
-        } else if (event.getX() + this.wall.getRadius() > game.getPlayWidth() * 0.93) {
+        } else if (event.getX() + this.wall.getRadius() > game.getWidth() * 0.93) {
             isValid = false;
         }
 

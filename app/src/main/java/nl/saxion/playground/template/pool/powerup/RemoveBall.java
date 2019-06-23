@@ -18,7 +18,6 @@ public class RemoveBall extends Powerup {
     static private Bitmap bitmap;
     private Game game;
     private double x, y, radius;
-    private int currentturn, intialturn;
     private boolean applied = false;
 
     private ArrayList<Ball> balls;
@@ -29,13 +28,12 @@ public class RemoveBall extends Powerup {
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.currentturn = game.getTurns();
         if (this.collected && !this.applied) {
             applyEffect();
             this.applied = true;
@@ -89,7 +87,6 @@ public class RemoveBall extends Powerup {
     }
 
     public void resolveColission() {
-        this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
@@ -105,7 +102,7 @@ public class RemoveBall extends Powerup {
 
     @Override
     public void createPowerUp() {
-        RemoveBall removeBall = new RemoveBall(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        RemoveBall removeBall = new RemoveBall(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(removeBall);
         game.addEntity(removeBall);
     }

@@ -5,13 +5,9 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 import nl.saxion.playground.template.R;
-import nl.saxion.playground.template.lib.GameView;
-import nl.saxion.playground.template.pool.Game;
-import nl.saxion.playground.template.pool.Utility;
-import nl.saxion.playground.template.pool.Vector2;
-import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.balls.Ball;
 
 public class GravityWell extends Entity {
     private Game game;
@@ -28,7 +24,7 @@ public class GravityWell extends Entity {
 
     public GravityWell(Game game, ArrayList<Ball> balls) {
         this.location = new Vector2(
-                Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100),
+                Utility.randomDoubleFromRange(100, game.getWidth() - 100),
                 Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100)
         );
         this.game = game;
@@ -111,7 +107,7 @@ public class GravityWell extends Entity {
         double minimumDistance = 0;
 
         for(Ball ball : balls) {
-            if(ball.stoppedLikingTheGravity((int)(this.width * 2))) {
+            if (ball.stopGravitiy((int) (this.width * 2))) {
                 continue;
             }
 

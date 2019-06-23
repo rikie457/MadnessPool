@@ -16,15 +16,12 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 
 /**
- * The type Eight ball button.
+ * The Eight ball button.
+ * If this button is clicked the normal 8 ball is started
  */
 public class EightBallButton extends Entity {
 
     static private Bitmap bitmap;
-    /**
-     * The A val.
-     */
-    float aVal;
     private Game game;
 
     /**
@@ -45,7 +42,7 @@ public class EightBallButton extends Entity {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.eightballbutton);
         }
-        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 300, aVal);
+        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 300);
     }
 
     @Override

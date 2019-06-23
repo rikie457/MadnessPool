@@ -32,7 +32,7 @@ public class WhiteBallHandler extends Entity {
     /**
      * The Holes.
      */
-    ArrayList<Hole> holes;
+    private ArrayList<Hole> holes;
     private boolean ballReplaced = false;
     private boolean canContinue = false;
     private boolean movingBall = false;
@@ -157,9 +157,9 @@ public class WhiteBallHandler extends Entity {
          *Muren links en rechts
          */
 
-        if (event.getX() - this.whiteBall.getRadius() < game.getPlayWidth() * 0.07) {
+        if (event.getX() - this.whiteBall.getRadius() < game.getWidth() * 0.07) {
             isValid = false;
-        } else if (event.getX() + this.whiteBall.getRadius() > game.getPlayWidth() * 0.93) {
+        } else if (event.getX() + this.whiteBall.getRadius() > game.getWidth() * 0.93) {
             isValid = false;
         }
 
@@ -181,6 +181,7 @@ public class WhiteBallHandler extends Entity {
 
             double side1 = Math.sqrt(Math.pow(event.getX() - wall.getVector2().getX(), 2) + Math.pow(event.getY() - wall.getVector2().getY(), 2));
 
+
             double side2 = Math.sqrt(Math.pow(event.getX() - wall.getEndVector2().getX(), 2) + Math.pow(event.getY() - wall.getEndVector2().getY(), 2));
 
             double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(), 2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(), 2));
@@ -200,10 +201,7 @@ public class WhiteBallHandler extends Entity {
 
             double height = 2 * areaOfTriangle / base;
 
-            if (height < this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2)
-                isValid = false;
-            else
-                isValid = true;
+            isValid = !(height < this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2);
         }
 
         return isValid;

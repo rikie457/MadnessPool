@@ -61,9 +61,8 @@ public class Utility {
             param = dot / len_sqrt;
         }
 
-        double cx = 0;
-        double cy = 0;
-
+        double cx;
+        double cy;
         if (param < 0) {
             cx = x1;
             cy = y1;

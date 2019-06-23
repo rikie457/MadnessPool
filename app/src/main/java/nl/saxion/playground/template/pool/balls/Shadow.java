@@ -1,18 +1,16 @@
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
-import nl.saxion.playground.template.pool.Vector2;
 
 public class Shadow extends Entity {
     public Shadow(Ball ball, Game game) {
         this.ball = ball;
-        this.offset = -(29.5 * (1000/game.getPlayWidth()));
+        this.offset = -(29.5 * (1000 / game.getWidth()));
         this.scalingFactor = (float)2.95;
         this.game = game;
     }
@@ -21,7 +19,6 @@ public class Shadow extends Entity {
     private double offset;
     private double scalingFactor;
     private static Bitmap shadowBitmap;
-    private double shadowAngle;
     private Game game;
 
     @Override
@@ -30,7 +27,7 @@ public class Shadow extends Entity {
             if(!((WhiteBall)ball).getVisible()) return;
         }
         if(shadowBitmap == null) {
-            this.shadowBitmap = gameView.getBitmapFromResource(R.drawable.ball_shadow);
+            shadowBitmap = gameView.getBitmapFromResource(R.drawable.ball_shadow);
         }
 
         float x = (float)(ball.getVector2().getX() + offset);

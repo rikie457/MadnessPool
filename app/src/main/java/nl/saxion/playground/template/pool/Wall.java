@@ -5,7 +5,6 @@ import android.graphics.Color;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
-import nl.saxion.playground.template.pool.balls.Ball;
 
 public class Wall extends Entity {
 
@@ -37,9 +36,7 @@ public class Wall extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        Ball ball = game.getBalls().get(15);
         gv.getCanvas().drawLine((float) vector2.getX(), (float) vector2.getY(), (float) endVector2.getX(), (float) endVector2.getY(), Game.grayPaint);
-        gv.getCanvas().drawCircle((float) Utility.getClosestPoint(this, ball).getX(), (float) Utility.getClosestPoint(this, ball).getY(), 5, Game.powerupPaint);
     }
 
     /**
@@ -48,8 +45,6 @@ public class Wall extends Entity {
      * @param touch
      */
     public void placeWall(GameModel.Touch touch) {
-
-
         this.vector2.set(touch.x - 20, touch.y);
         this.endVector2.set(touch.x + 20, touch.y);
         this.middleX = touch.x;

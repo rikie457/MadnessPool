@@ -1,14 +1,8 @@
 package nl.saxion.playground.template.pool;
 
-import android.graphics.Bitmap;
-import android.os.CountDownTimer;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.handlers.WallHandler;
 
 public class WallPlacementTimer extends Entity {
 

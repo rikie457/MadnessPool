@@ -23,7 +23,7 @@ public class NoDrag extends Powerup {
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class NoDrag extends Powerup {
 
     @Override
     public void createPowerUp() {
-        NoDrag noDrag = new NoDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        NoDrag noDrag = new NoDrag(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(noDrag);
         game.addEntity(noDrag);
     }

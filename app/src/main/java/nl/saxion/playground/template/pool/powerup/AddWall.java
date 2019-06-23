@@ -7,32 +7,28 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
-import nl.saxion.playground.template.pool.handlers.WallHandler;
 
 
 public class AddWall extends Powerup {
 
     private Game game;
     private WhiteBall whiteBall;
-    private WallHandler wallHandler;
     private boolean effectApplied = false;
-    private int currentturn;
     private int intialturn;
-    static Bitmap bitmap;
+    private static Bitmap bitmap;
 
     public AddWall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
-        this.wallHandler = this.game.getWallHandler();
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.currentturn = game.getTurns();
+        int currentturn = game.getTurns();
         if (this.collected) {
-            if (this.intialturn + 2 == this.currentturn) {
+            if (this.intialturn + 2 == currentturn) {
                 game.removeEntity(this);
             } else if (!this.effectApplied){
                     applyEffect();
@@ -62,7 +58,7 @@ public class AddWall extends Powerup {
 
     @Override
     public void createPowerUp() {
-        AddWall addwall = new AddWall(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        AddWall addwall = new AddWall(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(addwall);
         game.addEntity(addwall);
     }

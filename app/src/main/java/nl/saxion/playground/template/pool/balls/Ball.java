@@ -7,7 +7,6 @@
 package nl.saxion.playground.template.pool.balls;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -21,28 +20,48 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.Wall;
 
+/**
+ * The type Ball.
+ * This is the ball on the screen. Everything the ball can collide with is written here.
+ * Also the graphics are defined here.
+ */
 public class Ball extends Entity {
+    /**
+     * The constant lastisertedid.
+     * This is the auto increment for the ID
+     */
     public static int lastisertedid = 0;
 
-    protected double speedX, speedY, mass, width, height, radius, bx, by, friction, energyloss;
+    /**
+     * All the required data for the collisions
+     */
+    private double speedX, speedY, mass, width, height, radius, bx, by, friction, energyloss;
+    private boolean collision = true;
     protected Vector2 vector2;
-    protected Vector2 madnessWallVector;
-    protected Game game;
-    private int i = 0;
+    private float lastAngle = (float) (Math.random() * 360);
 
+
+    protected Game game;
     private static Bitmap[] bitmaps;
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
     private int id, type;
     private boolean moving;
-    private boolean collision = true;
     private int[] drawables;
-
     private double gravityPullsHad = 0;
-
-    // the shadow
     private Shadow shadow;
 
 
+    /**
+     * Instantiates a new Ball.
+     *
+     * @param game      the game
+     * @param drawables the drawables
+     * @param x         the x
+     * @param y         the y
+     * @param width     the width
+     * @param height    the height
+     * @param type      the type
+     */
     public Ball(Game game, int[] drawables, double x, double y, double width, double height, int type) {
         this.id = lastisertedid;
         lastisertedid++;
@@ -52,26 +71,31 @@ public class Ball extends Entity {
         this.radius = width / 2;
         this.speedY = 0;
         this.speedX = 0;
-        this.bx = game.getPlayWidth();
+        this.bx = game.getWidth();
         this.by = game.getPlayHeight();
         this.mass = 10;
         this.friction = .9965;
         this.energyloss = .900;
         this.type = type;
         this.vector2 = new Vector2(x, y);
-        this.madnessWallVector = new Vector2();
         this.drawables = drawables;
+
         if (bitmaps == null) {
             bitmaps = new Bitmap[16];
         }
-        if(this.type != 0) {
+        if (this.type != 0) {
             this.shadow = new Shadow(this, game);
             game.addEntity(shadow);
         }
     }
 
-
+    /**
+     * Check if ball has collision with other balls.
+     * If so resolve them
+     */
     private void checkCollisionBall(ArrayList<Ball> balls) {
+        //Check for all balls after this ball in the array.
+        //Like id = 5 check in array for: 6 7 8 9 10 11 12 13 14 15
         for (int i = this.id + 1; i < balls.size(); i++) {
             Ball ball = balls.get(i);
             double ball1x = this.vector2.getX();
@@ -83,6 +107,7 @@ public class Ball extends Entity {
             double xd = ball1x - ball2x;
             double yd = ball1y - ball2y;
 
+            //if the balls are colliding then resolve the collision
             boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
             if (colliding) {
 
@@ -109,6 +134,9 @@ public class Ball extends Entity {
         }
     }
 
+    /**
+     * Check for collision with outer walls and resolve them.
+     */
     private void checkCollisionWall() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -118,12 +146,12 @@ public class Ball extends Entity {
         /**
          * muren rechts en links
          */
-        if (x - this.radius <= game.getPlayWidth() * 0.056) {
-            this.vector2.setX(game.getPlayWidth() * 0.056 + this.radius);
+        if (x - this.radius <= game.getWidth() * 0.056) {
+            this.vector2.setX(game.getWidth() * 0.056 + this.radius);
             this.speedX = -this.speedX;
-        } else if (x + this.radius >= game.getPlayWidth() * 0.93) {
+        } else if (x + this.radius >= game.getWidth() * 0.93) {
             this.speedX = -this.speedX;
-            this.vector2.setX(game.getPlayWidth() * 0.93 - this.radius);
+            this.vector2.setX(game.getWidth() * 0.93 - this.radius);
             this.speedX *= this.energyloss;
         } else {
             this.vector2.setX(x += this.speedX);
@@ -135,9 +163,9 @@ public class Ball extends Entity {
         /**
          * muuren boven en onder
          */
-        if (y - this.radius <= game.getPlayWidth() * 0.04) {
+        if (y - this.radius <= game.getWidth() * 0.04) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getPlayWidth() * 0.04 + this.radius);
+            this.vector2.setY(game.getWidth() * 0.04 + this.radius);
         } else if (y + this.radius > game.getPlayHeight() * 0.85) {
             this.speedY = -this.speedY;
             this.vector2.setY(game.getPlayHeight() * 0.85 - this.radius);
@@ -151,23 +179,37 @@ public class Ball extends Entity {
         }
     }
 
-    public boolean stoppedLikingTheGravity(int maxPulls) {
-        if(this.gravityPullsHad > maxPulls) return true;
-        return false;
+    /**
+     * Stop the gravity boolean.
+     *
+     * @param maxPulls the max pulls
+     * @return the boolean
+     */
+    public boolean stopGravitiy(int maxPulls) {
+        return this.gravityPullsHad > maxPulls;
     }
 
-    public void startLikingGravityBroAndInviteYourFriends() {
-        // ok, sure, np
-        for(Ball ball : game.getBalls()) {
+    /**
+     * Start gravity so the balls get affected
+     */
+    public void startGravitiy() {
+        for (Ball ball : game.getBalls()) {
             ball.gravityPullsHad = 0;
         }
     }
 
+    /**
+     * Remove ball.
+     */
     public void removeBall() {
         this.game.removeEntity(this);
-        if(shadow != null) this.game.removeEntity(shadow);
+        if (shadow != null) this.game.removeEntity(shadow);
     }
 
+    /**
+     * Check if the balls has a collision with the hole.
+     * If so remove the ball and add it to the correct array of balls for the player
+     */
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -178,7 +220,6 @@ public class Ball extends Entity {
             if (distance > this.radius) continue; // no collision
 
             // The ball hit the pocket!
-
             if (this.type == 3) {
                 //is 8 ball
                 if (game.getCurrentplayer().getScoredballs().size() < 7) {
@@ -223,47 +264,36 @@ public class Ball extends Entity {
     }
 
     /**
-     * Sends the ball in the right direction on hitting the wall.
+     * Sends the ball in the right direction after hitting the placeable wall.
      */
     private void checkCollisionPlaceableWalls() {
         for (int i = 0; i < game.getWalls().size(); i++) {
+            Wall wall = game.getWalls().get(i);
+            Vector2 closestpoint = Utility.getClosestPoint(wall, this);
+
             if (this.id == 15) {
-                Wall wall = game.getWalls().get(i);
-                Vector2 closestpoint = Utility.getClosestPoint(wall, this);
-                if (Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius) <= this.radius) {
+                System.out.println(Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius + 10) <= this.radius);
+            }
+            //collision
+            if (Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius + 10) <= this.radius) {
+                double x1 = wall.getVector2().getX();
+                double y1 = wall.getVector2().getY();
+                double x2 = wall.getEndVector2().getX();
+                double y2 = wall.getEndVector2().getY();
 
-                    //collision
-                    double x1 = wall.getVector2().getX();
-                    double y1 = wall.getVector2().getY();
-                    double x2 = wall.getEndVector2().getX();
-                    double y2 = wall.getEndVector2().getY();
-
-                    if (closestpoint.getX() == x1 && closestpoint.getY() == y1) {
-                        this.vector2.setX(x1 + this.radius);
-                        this.vector2.setY(y1 + this.radius);
-                        this.speedX = -this.speedX;
-                        this.speedY = -this.speedY;
-                        this.speedX *= this.energyloss;
-                        this.speedY *= this.energyloss;
-                    } else if (closestpoint.getX() == x2 && closestpoint.getY() == y2) {
-                        this.vector2.setX(x2 + this.radius);
-                        this.vector2.setY(y2 + this.radius);
-                        this.speedX = -this.speedX;
-                        this.speedY = -this.speedY;
-                        this.speedX *= this.energyloss;
-                        this.speedY *= this.energyloss;
-
-                    }
-
-
+                if (closestpoint.getX() == x1 && closestpoint.getY() == y1) {
+                    this.speedX -= 2.0 * this.speedX;
+                    this.speedY -= 2.0 * this.speedY;
+                } else if (closestpoint.getX() == x2 && closestpoint.getY() == y2) {
+                    this.speedX -= 2.0 * this.speedX;
+                    this.speedY -= 2.0 * this.speedY;
+                } else {
                     Vector2 line = new Vector2();
                     Vector2 normal = new Vector2();
-
                     line.setX(x2 - x1);
                     line.setY(y2 - y1);
                     normal.setX(-line.getY());
                     normal.setY(line.getX());
-
 
                     double lenthofnormal = Math.sqrt((normal.getX() * normal.getX()) + (normal.getY() * normal.getY()));
                     normal.setX(normal.getX() / lenthofnormal);
@@ -271,10 +301,7 @@ public class Ball extends Entity {
 
                     double distanceAlongNormal = speedX * normal.getX() + speedY * normal.getY();
                     this.speedX -= 2.0 * distanceAlongNormal * normal.getX();
-                    this.speedX *= this.energyloss;
                     this.speedY -= 2.0 * distanceAlongNormal * normal.getY();
-                    this.speedY *= this.energyloss;
-
 
                 }
             }
@@ -285,7 +312,7 @@ public class Ball extends Entity {
     /**
      * Gets the angle at which the ball is moving.
      *
-     * @return
+     * @return angle movement
      */
     public double getAngleMovement() {
         if (checkMovement()) {
@@ -293,6 +320,11 @@ public class Ball extends Entity {
         } else return 0.0;
     }
 
+    /**
+     * Gets type.
+     *
+     * @return the type
+     */
     public int getType() {
         return this.type;
     }
@@ -324,7 +356,6 @@ public class Ball extends Entity {
 
     }
 
-    private float lastAngle = (float)(Math.random() * 360);
 
     private float getNewRandomAngle() {
         if (moving) {
@@ -344,13 +375,13 @@ public class Ball extends Entity {
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
-        if(ball_inner_shadow_madness == null)
+        if (ball_inner_shadow_madness == null)
             ball_inner_shadow_madness = gv.getBitmapFromResource(R.drawable.ball_inner_shadow_madness);
 
-        if(Game.gameMode == Game.GameMode.MADNESS)
-            gv.drawBitmap(ball_inner_shadow_madness, (float)(x / 1.0005), (float)(y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
+        if (Game.gameMode == Game.GameMode.MADNESS)
+            gv.drawBitmap(ball_inner_shadow_madness, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
         else
-            gv.drawBitmap(ball_inner_shadow, (float)(x / 1.0005), (float)(y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
+            gv.drawBitmap(ball_inner_shadow, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
     }
 
     @Override
@@ -358,86 +389,177 @@ public class Ball extends Entity {
         return 7;
     }
 
+    /**
+     * Gets mass.
+     *
+     * @return the mass
+     */
     public double getMass() {
         return this.mass;
     }
 
-    // werkt niet, niet gebruiken
-    public void setSpeedX(float xSpeed) {
-        this.speedX = xSpeed;
-    }
-
+    /**
+     * Gets vector 2.
+     *
+     * @return the vector 2
+     */
     public Vector2 getVector2() {
         return vector2;
     }
 
-    public void applyForce(Vector2 vector2) {
-        this.speedX += vector2.getX();
-        this.speedY += vector2.getY();
-        this.gravityPullsHad++;
-        Log.e("gravityPullsHad for", this.id + ": " + this.gravityPullsHad);
-    }
-
+    /**
+     * Sets vector 2.
+     *
+     * @param vector2 the vector 2
+     */
     public void setVector2(Vector2 vector2) {
         this.vector2 = vector2;
     }
 
-    // werkt niet, niet gebruiken
-    public void setSpeedY(float ySpeed) {
-        this.speedY = ySpeed;
+    /**
+     * Apply force.
+     *
+     * @param vector2 the vector 2
+     */
+    public void applyForce(Vector2 vector2) {
+        this.speedX += vector2.getX();
+        this.speedY += vector2.getY();
+        this.gravityPullsHad++;
     }
 
-
-
+    /**
+     * Gets radius.
+     *
+     * @return the radius
+     */
     public double getRadius() {
         return this.radius;
     }
 
-    public void setFriction(double friction) {
-        this.friction = friction;
-    }
-
+    /**
+     * Gets friction.
+     *
+     * @return the friction
+     */
     public double getFriction() {
         return friction;
     }
 
+    /**
+     * Sets friction.
+     *
+     * @param friction the friction
+     */
+    public void setFriction(double friction) {
+        this.friction = friction;
+    }
+
+    /**
+     * Gets width.
+     *
+     * @return the width
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Gets height.
+     *
+     * @return the height
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets speed x.
+     *
+     * @return the speed x
+     */
     public double getSpeedX() {
         return speedX;
     }
 
+    /**
+     * Sets speed x.
+     *
+     * @param xSpeed the x speed
+     */
+    public void setSpeedX(double xSpeed) {
+        this.speedX = xSpeed;
+    }
+
+    /**
+     * Gets speed y.
+     *
+     * @return the speed y
+     */
     public double getSpeedY() {
         return speedY;
     }
 
+    /**
+     * Sets speed y.
+     *
+     * @param ySpeed the y speed
+     */
+    public void setSpeedY(double ySpeed) {
+        this.speedY = ySpeed;
+    }
+
+    /**
+     * Is moving boolean.
+     *
+     * @return the boolean
+     */
     public boolean isMoving() {
         return moving;
     }
 
+    /**
+     * Sets moving.
+     *
+     * @param moving the moving
+     */
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
+    /**
+     * Gets collision.
+     *
+     * @return the collision
+     */
     public boolean getCollision() {
         return this.collision;
     }
 
+    /**
+     * Sets collision.
+     *
+     * @param collision the collision
+     */
     public void setCollision(boolean collision) {
         this.collision = collision;
     }
 
 
+    /**
+     * Gets bitmap.
+     *
+     * @param id the id
+     * @return the bitmap
+     */
     public Bitmap getBitmap(int id) {
 
         return bitmaps[this.id];

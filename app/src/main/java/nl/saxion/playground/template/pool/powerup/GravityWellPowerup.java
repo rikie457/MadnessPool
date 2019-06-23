@@ -23,7 +23,7 @@ public class GravityWellPowerup extends Powerup {
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GravityWellPowerup extends Powerup {
                 game.addEntity(gravityWell);
                 used = true;
             }
-        } else if (this.currentTurn + 2 == this.currentTurn) {
+        } else if (this.initialTurn + 2 == this.currentTurn) {
             game.removeEntity(this);
         }
     }
@@ -64,7 +64,7 @@ public class GravityWellPowerup extends Powerup {
     public void createPowerUp() {
         GravityWellPowerup gravityWellPowerup =
                 new GravityWellPowerup(game,
-                        (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100),
+                        (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100),
                         (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100),
                         this.whiteBall
                 );
