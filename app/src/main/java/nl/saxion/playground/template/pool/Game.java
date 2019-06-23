@@ -500,10 +500,10 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
-//                powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
-//                powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
-//                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
-//                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new GravityPocket(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
