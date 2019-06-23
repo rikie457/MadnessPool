@@ -34,7 +34,7 @@ public class ShootLine extends Entity {
 
     @Override
     public int getLayer() {
-        return 1;
+        return 6;
     }
 
     @Override

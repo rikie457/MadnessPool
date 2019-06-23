@@ -38,6 +38,10 @@ public class WinMessage extends Entity {
         this.winnerId = winnerId;
     }
 
+    public int getLayer() {
+        return 9;
+    }
+
     @Override
     public void tick() {
         super.tick();
