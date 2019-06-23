@@ -52,6 +52,8 @@ public class Ball extends Entity {
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
     private int id, type;
     private boolean moving;
+    private boolean collision = true;
+    protected boolean visible = true;
     private int[] drawables;
     private double gravityPullsHad = 0;
     private Shadow shadow;
@@ -100,41 +102,44 @@ public class Ball extends Entity {
      * If so resolve them
      */
     private void checkCollisionBall(ArrayList<Ball> balls) {
-        //Check for all balls after this ball in the array.
+
+        if (this.collision) {
+             //Check for all balls after this ball in the array.
         //Like id = 5 check in array for: 6 7 8 9 10 11 12 13 14 15
-        for (int i = this.id + 1; i < balls.size(); i++) {
-            Ball ball = balls.get(i);
-            double ball1x = this.vector2.getX();
-            double ball1y = this.vector2.getY();
-            double ball2x = ball.vector2.getX();
-            double ball2y = ball.vector2.getY();
+            for (int i = this.id + 1; i < balls.size(); i++) {
+                Ball ball = balls.get(i);
+                double ball1x = this.vector2.getX();
+                double ball1y = this.vector2.getY();
+                double ball2x = ball.vector2.getX();
+                double ball2y = ball.vector2.getY();
 
-            double distSqr = Utility.getDistanceNotSquared(ball1x, ball1y, ball2x, ball2y);
-            double xd = ball1x - ball2x;
-            double yd = ball1y - ball2y;
+                double distSqr = Utility.getDistanceNotSquared(ball1x, ball1y, ball2x, ball2y);
+                double xd = ball1x - ball2x;
+                double yd = ball1y - ball2y;
 
-            //if the balls are colliding then resolve the collision
-            boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
-            if (colliding) {
+       //if the balls are colliding then resolve the collision
+                boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
+                if (colliding) {
 
-                if (this.speedX == 0 && this.speedY == 0 && ball.speedX == 0 && ball.speedY == 0) {
-                    this.speedY = .5;
-                    this.speedX = -.5;
-                }
-                double xVelocity = ball.speedX - this.speedX;
-                double yVelocity = ball.speedY - this.speedY;
-                double dotProduct = xd * xVelocity + yd * yVelocity;
-                if (dotProduct > 0) {
-                    double collisionScale = dotProduct / distSqr;
-                    double xCollision = xd * collisionScale;
-                    double yCollision = yd * collisionScale;
-                    double combinedMass = this.getMass() + ball.getMass();
-                    double collisionWeightA = 2 * ball.getMass() / combinedMass;
-                    double collisionWeightB = 2 * this.getMass() / combinedMass;
-                    this.speedX += collisionWeightA * xCollision;
-                    this.speedY += collisionWeightA * yCollision;
-                    ball.speedX -= collisionWeightB * xCollision;
-                    ball.speedY -= collisionWeightB * yCollision;
+                    if (this.speedX == 0 && this.speedY == 0 && ball.speedX == 0 && ball.speedY == 0) {
+                        this.speedY = .5;
+                        this.speedX = -.5;
+                    }
+                    double xVelocity = ball.speedX - this.speedX;
+                    double yVelocity = ball.speedY - this.speedY;
+                    double dotProduct = xd * xVelocity + yd * yVelocity;
+                    if (dotProduct > 0) {
+                        double collisionScale = dotProduct / distSqr;
+                        double xCollision = xd * collisionScale;
+                        double yCollision = yd * collisionScale;
+                        double combinedMass = this.getMass() + ball.getMass();
+                        double collisionWeightA = 2 * ball.getMass() / combinedMass;
+                        double collisionWeightB = 2 * this.getMass() / combinedMass;
+                        this.speedX += collisionWeightA * xCollision;
+                        this.speedY += collisionWeightA * yCollision;
+                        ball.speedX -= collisionWeightB * xCollision;
+                        ball.speedY -= collisionWeightB * yCollision;
+                    }
                 }
             }
         }
@@ -213,9 +218,18 @@ public class Ball extends Entity {
     }
 
     /**
+     * Sets the cue ball invisible when scored.
+     */
+    public void setCueBallInvisible() {
+        this.visible = false;
+        this.collision = false;
+    }
+
+        /**
      * Check if the balls has a collision with the hole.
      * If so remove the ball and add it to the correct array of balls for the player
      */
+
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -236,7 +250,7 @@ public class Ball extends Entity {
             } else if (this.type == 0) {
                 //is cue ball
                 game.placeCueBall();
-                removeBall();
+                setCueBallInvisible();
 
             } else {
                 // A regular ball
@@ -311,40 +325,6 @@ public class Ball extends Entity {
         }
     }
 
-
-    /**
-     * Checks if there is collion with a wall.
-     *
-     * @param wall the wall
-     * @return boolean
-     */
-    public boolean collisionBallWall(Wall wall) {
-
-        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(), 2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(), 2));
-
-        double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(), 2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(), 2));
-
-        double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(), 2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(), 2));
-
-        if (this.radius + this.width / 2 > side1 || this.radius + this.width / 2 > side2)
-            return true;
-
-        double angle1 = Math.atan2(wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY()) - Math.atan2(this.vector2.getX() - wall.getVector2().getX(), this.vector2.getY() - wall.getVector2().getY());
-
-        double angle2 = Math.atan2(wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY()) - Math.atan2(this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY());
-
-        if (angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
-            return false;
-
-        double semiperimeter = (side1 + side2 + base) / 2;
-
-        double areaOfTriangle = Math.sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base));
-
-        double height = 2 * areaOfTriangle / base;
-
-        return height < this.radius + this.width / 2;
-
-    }
 
     /**
      * Checks if a ball is in the gravity field of a hole when the

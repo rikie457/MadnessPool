@@ -777,6 +777,7 @@ public class Game extends GameModel {
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
         removeEntity(wallHandler);
+
         if (getMadness()) {
             removeEntity(powerupCreator);
         }

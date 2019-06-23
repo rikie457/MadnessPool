@@ -26,7 +26,6 @@ public class WhiteBall extends Ball {
     private boolean shot;
     private Vector2 origin = new Vector2(), end = new Vector2();
     private Shadow shadow;
-    private boolean visible = true;
 
     /**
      * Instantiates a new White ball.
@@ -81,11 +80,6 @@ public class WhiteBall extends Ball {
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    @Override
-    public void removeBall() {
-        this.visible = false;
     }
 
     @Override
