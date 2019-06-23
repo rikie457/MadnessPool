@@ -4,7 +4,7 @@
  * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
  */
 
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.messages;
 
 import android.graphics.Bitmap;
 import android.view.MotionEvent;
@@ -13,6 +13,7 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
 
 /**
  * The type Win message.

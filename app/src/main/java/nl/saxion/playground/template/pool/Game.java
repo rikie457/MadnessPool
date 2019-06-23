@@ -18,6 +18,10 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.handlers.WallHandler;
+import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
+import nl.saxion.playground.template.pool.messages.WinMessage;
+import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
@@ -60,7 +64,6 @@ public class Game extends GameModel {
 
     static public Paint powerupPaint = new Paint();
 
-    static public GameMode gameMode = null;
 
     //Players
     private Player player1 = new Player(1);
@@ -81,7 +84,7 @@ public class Game extends GameModel {
     private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
-    private float powerupsize = 15f;
+    private float powerupsize = 30f;
     private int turns;
 
     // Top Overlay pool table
@@ -93,6 +96,7 @@ public class Game extends GameModel {
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Wall> walls = new ArrayList<>();
     private ArrayList<Powerup> powerups = new ArrayList<>();
+
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
@@ -596,9 +600,9 @@ public class Game extends GameModel {
             if (this.currentplayer == player1 && !this.playerScored) {
                 setCurrentPlayer(player2);
                 turns++;
-            } else if (!this.playerScored){
+            } else if (!this.playerScored) {
                 setCurrentPlayer(player1);
-                      turns++;
+                turns++;
             }
             this.allmoving = false;
             ball.setShot(false);
@@ -607,10 +611,10 @@ public class Game extends GameModel {
             this.allmoving = true;
         }
         if (this.walls.size() > 0 && !this.playerScored && !this.checkMovementForAllBalls()) {
-            for (int i = 0; i < this.walls.size(); i++) {
-                removeEntity(this.walls.get(i));
-            }
-            this.walls.clear();
+//            for (int i = 0; i < this.walls.size(); i++) {
+//                removeEntity(this.walls.get(i));
+//            }
+//            this.walls.clear();
         }
     }
 
@@ -703,16 +707,20 @@ public class Game extends GameModel {
         return players;
     }
 
-    public ArrayList<Wall> getWalls () {
+    public ArrayList<Wall> getWalls() {
         return this.walls;
     }
 
-    public void setPlayerScored (boolean scored) {
+    public void setPlayerScored(boolean scored) {
         this.playerScored = scored;
     }
 
     public boolean hasPlayerScored() {
         return playerScored;
+    }
+
+    public WallHandler getWallHandler() {
+        return this.wallHandler;
     }
 
     public boolean getMadness() {

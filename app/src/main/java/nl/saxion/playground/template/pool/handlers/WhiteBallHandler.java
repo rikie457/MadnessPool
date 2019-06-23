@@ -4,7 +4,7 @@
  * Alle rechten behoren tot ons. De boven genoemde gebruikers. Het kopieren van deze software is verboden.
  */
 
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.handlers;
 
 import android.view.MotionEvent;
 
@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
 import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.Wall;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
@@ -168,6 +172,39 @@ public class WhiteBallHandler extends Entity {
             isValid = false;
         }
 
+        /**
+         * PlaceableWalls
+         */
+        for (int i = 0; i < game.getWalls().size(); i++) {
+
+            Wall wall = game.getWalls().get(i);
+
+            double side1 = Math.sqrt(Math.pow(event.getX() - wall.getVector2().getX(), 2) + Math.pow(event.getY() - wall.getVector2().getY(), 2));
+
+            double side2 = Math.sqrt(Math.pow(event.getX() - wall.getEndVector2().getX(), 2) + Math.pow(event.getY() - wall.getEndVector2().getY(), 2));
+
+            double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(), 2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(), 2));
+
+            if (this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2 > side1 || this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2 > side2) return false;
+
+            double angle1 = Math.atan2(wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY()) - Math.atan2(event.getX() - wall.getVector2().getX(), event.getY() - wall.getVector2().getY());
+
+            double angle2 = Math.atan2(wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY()) - Math.atan2(event.getX() - wall.getEndVector2().getX(), event.getY() - wall.getEndVector2().getY());
+
+            if (angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
+                return true;
+
+            double semiperimeter = (side1 + side2 + base) / 2;
+
+            double areaOfTriangle = Math.sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base));
+
+            double height = 2 * areaOfTriangle / base;
+
+            if (height < this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2)
+                isValid = false;
+            else
+                isValid = true;
+        }
 
         return isValid;
     }

@@ -226,102 +226,71 @@ public class Ball extends Entity {
      * Sends the ball in the right direction on hitting the wall.
      */
     private void checkCollisionPlaceableWalls() {
-        double totalVelocity = this.speedX + this.speedY;
-        double totalCordDiff, xCordDiff, yCofdDiff, newSpeedXCalc, newSpeedYCalc;
-        double angleDifference;
-
-        Wall wall;
-
-
         for (int i = 0; i < game.getWalls().size(); i++) {
-            wall = game.getWalls().get(i);
-            if (collisionBallWall(game.getWalls().get(i))) {
+            if (this.id == 15) {
+                Wall wall = game.getWalls().get(i);
+                Vector2 closestpoint = Utility.getClosestPoint(wall, this);
+                if (Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius) <= this.radius) {
+
+                    //collision
+                    double x1 = wall.getVector2().getX();
+                    double y1 = wall.getVector2().getY();
+                    double x2 = wall.getEndVector2().getX();
+                    double y2 = wall.getEndVector2().getY();
+
+                    if (closestpoint.getX() == x1 && closestpoint.getY() == y1) {
+                        this.vector2.setX(x1 + this.radius);
+                        this.vector2.setY(y1 + this.radius);
+                        this.speedX = -this.speedX;
+                        this.speedY = -this.speedY;
+                        this.speedX *= this.energyloss;
+                        this.speedY *= this.energyloss;
+                    } else if (closestpoint.getX() == x2 && closestpoint.getY() == y2) {
+                        this.vector2.setX(x2 + this.radius);
+                        this.vector2.setY(y2 + this.radius);
+                        this.speedX = -this.speedX;
+                        this.speedY = -this.speedY;
+                        this.speedX *= this.energyloss;
+                        this.speedY *= this.energyloss;
+
+                    }
 
 
-                if (wall.getLineAngle() > getAngleMovement()) {
-                    angleDifference = wall.getLineAngle() - getAngleMovement();
-                } else {
-                    angleDifference = getAngleMovement() - wall.getLineAngle();
+                    Vector2 line = new Vector2();
+                    Vector2 normal = new Vector2();
+
+                    line.setX(x2 - x1);
+                    line.setY(y2 - y1);
+                    normal.setX(-line.getY());
+                    normal.setY(line.getX());
+
+
+                    double lenthofnormal = Math.sqrt((normal.getX() * normal.getX()) + (normal.getY() * normal.getY()));
+                    normal.setX(normal.getX() / lenthofnormal);
+                    normal.setY(normal.getY() / lenthofnormal);
+
+                    double distanceAlongNormal = speedX * normal.getX() + speedY * normal.getY();
+                    this.speedX -= 2.0 * distanceAlongNormal * normal.getX();
+                    this.speedX *= this.energyloss;
+                    this.speedY -= 2.0 * distanceAlongNormal * normal.getY();
+                    this.speedY *= this.energyloss;
+
+
                 }
-
-                if (angleDifference > 180) {
-                    angleDifference -= 180;
-                }
-
-                //Ball up = min, ball down = plus, ball right = 0, ball left = 180
-                //wall measured from the line end
-                //line end right side = 180, line end left side = 0, line end up = plus, line end down = min
-
-                //Opposite angle line = movementAngle + 180 + 2 * angleDifference
-
-                //this.endVector2.set(this.middleX + this.radius * Math.cos(this.lineRotation), this.middleY + this.radius * Math.sin(Math.sin(this.lineRotation)));
-
-                this.madnessWallVector.set(this.vector2.getX() + 20 * Math.cos(getAngleMovement() + angleDifference * 2), this.vector2.getY() + 20 * Math.sin(Math.sin(getAngleMovement() + angleDifference * 2)));
-
-                xCordDiff = this.vector2.getX() - this.madnessWallVector.getX();
-                yCofdDiff = this.vector2.getY() - this.madnessWallVector.getY();
-
-                if (xCordDiff < 0 && yCofdDiff > 0) {
-                    totalCordDiff = -1 * xCordDiff + yCofdDiff;
-                } else if (xCordDiff < 0 && yCofdDiff < 0) {
-                    totalCordDiff = -1 * xCordDiff + -1 * yCofdDiff;
-                } else if (xCordDiff > 0 && yCofdDiff < 0) {
-                    totalCordDiff = xCordDiff + -1 * yCofdDiff;
-                } else {
-                    totalCordDiff = xCordDiff + yCofdDiff;
-                }
-
-                newSpeedXCalc = xCordDiff / totalCordDiff;
-                newSpeedYCalc = yCofdDiff / totalCordDiff;
-                this.speedX = newSpeedXCalc * totalVelocity;
-                this.speedY = newSpeedYCalc * totalVelocity;
             }
         }
     }
 
 
     /**
-     * Checks if there is collion with a wall.
-     * @param wall
-     * @return
-     */
-    public boolean collisionBallWall(Wall wall){
-
-        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(),2));
-
-        double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(),2));
-
-        double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(),2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(),2));
-
-        if(this.radius + this.width/2 > side1 || this.radius + this.width/2 > side2)
-            return true;
-
-        double angle1 = Math.atan2( wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getVector2().getX(), this.vector2.getY() - wall.getVector2().getY() );
-
-        double angle2 = Math.atan2( wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY() );
-
-        if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
-            return false;
-
-        double semiperimeter = (side1 + side2 + base) / 2;
-
-        double areaOfTriangle = Math.sqrt( semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base) );
-
-        double height = 2*areaOfTriangle/base;
-
-        return height < this.radius + this.width / 2;
-
-    }
-
-    /**
      * Gets the angle at which the ball is moving.
+     *
      * @return
      */
     public double getAngleMovement() {
         if (checkMovement()) {
             return Math.toDegrees(Math.atan2(this.speedY, this.speedX));
-        }
-        else return 0.0;
+        } else return 0.0;
     }
 
     public int getType() {
@@ -340,12 +309,15 @@ public class Ball extends Entity {
 
     @Override
     public void tick() {
+        double x = this.vector2.getX();
+        double y = this.vector2.getY();
+        this.vector2.set(x += this.speedX, y += this.speedY);
+
 
         this.moving = checkMovement();
         checkCollisionWall();
         checkCollisionBall(game.getBalls());
         checkCollisionHole();
-
         if (game.getMadness()) {
             checkCollisionPlaceableWalls();
         }
