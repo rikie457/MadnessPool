@@ -18,7 +18,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
-import nl.saxion.playground.template.pool.powerup.GravityWell;
+import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
@@ -506,7 +506,7 @@ public class Game extends GameModel {
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new MoreDrag(this, 250, 250, whiteball));
-                powerupCreator.getPowerups().add(new GravityWell(this, 250, 250, whiteball, balls));
+                powerupCreator.getPowerups().add(new GravityWellPowerup(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }

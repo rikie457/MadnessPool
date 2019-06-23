@@ -72,8 +72,6 @@ public class Background extends Entity {
         }
     }
 
-
-
     private void cycleColors() {
         if(currentColorCycling == RED) {
             if(this.r >= maxValueForColors[RED] || altRed) {
@@ -145,7 +143,7 @@ public class Background extends Entity {
     }
 
     private boolean tooLight() {
-        if(r + g + b >= 512) {
+        if(r + g + b >= 510) {
             if(r > g && r > b) {
                 altRed = true;
                 altGreen = false;
