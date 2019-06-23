@@ -82,13 +82,13 @@ public class WhiteBall extends Ball {
                 updateEnd(touch);
 
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                this.startLikingGravityBroAndInviteYourFriends();
+                this.startGravitiy();
 
                 double mag = Math.abs(Utility.getDistanceNotSquared(this.origin.getX(), this.origin.getY(), touch.x, touch.y)) * 2;
                 this.line.setVisible(false);
 
-                this.speedX = 0.00001 * (this.vector2.getX() + mag * Math.cos(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
-                this.speedY = 0.00001 * (this.vector2.getX() + mag * Math.sin(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI)));
+                this.setSpeedX(0.00001 * (this.vector2.getX() + mag * Math.cos(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI))));
+                this.setSpeedY(0.00001 * (this.vector2.getX() + mag * Math.sin(Math.toRadians(Math.atan2(this.origin.getY() - this.end.getY(), this.origin.getX() - this.end.getX()) * 180 / PI))));
                 this.shot = true;
             }
         }
@@ -102,7 +102,7 @@ public class WhiteBall extends Ball {
         this.end.set(touch.x, touch.y);
 
         // init drawable shootLine
-        this.line.getVector2().set(this.vector2.getX() + this.radius, this.vector2.getY() + this.radius);
+        this.line.getVector2().set(this.vector2.getX() + this.getRadius(), this.vector2.getY() + this.getRadius());
     }
 
     /**
@@ -112,8 +112,8 @@ public class WhiteBall extends Ball {
         this.end.set(touch.x, touch.y);
 
         // update drawable shootLine
-        double xOffset = this.vector2.getX() - this.origin.getX() + this.radius;
-        double yOffset = this.vector2.getY() - this.origin.getY() + this.radius;
+        double xOffset = this.vector2.getX() - this.origin.getX() + this.getRadius();
+        double yOffset = this.vector2.getY() - this.origin.getY() + this.getRadius();
 
         this.line.getNewvector2().set(this.end.getX() + xOffset, this.end.getY() + yOffset);
 

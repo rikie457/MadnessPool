@@ -18,6 +18,9 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 import nl.saxion.playground.template.pool.buttons.EightBallButton;
 import nl.saxion.playground.template.pool.buttons.MadnessButton;
+import nl.saxion.playground.template.pool.handlers.WallHandler;
+import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
+import nl.saxion.playground.template.pool.messages.WinMessage;
 import nl.saxion.playground.template.pool.powerup.GravityPocket;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
@@ -30,38 +33,25 @@ import nl.saxion.playground.template.pool.powerup.Wormhole;
 
 /**
  * The type Game.
+ * Here is all the logic voor the game itself
+ * the gamemode is determined here and the logic for each action.
  */
 public class Game extends GameModel {
 
-    /**
-     * The constant transparent.
-     */
-    //Paint
-    static public Paint transparent = new Paint();
-    /**
-     * The Black paint.
-     */
-    static public Paint blackPaint = new Paint();
-    /**
-     * The White paint.
-     */
-    static public Paint whitePaint = new Paint();
-    /**
-     * The Gray paint
-     */
-    static public Paint grayPaint = new Paint();
-    /**
-     * The Gray paint reflection.
-     */
-    static public Paint grayPaintReflection = new Paint();
-    /**
-     * The Red paint.
-     */
-    static public Paint redPaint = new Paint();
 
-    static public Paint powerupPaint = new Paint();
-
+    /**
+     * The enum for the gamemode type
+     */
     static public GameMode gameMode = null;
+
+    //Paints
+    public static Paint powerupPaint = new Paint();
+    static Paint transparent = new Paint();
+    static Paint blackPaint = new Paint();
+    static Paint whitePaint = new Paint();
+    static Paint grayPaint = new Paint();
+    static Paint redPaint = new Paint();
+    private static Paint grayPaintReflection = new Paint();
 
     //Players
     private Player player1 = new Player(1);
@@ -80,10 +70,10 @@ public class Game extends GameModel {
     private boolean placingWall = false;
     private boolean pocketGravity = false;
     private float guiHeight = 75f;
-    private float left = 0, top = getHeight(), right = getPlayWidth(), bottom = getHeight() + guiHeight;
+    private float left = 0, top = getHeight(), right = getWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
-    private float powerupsize = 15f;
+    private float powerupsize = 30f;
     private int turns;
 
     // Top Overlay pool table
@@ -95,6 +85,7 @@ public class Game extends GameModel {
     private ArrayList<Player> players = new ArrayList<>();
     private ArrayList<Wall> walls = new ArrayList<>();
     private ArrayList<Powerup> powerups = new ArrayList<>();
+
 
     //Drawables ball
     private int[] drawables = {R.drawable.ball1, R.drawable.ball2, R.drawable.ball3, R.drawable.ball4, R.drawable.ball5, R.drawable.ball6, R.drawable.ball7, R.drawable.ball8, R.drawable.ball9, R.drawable.ball10, R.drawable.ball11, R.drawable.ball12, R.drawable.ball13, R.drawable.ball14, R.drawable.ball15, R.drawable.ball16};
@@ -192,11 +183,6 @@ public class Game extends GameModel {
                     +0)
     };
 
-
-    public boolean isAllmoving() {
-        return allmoving;
-    }
-
     /**
      * Gets play height.
      *
@@ -204,15 +190,6 @@ public class Game extends GameModel {
      */
     public float getPlayHeight() {
         return this.getHeight() - this.guiHeight;
-    }
-
-    /**
-     * Gets play width.
-     *
-     * @return the play width
-     */
-    public float getPlayWidth() {
-        return this.getWidth();
     }
 
     @Override
@@ -253,7 +230,7 @@ public class Game extends GameModel {
         player2.setScoredballs(this.player2balls);
 
         this.left = 0;
-        this.right = left + getPlayWidth();
+        this.right = left + getWidth();
         this.top = getPlayHeight();
         this.bottom = top + guiHeight;
         this.gui = new Gui(this, this.player1, this.player2, this.left, this.top, this.right, this.bottom);
@@ -264,12 +241,12 @@ public class Game extends GameModel {
 
         if (runs < 1) {
             //Cant use array because of different coordinates
-            Hole hole1 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.12, holesize);
-            Hole hole2 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.12, holesize);
-            Hole hole3 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.12, holesize);
-            Hole hole4 = new Hole(this, getPlayWidth() * 0.08, this.getHeight() * 0.75, holesize);
-            Hole hole5 = new Hole(this, getPlayWidth() * 0.505, this.getHeight() * 0.75, holesize);
-            Hole hole6 = new Hole(this, getPlayWidth() * 0.921, this.getHeight() * 0.75, holesize);
+            Hole hole1 = new Hole(this, getWidth() * 0.08, this.getHeight() * 0.12, holesize);
+            Hole hole2 = new Hole(this, getWidth() * 0.505, this.getHeight() * 0.12, holesize);
+            Hole hole3 = new Hole(this, getWidth() * 0.921, this.getHeight() * 0.12, holesize);
+            Hole hole4 = new Hole(this, getWidth() * 0.08, this.getHeight() * 0.75, holesize);
+            Hole hole5 = new Hole(this, getWidth() * 0.505, this.getHeight() * 0.75, holesize);
+            Hole hole6 = new Hole(this, getWidth() * 0.921, this.getHeight() * 0.75, holesize);
 
             this.holes.add(hole1);
             this.holes.add(hole2);
@@ -286,16 +263,6 @@ public class Game extends GameModel {
             addEntity(hole5);
             addEntity(hole6);
             addEntity(gui);
-
-            // add balls to shadows class
-            //this.ball_shadows = new Shadows(this, this.balls);
-
-            // add both player 1 and player 2's
-            // pointers to arrays of their scored balls
-            // to the Shadows Object, so their shadows can be drawn
-            //this.ball_shadows.setGUIBalls(this.player1balls, this.player2balls);
-            //addEntity(this.ball_shadows);
-
         }
         runs++;
     }
@@ -326,9 +293,9 @@ public class Game extends GameModel {
         // ball at 14 is WHITE BALL (index 14)
         // ball at 15 is BLACK BALL (index 15)
 
-        this.rack_x_offset = (getPlayWidth() / 3) * 2 - ball_radius;
+        this.rack_x_offset = (getWidth() / 3) * 2 - ball_radius;
         this.rack_y_offset = (getPlayHeight() / 2) - ball_radius;
-        this.rackPositions[14] = new Vector2(getPlayWidth() / 4, this.rack_y_offset);
+        this.rackPositions[14] = new Vector2(getWidth() / 4, this.rack_y_offset);
 
         int whiteBallIndex = 0, blackBallIndex = 0;
 
@@ -422,16 +389,11 @@ public class Game extends GameModel {
                 } else if (i <= 14) {
                     type = 2;
                 }
-                Ball ball = new Ball(this, this.drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
-//                if (type == 1){
-//                   this.player1balls.add(ball);
-//                }else if(type == 2){
-//                    this.player2balls.add(ball);
-//                }
-                    this.balls.add(ball);
+                Ball ball = new Ball(this, this.drawables, getWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, type);
+                this.balls.add(ball);
                 addEntity(ball);
             } else {
-                WhiteBall ball = new WhiteBall(this, drawables, getPlayWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
+                WhiteBall ball = new WhiteBall(this, drawables, getWidth() / 2, getPlayHeight() / 2, ballsize, ballsize, 0, this.line);
                 this.balls.add(ball);
                 addEntity(ball);
             }
@@ -458,13 +420,13 @@ public class Game extends GameModel {
      * Start eight ball.
      */
     public void startEightBall() {
-        this.gameMode = GameMode.EIGHT_BALL;
+        gameMode = GameMode.EIGHT_BALL;
 
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        if(table_top_overlay == null) {
+        if (table_top_overlay == null) {
             table_top_overlay = new TableTopOverlay(this);
             addEntity(table_top_overlay);
         }
@@ -486,14 +448,14 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
-        this.gameMode = GameMode.MADNESS;
+        gameMode = GameMode.MADNESS;
 
         this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
 
-        if(table_top_overlay == null) {
+        if (table_top_overlay == null) {
             table_top_overlay = new TableTopOverlay(this);
             addEntity(table_top_overlay);
         }
@@ -559,7 +521,6 @@ public class Game extends GameModel {
     }
 
 
-
     /**
      * Gets inactiveplayer.
      *
@@ -599,9 +560,9 @@ public class Game extends GameModel {
             if (this.currentplayer == player1 && !this.playerScored) {
                 setCurrentPlayer(player2);
                 turns++;
-            } else if (!this.playerScored){
+            } else if (!this.playerScored) {
                 setCurrentPlayer(player1);
-                      turns++;
+                turns++;
             }
             this.allmoving = false;
             ball.setShot(false);
@@ -650,6 +611,7 @@ public class Game extends GameModel {
 
     /**
      * checks if a wall is being placed.
+     *
      * @return placingWall boolean.
      */
     public boolean getPlacingWall() {
@@ -706,16 +668,20 @@ public class Game extends GameModel {
         return players;
     }
 
-    public ArrayList<Wall> getWalls () {
+    public ArrayList<Wall> getWalls() {
         return this.walls;
     }
 
-    public void setPlayerScored (boolean scored) {
+    public void setPlayerScored(boolean scored) {
         this.playerScored = scored;
     }
 
     public boolean hasPlayerScored() {
         return playerScored;
+    }
+
+    public WallHandler getWallHandler() {
+        return this.wallHandler;
     }
 
     public boolean getMadness() {
@@ -793,7 +759,7 @@ public class Game extends GameModel {
     public enum GameMode {
         MADNESS,
         EIGHT_BALL
-    };
+    }
 }
 
 

@@ -1,16 +1,18 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.handlers;
 
-import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
-import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.Wall;
+import nl.saxion.playground.template.pool.WallPlacementTimer;
 import nl.saxion.playground.template.pool.balls.Ball;
+import nl.saxion.playground.template.pool.messages.PlaceWallMessage;
 
 public class WallHandler extends Entity {
     private boolean overWallLimit = true;
@@ -53,11 +55,10 @@ public class WallHandler extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
         checkMovingBalls();
 
         if (!this.wallMade) {
-            Wall newWall = new Wall();
+            Wall newWall = new Wall(game);
             this.wall = newWall;
             this.wallMade = true;
         }
@@ -108,11 +109,18 @@ public class WallHandler extends Entity {
     public void handleTouch(GameModel.Touch touch, MotionEvent event) {
         super.handleTouch(touch, event);
 
-        if (!this.wallPlaced && !this.overWallLimit && this.canStartPlacing && isValidPosition(event) && !game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
-            this.wall.placeWall(touch);
-            this.wallPlaced = true;
-            game.addEntity(this.wall);
-            this.walls.add(this.wall);
+        if (!this.wallPlaced && !this.overWallLimit && this.canStartPlacing && !game.getCueBallScored() && event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (!this.wallMade) {
+                Wall newWall = new Wall(game);
+                this.wall = newWall;
+                this.wallMade = true;
+            }
+            if (isValidPosition(event)) {
+                this.wall.placeWall(touch);
+                this.wallPlaced = true;
+                game.addEntity(this.wall);
+                this.walls.add(this.wall);
+            }
         }
 
         if (this.wallPlaced && !this.rotatingWall && fingerOnWall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -180,9 +188,9 @@ public class WallHandler extends Entity {
          *Muren links en rechts
          */
 
-        if (event.getX() - this.wall.getRadius() < game.getPlayWidth() * 0.07) {
+        if (event.getX() - this.wall.getRadius() < game.getWidth() * 0.07) {
             isValid = false;
-        } else if (event.getX() + this.wall.getRadius() > game.getPlayWidth() * 0.93) {
+        } else if (event.getX() + this.wall.getRadius() > game.getWidth() * 0.93) {
             isValid = false;
         }
 

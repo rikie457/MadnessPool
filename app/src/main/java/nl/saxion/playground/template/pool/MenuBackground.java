@@ -48,6 +48,6 @@ public class MenuBackground extends Entity {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.menubackground);
         }
-        gv.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), game.getPlayHeight(), aVal);
+        gv.drawBitmap(bitmap, 0, 0, game.getWidth(), game.getPlayHeight(), aVal);
     }
 }

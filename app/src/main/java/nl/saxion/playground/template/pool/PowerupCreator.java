@@ -14,8 +14,6 @@ public class PowerupCreator extends Entity {
     private WhiteBall whiteball;
     private int tickCount;
 
-    private int i = 0;
-
     public PowerupCreator(Game game, WhiteBall whiteball, ArrayList<Ball> balls) {
         this.game = game;
         this.balls = balls;
@@ -25,9 +23,7 @@ public class PowerupCreator extends Entity {
     @Override
     public void tick() {
         float gameTime = (float) ++tickCount / game.ticksPerSecond();
-        //Every 1 minute a new powerup 1 = 1 sec 60 = 60 sec
-
-        if (gameTime == 5) {
+        if (gameTime == 15 && game.getPowerups().size() <= 10) {
             this.tickCount = 0;
             int random = (int) Utility.randomDoubleFromRange(1, 2);
             //50% chance of spawning

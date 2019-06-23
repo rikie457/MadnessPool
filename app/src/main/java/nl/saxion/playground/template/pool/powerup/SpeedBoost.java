@@ -23,7 +23,7 @@ public class SpeedBoost extends Powerup {
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class SpeedBoost extends Powerup {
 
     @Override
     public void createPowerUp() {
-        SpeedBoost speedBoost = new SpeedBoost(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        SpeedBoost speedBoost = new SpeedBoost(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(speedBoost);
         game.addEntity(speedBoost);
     }

@@ -1,7 +1,6 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
@@ -42,7 +41,7 @@ public class Wormhole extends Powerup {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
             if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), ball.getVector2().getX() + ball.getRadius(), ball.getVector2().getY() + ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
-                ball.getVector2().set(Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100));
+                ball.getVector2().set(Utility.randomDoubleFromRange(100, game.getWidth() - 100), Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100));
             }
         }
     }
@@ -64,7 +63,7 @@ public class Wormhole extends Powerup {
 
     @Override
     public void createPowerUp() {
-        Wormhole wormhole = new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        Wormhole wormhole = new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(wormhole);
         game.addEntity(wormhole);
     }

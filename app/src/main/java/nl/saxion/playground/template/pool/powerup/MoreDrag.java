@@ -1,7 +1,6 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
@@ -75,7 +74,7 @@ public class MoreDrag extends Powerup {
 
     @Override
     public void createPowerUp() {
-        MoreDrag moredrag = new MoreDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        MoreDrag moredrag = new MoreDrag(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(moredrag);
         game.addEntity(moredrag);
     }
