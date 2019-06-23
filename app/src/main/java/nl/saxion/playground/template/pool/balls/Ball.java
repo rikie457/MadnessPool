@@ -310,6 +310,68 @@ public class Ball extends Entity {
 
 
     /**
+     * Checks if there is collion with a wall.
+     * @param wall
+     * @return
+     */
+    public boolean collisionBallWall(Wall wall){
+
+        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(),2));
+
+        double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(),2));
+
+        double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(),2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(),2));
+
+        if(this.radius + this.width/2 > side1 || this.radius + this.width/2 > side2)
+            return true;
+
+        double angle1 = Math.atan2( wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getVector2().getX(), this.vector2.getY() - wall.getVector2().getY() );
+
+        double angle2 = Math.atan2( wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY() );
+
+        if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
+            return false;
+
+        double semiperimeter = (side1 + side2 + base) / 2;
+
+        double areaOfTriangle = Math.sqrt( semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base) );
+
+        double height = 2*areaOfTriangle/base;
+
+        return height < this.radius + this.width / 2;
+
+    }
+
+    /**
+     * Checks if a ball is in the gravity field of a hole when the
+     * GravityPocket powerup is active.
+     */
+    public void collisionPocketGravity() {
+        double x = this.vector2.getX();
+        double y = this.vector2.getY();
+
+        for (Hole hole : game.getHoles()) {
+
+            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 75, y + this.radius + 75, hole.getVector2().getX(), hole.getVector2().getY()));
+            if (distance > this.radius + 75) continue; // no collision
+
+            // The ball is in a gravity field
+
+            if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
+                this.speedX += 0.02;
+            } else {
+                this.speedX -= 0.02;
+            }
+
+            if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
+                this.speedY += 0.02;
+            } else {
+                this.speedY -= 0.02;
+            }
+        }
+    }
+
+    /**
      * Gets the angle at which the ball is moving.
      *
      * @return angle movement
@@ -352,6 +414,9 @@ public class Ball extends Entity {
         checkCollisionHole();
         if (game.getMadness()) {
             checkCollisionPlaceableWalls();
+            if (game.isPocketGravity() && !game.getPlacingWall()) {
+                collisionPocketGravity();
+            }
         }
 
     }
@@ -371,7 +436,7 @@ public class Ball extends Entity {
         float y = (float) this.vector2.getY();
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, getNewRandomAngle());
+        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, (Game.gameMode == Game.GameMode.MADNESS) ? getNewRandomAngle() : 0);
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
