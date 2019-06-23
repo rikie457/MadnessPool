@@ -738,7 +738,9 @@ public class Game extends GameModel {
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
         removeEntity(wallHandler);
-        removeEntity(powerupCreator);
+        if (isMadness) {
+            removeEntity(powerupCreator);
+        }
         for (int i = 0; i < balls.size(); i++) {
             this.balls.get(i).removeBall();
         }

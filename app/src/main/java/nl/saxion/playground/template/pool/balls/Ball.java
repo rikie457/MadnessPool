@@ -72,38 +72,40 @@ public class Ball extends Entity {
 
 
     private void checkCollisionBall(ArrayList<Ball> balls) {
-        for (int i = this.id + 1; i < balls.size(); i++) {
-            Ball ball = balls.get(i);
-            double ball1x = this.vector2.getX();
-            double ball1y = this.vector2.getY();
-            double ball2x = ball.vector2.getX();
-            double ball2y = ball.vector2.getY();
+        if (this.collision) {
+            for (int i = this.id + 1; i < balls.size(); i++) {
+                Ball ball = balls.get(i);
+                double ball1x = this.vector2.getX();
+                double ball1y = this.vector2.getY();
+                double ball2x = ball.vector2.getX();
+                double ball2y = ball.vector2.getY();
 
-            double distSqr = Utility.getDistanceNotSquared(ball1x, ball1y, ball2x, ball2y);
-            double xd = ball1x - ball2x;
-            double yd = ball1y - ball2y;
+                double distSqr = Utility.getDistanceNotSquared(ball1x, ball1y, ball2x, ball2y);
+                double xd = ball1x - ball2x;
+                double yd = ball1y - ball2y;
 
-            boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
-            if (colliding) {
+                boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
+                if (colliding) {
 
-                if (this.speedX == 0 && this.speedY == 0 && ball.speedX == 0 && ball.speedY == 0) {
-                    this.speedY = .5;
-                    this.speedX = -.5;
-                }
-                double xVelocity = ball.speedX - this.speedX;
-                double yVelocity = ball.speedY - this.speedY;
-                double dotProduct = xd * xVelocity + yd * yVelocity;
-                if (dotProduct > 0) {
-                    double collisionScale = dotProduct / distSqr;
-                    double xCollision = xd * collisionScale;
-                    double yCollision = yd * collisionScale;
-                    double combinedMass = this.getMass() + ball.getMass();
-                    double collisionWeightA = 2 * ball.getMass() / combinedMass;
-                    double collisionWeightB = 2 * this.getMass() / combinedMass;
-                    this.speedX += collisionWeightA * xCollision;
-                    this.speedY += collisionWeightA * yCollision;
-                    ball.speedX -= collisionWeightB * xCollision;
-                    ball.speedY -= collisionWeightB * yCollision;
+                    if (this.speedX == 0 && this.speedY == 0 && ball.speedX == 0 && ball.speedY == 0) {
+                        this.speedY = .5;
+                        this.speedX = -.5;
+                    }
+                    double xVelocity = ball.speedX - this.speedX;
+                    double yVelocity = ball.speedY - this.speedY;
+                    double dotProduct = xd * xVelocity + yd * yVelocity;
+                    if (dotProduct > 0) {
+                        double collisionScale = dotProduct / distSqr;
+                        double xCollision = xd * collisionScale;
+                        double yCollision = yd * collisionScale;
+                        double combinedMass = this.getMass() + ball.getMass();
+                        double collisionWeightA = 2 * ball.getMass() / combinedMass;
+                        double collisionWeightB = 2 * this.getMass() / combinedMass;
+                        this.speedX += collisionWeightA * xCollision;
+                        this.speedY += collisionWeightA * yCollision;
+                        ball.speedX -= collisionWeightB * xCollision;
+                        ball.speedY -= collisionWeightB * yCollision;
+                    }
                 }
             }
         }

@@ -64,6 +64,7 @@ public class WhiteBall extends Ball {
     @Override
     public void removeBall() {
         this.visible = false;
+        this.setCollision(false);
     }
 
     @Override

@@ -83,9 +83,13 @@ public class WhiteBallHandler extends Entity {
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
             game.setCueBallInHand(true);
             whiteBall.setVisible(true);
+            whiteBall.setCollision(true);
         }
 
-        //Places the cue ball.
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            game.setCueBallInHand(false);
+        }
+
         if (!this.ballReplaced && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
             this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
             this.whiteBall.setSpeedX(0);
@@ -115,7 +119,6 @@ public class WhiteBallHandler extends Entity {
         if (event.getAction() == MotionEvent.ACTION_UP) {
             this.movingBall = false;
             this.fingerOnBall = false;
-            game.setCueBallInHand(false);
         }
     }
 
