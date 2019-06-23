@@ -78,7 +78,7 @@ public class WallHandler extends Entity {
         }
 
         //Checks if the game is at the stage where the ball can be placed
-        if (this.canStartPlacing && this.walls.size() < 3 && !this.messageShown) {
+        if (this.canStartPlacing && this.walls.size() < 3 && !this.messageShown && !game.getCueBallScored()) {
             game.addEntity(placeWallMessage);
             game.addEntity(wallPlacementTimer);
             this.messageShown = true;
@@ -261,6 +261,28 @@ public class WallHandler extends Entity {
         if (!game.checkMovementForAllBalls()) {
             this.canStartPlacing = true;
         }
+    }
+
+    /**
+     *Resets the handler before removing.
+     */
+    public void removeHandler() {
+        if (this.wallMade) {
+            this.wall.placed = true;
+        }
+        this.wallPlaced = false;
+        this.fingerOnWall = false;
+        this.canStartPlacing = false;
+        this.canContinue = false;
+        this.messageShown = false;
+        this.wallMade = false;
+        this.timer = 0;
+        this.messageTimer = 0;
+        this.wallPlacementTimer.resetTimer();
+        game.removeEntity(wallPlacementTimer);
+        game.stopPlacingWall();
+        game.removeEntity(placeWallMessage);
+        game.removeEntity(this);
     }
 
     /**

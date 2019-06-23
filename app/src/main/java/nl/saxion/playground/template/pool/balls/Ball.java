@@ -241,6 +241,8 @@ public class Ball extends Entity {
             // The ball hit the pocket!
             if (this.type == 3) {
                 //is 8 ball
+                this.moving = false;
+                removeBall();
                 if (game.getCurrentplayer().getScoredballs().size() < 7) {
                     game.winnerScreen(game.getInactiveplayer().getPlayerId());
                 } else {

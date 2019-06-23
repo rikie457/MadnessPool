@@ -37,9 +37,7 @@ public class PowerupCreator extends Entity {
     public void tick() {
         float gameTime = (float) ++tickCount / game.ticksPerSecond();
         //If 15 seconds passed and the size is not 10
-        System.out.println(game.getPowerups().size());
         if (gameTime == 10 && game.getPowerups().size() < 11) {
-            System.out.println("NEW");
             this.tickCount = 0;
             int random = (int) Utility.randomDoubleFromRange(1, 2);
             //50% chance of spawning

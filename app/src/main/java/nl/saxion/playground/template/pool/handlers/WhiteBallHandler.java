@@ -235,6 +235,18 @@ public class WhiteBallHandler extends Entity {
     }
 
     /**
+     * Resets the handler before removing
+     */
+    public void removeHandler() {
+        this.timer = 0;
+        this.canContinue = false;
+        game.setCueBallInHand(false);
+        game.resetCueBallScored();
+        this.ballReplaced = false;
+        game.removeEntity(this);
+    }
+
+    /**
      * Sets white ball.
      *
      * @param whiteBall the white ball

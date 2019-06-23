@@ -19,7 +19,6 @@ public class PlaceWallMessage extends Entity {
     /**
      * The A val.
      */
-    float aVal;
     private Game game;
 
     /**
@@ -38,15 +37,6 @@ public class PlaceWallMessage extends Entity {
     @Override
     public void tick() {
         super.tick();
-
-        if (timer < 480) {
-            timer++;
-        }
-
-        if (timer == 480) {
-            timer = 0;
-            game.removeEntity(this);
-        }
     }
 
     @Override
@@ -60,9 +50,9 @@ public class PlaceWallMessage extends Entity {
         }
 
         if (game.getCurrentplayer().getPlayerId() == 1) {
-            gv.drawBitmap(bitmap1, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
+            gv.drawBitmap(bitmap1, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600);
         } else {
-            gv.drawBitmap(bitmap2, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600, aVal);
+            gv.drawBitmap(bitmap2, game.getWidth() / 2 - 300, game.getHeight() / 2 - 250, 600, 600);
         }
     }
 }
