@@ -100,7 +100,8 @@ public class WhiteBallHandler extends Entity {
             this.whiteBall.setSpeedY(0);
             this.ballReplaced = true;
             this.whiteBall.setCollision(true);
-            game.addEntity(this.whiteBall);
+            this.game.addEntity(this.whiteBall);
+            this.game.addEntity(this.whiteBall.getShadow());
         }
 
         //Moving the cue ball
