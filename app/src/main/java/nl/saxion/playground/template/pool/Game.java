@@ -241,12 +241,12 @@ public class Game extends GameModel {
 
         if (runs < 1) {
             //Cant use array because of different coordinates
-            Hole hole1 = new Hole(this, getWidth() * 0.08, this.getHeight() * 0.12, holesize);
-            Hole hole2 = new Hole(this, getWidth() * 0.505, this.getHeight() * 0.12, holesize);
-            Hole hole3 = new Hole(this, getWidth() * 0.921, this.getHeight() * 0.12, holesize);
-            Hole hole4 = new Hole(this, getWidth() * 0.08, this.getHeight() * 0.75, holesize);
-            Hole hole5 = new Hole(this, getWidth() * 0.505, this.getHeight() * 0.75, holesize);
-            Hole hole6 = new Hole(this, getWidth() * 0.921, this.getHeight() * 0.75, holesize);
+            Hole hole1 = new Hole(this, this.getWidth() * 0.08,  this.getHeight() * 0.11, holesize);
+            Hole hole2 = new Hole(this, this.getWidth() * 0.505, this.getHeight() * 0.11, holesize);
+            Hole hole3 = new Hole(this, this.getWidth() * 0.921, this.getHeight() * 0.11, holesize);
+            Hole hole4 = new Hole(this, this.getWidth() * 0.08,  this.getHeight() * 0.74, holesize);
+            Hole hole5 = new Hole(this, this.getWidth() * 0.505, this.getHeight() * 0.74, holesize);
+            Hole hole6 = new Hole(this, this.getWidth() * 0.921, this.getHeight() * 0.74, holesize);
 
             this.holes.add(hole1);
             this.holes.add(hole2);
