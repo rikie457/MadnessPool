@@ -35,6 +35,7 @@ public class Ball extends Entity {
     private int id, type;
     private boolean moving;
     private boolean collision = true;
+    protected boolean visible = true;
     private int[] drawables;
 
     private double gravityPullsHad = 0;
@@ -170,6 +171,14 @@ public class Ball extends Entity {
         if(shadow != null) this.game.removeEntity(shadow);
     }
 
+    /**
+     * Sets the cue ball invisible when scored.
+     */
+    public void setCueBallInvisible() {
+        this.visible = false;
+        this.collision = false;
+    }
+
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -191,7 +200,7 @@ public class Ball extends Entity {
             } else if (this.type == 0) {
                 //is cue ball
                 game.placeCueBall();
-                removeBall();
+                setCueBallInvisible();
 
             } else {
                 // A regular ball

@@ -26,7 +26,6 @@ public class WhiteBall extends Ball {
     private boolean shot;
     private Vector2 origin = new Vector2(), end = new Vector2();
     private Shadow shadow;
-    private boolean visible = true;
 
     public WhiteBall(Game game, int[] drawables, double x, double y, double width, double height, int type, ShootLine line) {
         super(game, drawables, x, y, width, height, type);
@@ -59,12 +58,6 @@ public class WhiteBall extends Ball {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
-    }
-
-    @Override
-    public void removeBall() {
-        this.visible = false;
-        this.setCollision(false);
     }
 
     @Override
