@@ -51,7 +51,7 @@ public class GravityWellPowerup extends Powerup {
                 used = true;
             }
         } else if (this.initialTurn + 2 == this.currentTurn) {
-            game.removeEntity(this);
+            removePowerup();
         }
     }
 

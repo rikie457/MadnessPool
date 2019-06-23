@@ -42,7 +42,7 @@ public class GravityPocket extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 removeEffect();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 if (!this.applied) {
                     applyEffect();

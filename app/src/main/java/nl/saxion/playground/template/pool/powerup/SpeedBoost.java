@@ -43,8 +43,8 @@ public class SpeedBoost extends Powerup {
         this.currentturn = game.getTurns();
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
-                game.removeEntity(this);
                 removeSpeedBoost();
+                removePowerup();
             } else {
                 if (!this.speedBoost) {
                     applySpeedBoost();

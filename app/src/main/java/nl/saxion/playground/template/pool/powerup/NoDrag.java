@@ -44,7 +44,7 @@ public class NoDrag extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 applyDrag();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 if (!this.applied) {
                     removeDrag();

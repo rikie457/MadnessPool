@@ -100,7 +100,7 @@ public class RemoveBall extends Powerup {
             }
         }
         this.applied = false;
-        game.removeEntity(this);
+        removePowerup();
     }
 
     public void resolveColission() {

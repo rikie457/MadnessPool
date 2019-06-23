@@ -171,7 +171,7 @@ public class Ball extends Entity {
          */
         if (y - this.radius <= game.getHeight() * 0.07) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getHeight()  * 0.07 + this.radius);
+            this.vector2.setY(game.getHeight() * 0.07 + this.radius);
         } else if (y + this.radius > game.getHeight() * 0.725) {
             this.speedY = -this.speedY;
             this.vector2.setY(game.getHeight() * 0.725 - this.radius);
@@ -318,29 +318,29 @@ public class Ball extends Entity {
      * @param wall the wall
      * @return boolean
      */
-    public boolean collisionBallWall(Wall wall){
+    public boolean collisionBallWall(Wall wall) {
 
-        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(),2));
+        double side1 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getVector2().getX(), 2) + Math.pow(this.vector2.getY() - wall.getVector2().getY(), 2));
 
-        double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(),2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(),2));
+        double side2 = Math.sqrt(Math.pow(this.vector2.getX() - wall.getEndVector2().getX(), 2) + Math.pow(this.vector2.getY() - wall.getEndVector2().getY(), 2));
 
-        double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(),2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(),2));
+        double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(), 2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(), 2));
 
-        if(this.radius + this.width/2 > side1 || this.radius + this.width/2 > side2)
+        if (this.radius + this.width / 2 > side1 || this.radius + this.width / 2 > side2)
             return true;
 
-        double angle1 = Math.atan2( wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getVector2().getX(), this.vector2.getY() - wall.getVector2().getY() );
+        double angle1 = Math.atan2(wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY()) - Math.atan2(this.vector2.getX() - wall.getVector2().getX(), this.vector2.getY() - wall.getVector2().getY());
 
-        double angle2 = Math.atan2( wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY() ) - Math.atan2( this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY() );
+        double angle2 = Math.atan2(wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY()) - Math.atan2(this.vector2.getX() - wall.getEndVector2().getX(), this.vector2.getY() - wall.getEndVector2().getY());
 
-        if(angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
+        if (angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
             return false;
 
         double semiperimeter = (side1 + side2 + base) / 2;
 
-        double areaOfTriangle = Math.sqrt( semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base) );
+        double areaOfTriangle = Math.sqrt(semiperimeter * (semiperimeter - side1) * (semiperimeter - side2) * (semiperimeter - base));
 
-        double height = 2*areaOfTriangle/base;
+        double height = 2 * areaOfTriangle / base;
 
         return height < this.radius + this.width / 2;
 
@@ -440,14 +440,14 @@ public class Ball extends Entity {
         float y = (float) this.vector2.getY();
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, (Game.gameMode == Game.GameMode.MADNESS) ? getNewRandomAngle() : 0);
+        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, (game.getMadness()) ? getNewRandomAngle() : 0);
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
         if (ball_inner_shadow_madness == null)
             ball_inner_shadow_madness = gv.getBitmapFromResource(R.drawable.ball_inner_shadow_madness);
 
-        if (Game.gameMode == Game.GameMode.MADNESS)
+        if (game.getMadness())
             gv.drawBitmap(ball_inner_shadow_madness, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
         else
             gv.drawBitmap(ball_inner_shadow, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));

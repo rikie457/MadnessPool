@@ -43,7 +43,7 @@ public class TableTopOverlay extends Entity {
             bitmapMaddness = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_madness);
         }
 
-        if (Game.gameMode == Game.GameMode.MADNESS) {
+        if (game.getMadness()) {
             current = bitmapMaddness;
         } else {
             current = bitmapNormal;

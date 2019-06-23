@@ -11,7 +11,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
  * The Add wall.
- *
+ * <p>
  * Adds a wall
  */
 public class AddWall extends Powerup {
@@ -44,9 +44,9 @@ public class AddWall extends Powerup {
         if (this.collected) {
             //Check if lifetime is not max than 2 turns
             if (this.intialturn + 2 == currentturn) {
-                game.removeEntity(this);
+                removePowerup();
                 //apply if not applied
-            } else if (!this.effectApplied){
+            } else if (!this.effectApplied) {
                 applyEffect();
                 this.effectApplied = true;
             }
@@ -64,16 +64,18 @@ public class AddWall extends Powerup {
     /**
      * Apply effect.
      */
-    public void applyEffect(){
+    public void applyEffect() {
         game.startPlacingWall();
     }
 
     @Override
     public void draw(GameView gv) {
-        if (bitmap == null) {
-            bitmap = gv.getBitmapFromResource(R.drawable.addwall);
+        if (!invisable) {
+            if (bitmap == null) {
+                bitmap = gv.getBitmapFromResource(R.drawable.addwall);
+            }
+            gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
         }
-        gv.drawBitmap(bitmap, (float) vector2.getX(), (float) vector2.getY(), game.getPowerupsize(), game.getPowerupsize());
     }
 
     @Override

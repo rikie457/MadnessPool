@@ -47,7 +47,7 @@ public class MoreDrag extends Powerup {
             //Check if lifetime is not max than 2 turns
             if (this.intialturn + 2 == this.currentturn) {
                 removeDrag();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 //apply if not applied
                 if (!this.applied) {

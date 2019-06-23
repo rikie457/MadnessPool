@@ -67,7 +67,7 @@ public class Background extends Entity {
 
     @Override
     public void draw(GameView gameView) {
-        if (Game.gameMode == Game.GameMode.MADNESS) {
+        if (game.getMadness()) {
             cycleColors();
             gameView.getCanvas().drawARGB((int) a, (int) r, (int) g, (int) b);
         } else {

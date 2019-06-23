@@ -41,14 +41,8 @@ public class Game extends GameModel {
 
 
     /**
-     * The enum for the gamemode type
-     */
-    static public GameMode gameMode = null;
-
-    /**
      * The constant powerupPaint.
      */
-//Paints
     public static Paint powerupPaint = new Paint();
     /**
      * The Transparent.
@@ -447,8 +441,6 @@ public class Game extends GameModel {
      * Start eight ball.
      */
     public void startEightBall() {
-        gameMode = GameMode.EIGHT_BALL;
-
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
@@ -475,8 +467,6 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
-        gameMode = GameMode.MADNESS;
-
         this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
@@ -506,7 +496,6 @@ public class Game extends GameModel {
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
         }
-
 
         // puts the balls in the rack
         rackBalls(this.balls);
@@ -788,7 +777,9 @@ public class Game extends GameModel {
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
         removeEntity(wallHandler);
-        removeEntity(powerupCreator);
+        if (getMadness()) {
+            removeEntity(powerupCreator);
+        }
         for (int i = 0; i < balls.size(); i++) {
             this.balls.get(i).removeBall();
         }
@@ -840,19 +831,6 @@ public class Game extends GameModel {
         start();
     }
 
-    /**
-     * The enum Game mode.
-     */
-    public enum GameMode {
-        /**
-         * Madness game mode.
-         */
-        MADNESS,
-        /**
-         * Eight ball game mode.
-         */
-        EIGHT_BALL
-    }
 }
 
 

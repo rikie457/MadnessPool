@@ -45,7 +45,7 @@ public class Wormhole extends Powerup {
         this.currentturn = game.getTurns();
         //Check if lifetime is not max than 2 turns
         if (this.intialturn + 2 == this.currentturn) {
-            game.removeEntity(this);
+            removePowerup();
         } else {
             //teleport ball if collected
             if (this.collected) {

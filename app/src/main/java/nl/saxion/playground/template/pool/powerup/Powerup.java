@@ -15,6 +15,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 public abstract class Powerup extends Entity {
 
     private Game game;
+
     /**
      * The Vector 2.
      */
@@ -25,7 +26,9 @@ public abstract class Powerup extends Entity {
     /**
      * The Invisable.
      */
-    protected boolean invisable = false, /**
+    boolean invisable = false,
+
+    /**
      * The Collected.
      */
     collected = false;
@@ -73,10 +76,15 @@ public abstract class Powerup extends Entity {
         }
     }
 
+    protected void removePowerup() {
+        game.removeEntity(this);
+        game.getPowerups().remove(this);
+    }
+
     /**
      * Resolve colission.
      */
-    public void resolveColission(){
+    protected void resolveColission() {
     }
 
     @Override
