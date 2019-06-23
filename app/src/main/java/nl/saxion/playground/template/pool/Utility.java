@@ -6,6 +6,8 @@
 
 package nl.saxion.playground.template.pool;
 
+import nl.saxion.playground.template.pool.balls.Ball;
+
 /**
  * The type Utility.
  */
@@ -86,9 +88,6 @@ public class Utility {
         return Math.sqrt((xx * xx) + (yy * yy));
     }
 
-    public static double clamp(double val, double min, double max) {
-        return Math.max(min, Math.min(max, val));
-    }
 
     public static int getRandIntInRange(int left, int right) {
         return (int) (left + (Math.random() * (right - left + 1)));

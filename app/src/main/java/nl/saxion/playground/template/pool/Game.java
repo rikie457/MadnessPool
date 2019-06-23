@@ -21,7 +21,6 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
-import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
@@ -63,6 +62,8 @@ public class Game extends GameModel {
     static public Paint redPaint = new Paint();
 
     static public Paint powerupPaint = new Paint();
+
+    static public GameMode gameMode = null;
 
 
     //Players
@@ -460,7 +461,7 @@ public class Game extends GameModel {
      * Start eight ball.
      */
     public void startEightBall() {
-        this.gameMode = GameMode.EIGHT_BALL;
+        gameMode = GameMode.EIGHT_BALL;
 
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
@@ -488,7 +489,7 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
-        this.gameMode = GameMode.MADNESS;
+        gameMode = GameMode.MADNESS;
 
         this.isMadness = true;
         removeEntity(menuBackground);
@@ -789,7 +790,7 @@ public class Game extends GameModel {
     public enum GameMode {
         MADNESS,
         EIGHT_BALL
-    };
+    }
 }
 
 
