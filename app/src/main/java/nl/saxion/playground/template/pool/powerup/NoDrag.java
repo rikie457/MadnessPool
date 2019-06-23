@@ -26,6 +26,9 @@ public class NoDrag extends Powerup {
         this.radius = game.getPowerupsize();
     }
 
+    /**
+     * checks if a powerup is collected, if one is collected the powerup will stay active for 2 turns.
+     */
     @Override
     public void tick() {
         super.tick();
@@ -43,6 +46,10 @@ public class NoDrag extends Powerup {
         }
     }
 
+    /**
+     * Apply's the standard amount of drag to all balls.
+     */
+
     public void applyDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -51,6 +58,10 @@ public class NoDrag extends Powerup {
         }
     }
 
+    /**
+     * Removes the drag of all balls.
+     */
+
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -58,11 +69,19 @@ public class NoDrag extends Powerup {
         }
     }
 
+    /**
+     * Collision handeler
+     */
+
     public void resolveColission() {
         this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
+
+    /**
+     * Draws the powerup on the pool table.
+     */
 
     public void draw(GameView gameView) {
         if (!invisable) {
@@ -72,6 +91,10 @@ public class NoDrag extends Powerup {
             gameView.drawBitmap(bitmap, (float) x, (float) y, (float) this.radius, (float) this.radius);
         }
     }
+
+    /**
+     * Creates the powerup on a random location on the pool table.
+     */
 
     @Override
     public void createPowerUp() {

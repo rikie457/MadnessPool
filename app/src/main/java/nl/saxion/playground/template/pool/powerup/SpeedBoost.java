@@ -26,6 +26,10 @@ public class SpeedBoost extends Powerup {
         this.radius = game.getPowerupsize();
     }
 
+    /**
+     * checks if a powerup is collected, if one is collected the powerup will stay active for 2 turns.
+     */
+
     @Override
     public void tick() {
         super.tick();
@@ -43,6 +47,10 @@ public class SpeedBoost extends Powerup {
         }
     }
 
+    /**
+     * Apply's a speedboost to all balls with a maximum of 2.
+     */
+
     public void applySpeedBoost(){
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -57,6 +65,10 @@ public class SpeedBoost extends Powerup {
         }
     }
 
+    /**
+     * Removes the speedboost of all balls.
+     */
+
     public void removeSpeedBoost(){
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -67,6 +79,10 @@ public class SpeedBoost extends Powerup {
         }
     }
 
+    /**
+     * Draws the powerup on the pool table.
+     */
+
     public void draw(GameView gameView) {
         if (!invisable) {
             if (bitmap == null) {
@@ -76,11 +92,19 @@ public class SpeedBoost extends Powerup {
         }
     }
 
+    /**
+     * Collision handeler
+     */
+
     public void resolveColission() {
         this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
+
+    /**
+     * Creates the powerup on a random location on the pool table.
+     */
 
     @Override
     public void createPowerUp() {
