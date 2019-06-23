@@ -775,8 +775,8 @@ public class Game extends GameModel {
      * @param winnerId the winner id
      */
     public void winnerScreen(int winnerId) {
-        removeEntity(whiteBallHandler);
-        removeEntity(wallHandler);
+        this.whiteBallHandler.removeHandler();
+        this.wallHandler.removeHandler();
 
         if (getMadness()) {
             removeEntity(powerupCreator);
@@ -823,6 +823,10 @@ public class Game extends GameModel {
         if (powerupCreator != null) {
             removeEntity(powerupCreator);
             powerupCreator = null;
+        }
+
+        for (int i = 0; i < this.balls.size(); i++) {
+            this.balls.get(i).setMoving(false);
         }
 
         this.gui = null;
