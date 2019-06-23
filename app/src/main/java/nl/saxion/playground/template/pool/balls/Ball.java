@@ -453,6 +453,10 @@ public class Ball extends Entity {
         return moving;
     }
 
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
     public boolean getCollision() {
         return this.collision;
     }
