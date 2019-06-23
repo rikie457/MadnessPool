@@ -259,10 +259,10 @@ public class Game extends GameModel {
 
         if (runs < 1) {
             //Cant use array because of different coordinates
-            Hole hole1 = new Hole(this, this.getWidth() * 0.08,  this.getPlayHeight() * 0.12, holesize);
+            Hole hole1 = new Hole(this, this.getWidth() * 0.08, this.getPlayHeight() * 0.12, holesize);
             Hole hole2 = new Hole(this, this.getWidth() * 0.505, this.getPlayHeight() * 0.11, holesize);
             Hole hole3 = new Hole(this, this.getWidth() * 0.921, this.getPlayHeight() * 0.11, holesize);
-            Hole hole4 = new Hole(this, this.getWidth() * 0.08,  this.getPlayHeight() * 0.88, holesize);
+            Hole hole4 = new Hole(this, this.getWidth() * 0.08, this.getPlayHeight() * 0.88, holesize);
             Hole hole5 = new Hole(this, this.getWidth() * 0.505, this.getPlayHeight() * 0.88, holesize);
             Hole hole6 = new Hole(this, this.getWidth() * 0.921, this.getPlayHeight() * 0.88, holesize);
 
@@ -697,15 +697,6 @@ public class Game extends GameModel {
     }
 
     /**
-     * Gets players.
-     *
-     * @return the players
-     */
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    /**
      * Gets walls.
      *
      * @return the walls
@@ -723,23 +714,6 @@ public class Game extends GameModel {
         this.playerScored = scored;
     }
 
-    /**
-     * Has player scored boolean.
-     *
-     * @return the boolean
-     */
-    public boolean hasPlayerScored() {
-        return playerScored;
-    }
-
-    /**
-     * Gets wall handler.
-     *
-     * @return the wall handler
-     */
-    public WallHandler getWallHandler() {
-        return this.wallHandler;
-    }
 
     /**
      * Gets madness.
