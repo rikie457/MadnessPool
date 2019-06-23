@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.pool.balls.Ball;
 
 /**
- * The type Player.
+ * The Player.
+ *
+ * This is the object the games uses to store tehe scored balls and the ball type
  */
 public class Player implements Serializable {
     private int balltype = -1;

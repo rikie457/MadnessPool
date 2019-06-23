@@ -12,6 +12,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Remove ball.
+ */
 public class RemoveBall extends Powerup {
     private WhiteBall whiteBall;
     private Player player;
@@ -22,6 +25,14 @@ public class RemoveBall extends Powerup {
 
     private ArrayList<Ball> balls;
 
+    /**
+     * Instantiates a new Remove ball.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public RemoveBall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -46,12 +57,16 @@ public class RemoveBall extends Powerup {
         return 1;
     }
 
+    /**
+     * Scores one of the balls
+     */
     public void applyEffect() {
         this.balls = game.getBalls();
         this.player = game.getCurrentplayer();
         boolean removed = false;
         int counter = 0;
 
+        //If there is no set ball type this will randomly set a ball type.
         if (player.getBalltype() == -1) {
             player.setBalltype((int) Math.floor(Math.random() * 2) + 1);
 
@@ -62,6 +77,7 @@ public class RemoveBall extends Powerup {
             }
         }
 
+        //Scores a ball if there is one available.
         if (this.balls.size() > 1) {
             while (!removed && counter < this.balls.size()) {
                 if (this.balls.get(counter).getType() == this.player.getBalltype() && !player.getScoredballs().contains(this.balls.get(counter))) {
@@ -72,6 +88,7 @@ public class RemoveBall extends Powerup {
                 }
                 counter++;
             }
+            //If all normal balls of a player are scored it will score the 8 ball.
             if (!removed) {
                 for (int i = 0; i < this.balls.size(); i++) {
                     if (this.balls.get(i).getType() == 3) {
@@ -83,7 +100,7 @@ public class RemoveBall extends Powerup {
             }
         }
         this.applied = false;
-        game.removeEntity(this);
+        removePowerup();
     }
 
     public void resolveColission() {

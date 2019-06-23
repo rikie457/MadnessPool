@@ -12,7 +12,9 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 /**
- * The type Hole.
+ * The Hole.
+ *
+ * This is the hole where the balls need to come in.
  */
 public class Hole extends Entity {
     private Vector2 vector2 = new Vector2();
@@ -39,6 +41,11 @@ public class Hole extends Entity {
         return 1;
     }
 
+    /**
+     * Gets vector 2.
+     *
+     * @return the vector 2
+     */
     public Vector2 getVector2() {
         return vector2;
     }

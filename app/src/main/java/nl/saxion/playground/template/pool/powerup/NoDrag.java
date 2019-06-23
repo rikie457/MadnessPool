@@ -9,6 +9,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type No drag.
+ */
 public class NoDrag extends Powerup {
     private WhiteBall whiteBall;
     static private Bitmap bitmap;
@@ -17,6 +20,14 @@ public class NoDrag extends Powerup {
     private int currentturn, intialturn;
     private boolean applied;
 
+    /**
+     * Instantiates a new No drag.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public NoDrag(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -36,7 +47,7 @@ public class NoDrag extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 applyDrag();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 if (!this.applied) {
                     removeDrag();

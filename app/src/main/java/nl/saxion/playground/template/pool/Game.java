@@ -21,6 +21,7 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
+import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.GravityPocket;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
@@ -40,16 +41,28 @@ public class Game extends GameModel {
 
 
     /**
-     * The enum for the gamemode type
+     * The constant powerupPaint.
      */
-    static public GameMode gameMode = null;
-
-    //Paints
     public static Paint powerupPaint = new Paint();
+    /**
+     * The Transparent.
+     */
     static Paint transparent = new Paint();
+    /**
+     * The Black paint.
+     */
     static Paint blackPaint = new Paint();
+    /**
+     * The White paint.
+     */
     static Paint whitePaint = new Paint();
+    /**
+     * The Gray paint.
+     */
     static Paint grayPaint = new Paint();
+    /**
+     * The Red paint.
+     */
     static Paint redPaint = new Paint();
     private static Paint grayPaintReflection = new Paint();
 
@@ -203,6 +216,11 @@ public class Game extends GameModel {
         return (float) (actualHeight / (double) actualWidth * getWidth());
     }
 
+    /**
+     * Gets powerups.
+     *
+     * @return the powerups
+     */
     public ArrayList<Powerup> getPowerups() {
         return powerups;
     }
@@ -274,7 +292,7 @@ public class Game extends GameModel {
      * @param a        the a
      * @param b        the b
      */
-    // swaps the elements at loc a and b in array 'arrayInt'
+// swaps the elements at loc a and b in array 'arrayInt'
     public void swap(ArrayList<Integer> arrayInt, int a, int b) {
         if (a == b) return;
         int temp = arrayInt.get(a);
@@ -378,6 +396,9 @@ public class Game extends GameModel {
         }
     }
 
+    /**
+     * Init balls.
+     */
     public void initBalls() {
         for (int i = 0; i < 16; i++) {
             int type = -1;
@@ -420,8 +441,6 @@ public class Game extends GameModel {
      * Start eight ball.
      */
     public void startEightBall() {
-        gameMode = GameMode.EIGHT_BALL;
-
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
         removeEntity(madnessButton);
@@ -448,8 +467,6 @@ public class Game extends GameModel {
      * Start madness.
      */
     public void startMadness() {
-        gameMode = GameMode.MADNESS;
-
         this.isMadness = true;
         removeEntity(menuBackground);
         removeEntity(eightBallButton);
@@ -467,6 +484,7 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
+                powerupCreator.getPowerups().add(new AddWall(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
@@ -478,7 +496,6 @@ public class Game extends GameModel {
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
         }
-
 
         // puts the balls in the rack
         rackBalls(this.balls);
@@ -506,7 +523,6 @@ public class Game extends GameModel {
      *
      * @return the currentplayer
      */
-
     public int getTurns() {
         return turns;
     }
@@ -530,6 +546,11 @@ public class Game extends GameModel {
         return inactiveplayer;
     }
 
+    /**
+     * Gets powerupsize.
+     *
+     * @return the powerupsize
+     */
     public float getPowerupsize() {
         return powerupsize;
     }
@@ -548,12 +569,19 @@ public class Game extends GameModel {
         return false;
     }
 
+    /**
+     * Gets balls.
+     *
+     * @return the balls
+     */
     public ArrayList<Ball> getBalls() {
         return balls;
     }
 
     /**
      * Round checker.
+     *
+     * @param ball the ball
      */
     public void roundChecker(WhiteBall ball) {
         if (!this.checkMovementForAllBalls()) {
@@ -660,38 +688,83 @@ public class Game extends GameModel {
         this.cueBallInHand = cueBallInHand;
     }
 
+    /**
+     * Gets holes.
+     *
+     * @return the holes
+     */
     public ArrayList<Hole> getHoles() {
         return holes;
     }
 
+    /**
+     * Gets players.
+     *
+     * @return the players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Gets walls.
+     *
+     * @return the walls
+     */
     public ArrayList<Wall> getWalls() {
         return this.walls;
     }
 
+    /**
+     * Sets player scored.
+     *
+     * @param scored the scored
+     */
     public void setPlayerScored(boolean scored) {
         this.playerScored = scored;
     }
 
+    /**
+     * Has player scored boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasPlayerScored() {
         return playerScored;
     }
 
+    /**
+     * Gets wall handler.
+     *
+     * @return the wall handler
+     */
     public WallHandler getWallHandler() {
         return this.wallHandler;
     }
 
+    /**
+     * Gets madness.
+     *
+     * @return the madness
+     */
     public boolean getMadness() {
         return this.isMadness;
     }
 
+    /**
+     * Is pocket gravity boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPocketGravity() {
         return pocketGravity;
     }
 
+    /**
+     * Sets pocket gravity.
+     *
+     * @param pocketGravity the pocket gravity
+     */
     public void setPocketGravity(boolean pocketGravity) {
         this.pocketGravity = pocketGravity;
     }
@@ -704,7 +777,10 @@ public class Game extends GameModel {
     public void winnerScreen(int winnerId) {
         removeEntity(whiteBallHandler);
         removeEntity(wallHandler);
-        removeEntity(powerupCreator);
+
+        if (getMadness()) {
+            removeEntity(powerupCreator);
+        }
         for (int i = 0; i < balls.size(); i++) {
             this.balls.get(i).removeBall();
         }
@@ -756,10 +832,6 @@ public class Game extends GameModel {
         start();
     }
 
-    public enum GameMode {
-        MADNESS,
-        EIGHT_BALL
-    }
 }
 
 

@@ -13,7 +13,9 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 /**
- * The type Menu background.
+ * The Menu background.
+ *
+ * This is the translucent background that comes with the menu
  */
 public class MenuBackground extends Entity {
 

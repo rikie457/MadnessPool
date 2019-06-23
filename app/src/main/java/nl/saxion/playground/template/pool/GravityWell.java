@@ -9,6 +9,9 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.balls.Ball;
 
+/**
+ * The type Gravity well.
+ */
 public class GravityWell extends Entity {
     private Game game;
     private boolean visible = true;
@@ -22,6 +25,12 @@ public class GravityWell extends Entity {
     private int lastTurn, myTurn;
     private int evaporateAmount = 15;
 
+    /**
+     * Instantiates a new Gravity well.
+     *
+     * @param game  the game
+     * @param balls the balls
+     */
     public GravityWell(Game game, ArrayList<Ball> balls) {
         this.location = new Vector2(
                 Utility.randomDoubleFromRange(100, game.getWidth() - 100),
