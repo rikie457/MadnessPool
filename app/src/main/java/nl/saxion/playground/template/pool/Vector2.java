@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * The Vector2.
  * This allows to store the x y in a single point
- * this is usefull if you want to calculate with 2 points or store them;
+ * this is useful if you want to calculate with 2 points or store them;
  */
 public class Vector2 implements Serializable {
     private double x, y;

@@ -38,9 +38,12 @@ public class AddWall extends Powerup {
     public void tick() {
         super.tick();
         int currentturn = game.getTurns();
+        //Check if collected
         if (this.collected) {
+            //Check if lifetime is not max than 2 turns
             if (this.intialturn + 2 == currentturn) {
                 game.removeEntity(this);
+                //apply if not applied
             } else if (!this.effectApplied){
                 applyEffect();
                 this.effectApplied = true;
@@ -50,6 +53,7 @@ public class AddWall extends Powerup {
 
     @Override
     public void resolveColission() {
+        //If collision set the needed variables.
         this.collected = true;
         this.invisable = true;
         this.intialturn = game.getTurns();

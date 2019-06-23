@@ -21,6 +21,7 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
+import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.GravityPocket;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
@@ -264,10 +265,10 @@ public class Game extends GameModel {
 
         if (runs < 1) {
             //Cant use array because of different coordinates
-            Hole hole1 = new Hole(this, this.getWidth() * 0.08,  this.getHeight() * 0.11, holesize);
+            Hole hole1 = new Hole(this, this.getWidth() * 0.08, this.getHeight() * 0.11, holesize);
             Hole hole2 = new Hole(this, this.getWidth() * 0.505, this.getHeight() * 0.11, holesize);
             Hole hole3 = new Hole(this, this.getWidth() * 0.921, this.getHeight() * 0.11, holesize);
-            Hole hole4 = new Hole(this, this.getWidth() * 0.08,  this.getHeight() * 0.74, holesize);
+            Hole hole4 = new Hole(this, this.getWidth() * 0.08, this.getHeight() * 0.74, holesize);
             Hole hole5 = new Hole(this, this.getWidth() * 0.505, this.getHeight() * 0.74, holesize);
             Hole hole6 = new Hole(this, this.getWidth() * 0.921, this.getHeight() * 0.74, holesize);
 
@@ -493,6 +494,7 @@ public class Game extends GameModel {
                 //Create powerupcreator for powerup spawning
                 this.powerupCreator = new PowerupCreator(this, whiteball, this.balls);
                 //Add powerup to array of spawnable powerups
+                powerupCreator.getPowerups().add(new AddWall(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new SpeedBoost(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new NoDrag(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new Wormhole(this, 250, 250, whiteball));
