@@ -103,8 +103,8 @@ public class Ball extends Entity {
     private void checkCollisionBall(ArrayList<Ball> balls) {
 
         if (this.collision) {
-             //Check for all balls after this ball in the array.
-        //Like id = 5 check in array for: 6 7 8 9 10 11 12 13 14 15
+            //Check for all balls after this ball in the array.
+            //Like id = 5 check in array for: 6 7 8 9 10 11 12 13 14 15
             for (int i = this.id + 1; i < balls.size(); i++) {
                 Ball ball = balls.get(i);
                 double ball1x = this.vector2.getX();
@@ -116,7 +116,7 @@ public class Ball extends Entity {
                 double xd = ball1x - ball2x;
                 double yd = ball1y - ball2y;
 
-       //if the balls are colliding then resolve the collision
+                //if the balls are colliding then resolve the collision
                 boolean colliding = distSqr <= (this.getRadius() + ball.radius) * (this.getRadius() + ball.radius) && this.collision;
                 if (colliding) {
 
@@ -175,7 +175,7 @@ public class Ball extends Entity {
          */
         if (y - this.radius <= game.getPlayHeight() * 0.07) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getPlayHeight()  * 0.07 + this.radius);
+            this.vector2.setY(game.getPlayHeight() * 0.07 + this.radius);
         } else if (y + this.radius > game.getPlayHeight() * 0.85) {
             this.speedY = -this.speedY;
             this.vector2.setY(game.getPlayHeight() * 0.85 - this.radius);
@@ -224,11 +224,10 @@ public class Ball extends Entity {
         this.collision = false;
     }
 
-        /**
+    /**
      * Check if the balls has a collision with the hole.
      * If so remove the ball and add it to the correct array of balls for the player
      */
-
     private void checkCollisionHole() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
@@ -341,15 +340,15 @@ public class Ball extends Entity {
             // The ball is in a gravity field
 
             if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
-                this.speedX += 0.02;
+                this.speedX += 0.01;
             } else {
-                this.speedX -= 0.02;
+                this.speedX -= 0.01;
             }
 
             if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
-                this.speedY += 0.02;
+                this.speedY += 0.01;
             } else {
-                this.speedY -= 0.02;
+                this.speedY -= 0.01;
             }
         }
     }
