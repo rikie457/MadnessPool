@@ -10,7 +10,9 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 
 /**
- * The type Add wall.
+ * The Add wall.
+ *
+ * Adds a wall
  */
 public class AddWall extends Powerup {
 

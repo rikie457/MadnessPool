@@ -11,7 +11,6 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
  * The Wormhole.
- * <p>
  * Everytime a ball hits this object it will be teleported to another location on the table
  */
 public class Wormhole extends Powerup {
@@ -44,9 +43,11 @@ public class Wormhole extends Powerup {
     public void tick() {
         super.tick();
         this.currentturn = game.getTurns();
+        //Check if lifetime is not max than 2 turns
         if (this.intialturn + 2 == this.currentturn) {
             game.removeEntity(this);
         } else {
+            //teleport ball if collected
             if (this.collected) {
                 teleport();
             }

@@ -10,7 +10,9 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
- * The type More drag.
+ * The More drag.
+ *
+ * Adds more friction to ball
  */
 public class MoreDrag extends Powerup {
     /**
@@ -40,11 +42,14 @@ public class MoreDrag extends Powerup {
     public void tick() {
         super.tick();
         this.currentturn = game.getTurns();
+        //Check if collected
         if (this.collected) {
+            //Check if lifetime is not max than 2 turns
             if (this.intialturn + 2 == this.currentturn) {
                 removeDrag();
                 game.removeEntity(this);
             } else {
+                //apply if not applied
                 if (!this.applied) {
                     applyDrag();
                     this.applied = true;
