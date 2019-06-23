@@ -37,6 +37,7 @@ public class WallHandler extends Entity {
 
     /**
      * Instantiates a new WallHandler.
+     * When a wall needs to be placed this class becomes active.
      * @param balls
      * @param holes
      * @param walls

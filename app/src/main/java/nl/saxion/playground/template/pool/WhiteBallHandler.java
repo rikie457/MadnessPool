@@ -18,6 +18,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
  * The type White ball handler.
+ * When de cue ball is scored in needs to be replaced on the table.
  */
 public class WhiteBallHandler extends Entity {
 
