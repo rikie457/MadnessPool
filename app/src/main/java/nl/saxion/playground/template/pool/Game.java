@@ -259,7 +259,7 @@ public class Game extends GameModel {
 
         if (runs < 1) {
             //Cant use array because of different coordinates
-            Hole hole1 = new Hole(this, this.getWidth() * 0.08,  this.getPlayHeight() * 0.11, holesize);
+            Hole hole1 = new Hole(this, this.getWidth() * 0.08,  this.getPlayHeight() * 0.12, holesize);
             Hole hole2 = new Hole(this, this.getWidth() * 0.505, this.getPlayHeight() * 0.11, holesize);
             Hole hole3 = new Hole(this, this.getWidth() * 0.921, this.getPlayHeight() * 0.11, holesize);
             Hole hole4 = new Hole(this, this.getWidth() * 0.08,  this.getPlayHeight() * 0.88, holesize);
