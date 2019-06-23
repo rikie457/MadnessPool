@@ -356,7 +356,7 @@ public class Ball extends Entity {
 
     private float getNewRandomAngle() {
         if (moving) {
-            float angleSpeed = ((float) ((Math.abs(this.speedX * this.speedY) * 500)) % 360);
+            float angleSpeed = ((float) (((Math.abs(this.speedX) + Math.abs(this.speedY)) * 50)) % 360);
             this.lastAngle += ((this.speedX < 0) ? -angleSpeed : angleSpeed);
             return this.lastAngle;
         } else return this.lastAngle;
