@@ -9,15 +9,35 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.Vector2;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Powerup.
+ */
 public abstract class Powerup extends Entity {
 
     private Game game;
+    /**
+     * The Vector 2.
+     */
     protected Vector2 vector2 = new Vector2();
     private double radius;
     private WhiteBall ball;
 
-    protected boolean invisable = false, collected = false;
+    /**
+     * The Invisable.
+     */
+    protected boolean invisable = false, /**
+     * The Collected.
+     */
+    collected = false;
 
+    /**
+     * Instantiates a new Powerup.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public Powerup(Game game, double x, double y, WhiteBall ball) {
         this.game = game;
         this.vector2.set(x, y);
@@ -53,6 +73,9 @@ public abstract class Powerup extends Entity {
         }
     }
 
+    /**
+     * Resolve colission.
+     */
     public void resolveColission(){
     }
 
@@ -61,6 +84,9 @@ public abstract class Powerup extends Entity {
         return super.toString();
     }
 
+    /**
+     * Create power up.
+     */
     public void createPowerUp() {
     }
 }

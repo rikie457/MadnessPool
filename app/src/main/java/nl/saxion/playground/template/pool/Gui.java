@@ -18,7 +18,11 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.balls.Ball;
 
 /**
- * The type Gui.
+ * The Gui.
+ * This class allows for displaying all of the various information like
+ * the scoredballs per player
+ * the remaining time to place a wall
+ * the powerups
  */
 public class Gui extends Entity {
     static private Bitmap bitmap;
@@ -62,7 +66,6 @@ public class Gui extends Entity {
     public void draw(GameView gv) {
         float x = (float) this.vector2.getX();
         float y = (float) this.vector2.getY();
-        //THIS IS NOT HOW TO SCALE THE GUI I KNOW!
         gv.getCanvas().drawRect(x, y, (float) this.width, (float) this.height, Game.blackPaint);
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.shelf);
@@ -74,18 +77,18 @@ public class Gui extends Entity {
         colorCurrentPlayer.setTextSize(20);
 
         if (game.getCurrentplayer() == this.player1) {
-            gv.getCanvas().drawText(">", (float) x + 10, (float) y + 50, colorCurrentPlayer);
+            gv.getCanvas().drawText(">", x + 10, y + 50, colorCurrentPlayer);
         } else {
-            gv.getCanvas().drawText("<", (float) x + 980, (float) y + 50, colorCurrentPlayer);
+            gv.getCanvas().drawText("<", x + 980, y + 50, colorCurrentPlayer);
         }
 
-        gv.getCanvas().drawText("Player 1", (float) x + 20, (float) y + 50, (game.getCurrentplayer() == this.player1) ? colorCurrentPlayer : Game.whitePaint);
-        gv.drawBitmap(bitmap, (float) x + 90, (float) y + 25, 230, 50);
-        gv.getCanvas().drawText("Player 2", (float) x + 910, (float) y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : Game.whitePaint);
-        gv.drawBitmap(bitmap, (float) x + 680, (float) y + 25, 230, 50);
+        gv.getCanvas().drawText("Player 1", x + 20, y + 50, (game.getCurrentplayer() == this.player1) ? colorCurrentPlayer : Game.whitePaint);
+        gv.drawBitmap(bitmap, x + 90, y + 25, 230, 50);
+        gv.getCanvas().drawText("Player 2", x + 910, y + 50, (game.getCurrentplayer() == this.player2) ? colorCurrentPlayer : Game.whitePaint);
+        gv.drawBitmap(bitmap, x + 680, y + 25, 230, 50);
 
-        if(this.ball_inner_shadow == null) {
-            this.ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
+        if (ball_inner_shadow == null) {
+            ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
         }
 
         ArrayList<Ball> player1balls = this.player1.getScoredballs();
@@ -97,25 +100,25 @@ public class Gui extends Entity {
                 if (ball.getBitmap(j) != null) {
                     if (this.player1.getBalltype() == 1) {
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x + 60 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()),
                                 (float) (ball.getHeight()));
                         gv.drawBitmap(ball_inner_shadow,
-                                (float) x + 60 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x + 60 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()),
                                 (float) (ball.getHeight()));
                     } else {
                         if (ball.getBitmap(j) != null) {
                             gv.drawBitmap(ball.getBitmap(j),
-                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10,
-                                    (float) y + (float) ball.getRadius() + 15,
+                                    x + 650 + ball.getId() * (float) ball.getWidth() + 10,
+                                    y + (float) ball.getRadius() + 15,
                                     (float) (ball.getWidth()),
                                     (float) (ball.getHeight()));
                             gv.drawBitmap(ball_inner_shadow,
-                                    (float) x + 650 + ball.getId() * (float) ball.getWidth() + 10,
-                                    (float) y + (float) ball.getRadius() + 15,
+                                    x + 650 + ball.getId() * (float) ball.getWidth() + 10,
+                                    y + (float) ball.getRadius() + 15,
                                     (float) (ball.getWidth()),
                                     (float) (ball.getHeight()));
                         }
@@ -130,26 +133,26 @@ public class Gui extends Entity {
                 if (this.player2.getBalltype() == 2) {
                     if (ball.getBitmap(j) != null) {
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x + 410 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()) - 500,
                                 (float) (ball.getHeight()));
                         gv.drawBitmap(ball_inner_shadow,
-                                (float) x + 410 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x + 410 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()) - 500,
                                 (float) (ball.getHeight()));
                     }
                 } else {
                     if (ball.getBitmap(j) != null) {
                         gv.drawBitmap(ball.getBitmap(j),
-                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x - 180 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()) - 500,
                                 (float) (ball.getHeight()));
                         gv.drawBitmap(ball_inner_shadow,
-                                (float) x - 180 + ball.getId() * (float) ball.getWidth() + 10,
-                                (float) y + (float) ball.getRadius() + 15,
+                                x - 180 + ball.getId() * (float) ball.getWidth() + 10,
+                                y + (float) ball.getRadius() + 15,
                                 (float) (ball.getWidth()) - 500,
                                 (float) (ball.getHeight()));
                     }

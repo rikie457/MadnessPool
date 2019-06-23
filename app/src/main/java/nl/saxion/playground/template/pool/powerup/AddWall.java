@@ -9,6 +9,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 
+/**
+ * The type Add wall.
+ */
 public class AddWall extends Powerup {
 
     private Game game;
@@ -17,6 +20,14 @@ public class AddWall extends Powerup {
     private int intialturn;
     private static Bitmap bitmap;
 
+    /**
+     * Instantiates a new Add wall.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public AddWall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -31,8 +42,8 @@ public class AddWall extends Powerup {
             if (this.intialturn + 2 == currentturn) {
                 game.removeEntity(this);
             } else if (!this.effectApplied){
-                    applyEffect();
-                    this.effectApplied = true;
+                applyEffect();
+                this.effectApplied = true;
             }
         }
     }
@@ -44,6 +55,9 @@ public class AddWall extends Powerup {
         this.intialturn = game.getTurns();
     }
 
+    /**
+     * Apply effect.
+     */
     public void applyEffect(){
         game.startPlacingWall();
     }

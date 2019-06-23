@@ -9,14 +9,30 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The Wormhole.
+ * <p>
+ * Everytime a ball hits this object it will be teleported to another location on the table
+ */
 public class Wormhole extends Powerup {
 
+    /**
+     * The Bitmap.
+     */
     static Bitmap bitmap;
     private Game game;
     private WhiteBall whiteBall;
     private int currentturn, intialturn;
 
 
+    /**
+     * Instantiates a new Wormhole.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public Wormhole(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -37,6 +53,9 @@ public class Wormhole extends Powerup {
         }
     }
 
+    /**
+     * Teleport.
+     */
     public void teleport() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);

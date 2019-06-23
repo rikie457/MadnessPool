@@ -9,13 +9,27 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type More drag.
+ */
 public class MoreDrag extends Powerup {
+    /**
+     * The Bitmap.
+     */
     static Bitmap bitmap;
     private Game game;
     private WhiteBall whiteBall;
     private int currentturn, intialturn;
     private boolean applied;
 
+    /**
+     * Instantiates a new More drag.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public MoreDrag(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -39,6 +53,9 @@ public class MoreDrag extends Powerup {
         }
     }
 
+    /**
+     * Apply drag.
+     */
     public void applyDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -47,6 +64,9 @@ public class MoreDrag extends Powerup {
         }
     }
 
+    /**
+     * Remove drag.
+     */
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);

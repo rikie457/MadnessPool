@@ -9,7 +9,10 @@ package nl.saxion.playground.template.pool;
 import nl.saxion.playground.template.pool.balls.Ball;
 
 /**
- * The type Utility.
+ * The Utility class.
+ *
+ * This class is used for various calculations
+ * Mainly the distance between 2 object or 2 points
  */
 public class Utility {
     /**
@@ -39,6 +42,13 @@ public class Utility {
         return (Math.random() * (max - min + 1) + min);
     }
 
+    /**
+     * Gets closest point.
+     *
+     * @param wall the wall
+     * @param ball the ball
+     * @return the closest point between the ball and the wall
+     */
     public static Vector2 getClosestPoint(Wall wall, Ball ball) {
         double x1 = wall.getVector2().getX();
         double y1 = wall.getVector2().getY();
@@ -77,6 +87,13 @@ public class Utility {
     }
 
 
+    /**
+     * Gets distance from closest point.
+     *
+     * @param closestpoint the closestpoint
+     * @param ball         the ball
+     * @return the distance from closest point
+     */
     public static double getDistanceFromClosestPoint(Vector2 closestpoint, Ball ball) {
         double bx = ball.getVector2().getX();
         double by = ball.getVector2().getY();
@@ -88,6 +105,13 @@ public class Utility {
     }
 
 
+    /**
+     * Gets rand int in range.
+     *
+     * @param left  the left
+     * @param right the right
+     * @return the rand int in range
+     */
     public static int getRandIntInRange(int left, int right) {
         return (int) (left + (Math.random() * (right - left + 1)));
     }

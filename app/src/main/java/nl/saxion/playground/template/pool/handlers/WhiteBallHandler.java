@@ -21,7 +21,7 @@ import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
- * The type White ball handler.
+ * The White ball handler.
  */
 public class WhiteBallHandler extends Entity {
 

@@ -12,6 +12,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Remove ball.
+ */
 public class RemoveBall extends Powerup {
     private WhiteBall whiteBall;
     private Player player;
@@ -22,6 +25,14 @@ public class RemoveBall extends Powerup {
 
     private ArrayList<Ball> balls;
 
+    /**
+     * Instantiates a new Remove ball.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public RemoveBall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -46,6 +57,9 @@ public class RemoveBall extends Powerup {
         return 1;
     }
 
+    /**
+     * Apply effect.
+     */
     public void applyEffect() {
         this.balls = game.getBalls();
         this.player = game.getCurrentplayer();

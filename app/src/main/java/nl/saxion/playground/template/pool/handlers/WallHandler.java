@@ -14,6 +14,9 @@ import nl.saxion.playground.template.pool.WallPlacementTimer;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.messages.PlaceWallMessage;
 
+/**
+ * The Wall handler.
+ */
 public class WallHandler extends Entity {
     private boolean overWallLimit = true;
     private boolean wallPlaced = false;
@@ -33,16 +36,26 @@ public class WallHandler extends Entity {
     private PlaceWallMessage placeWallMessage;
     private WallPlacementTimer wallPlacementTimer;
 
+    /**
+     * The Balls.
+     */
     ArrayList<Ball> balls;
+    /**
+     * The Holes.
+     */
     ArrayList<Hole> holes;
+    /**
+     * The Walls.
+     */
     ArrayList<Wall> walls;
 
     /**
      * Instantiates a new WallHandler.
-     * @param balls
-     * @param holes
-     * @param walls
-     * @param game
+     *
+     * @param balls the balls
+     * @param holes the holes
+     * @param walls the walls
+     * @param game  the game
      */
     public WallHandler(ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Wall> walls, Game game) {
         this.balls = balls;
@@ -155,8 +168,9 @@ public class WallHandler extends Entity {
 
     /**
      * checks if the place where the player wants to place the wall is a valid position.
-     * @param event
-     * @return
+     *
+     * @param event the event
+     * @return boolean
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
@@ -209,14 +223,21 @@ public class WallHandler extends Entity {
 
     /**
      * Checks if the player holds the wall.
-     * @param event
-     * @return
+     *
+     * @param event the event
+     * @return boolean
      */
     public boolean fingerOnWall(MotionEvent event) {
         return (event.getX() < this.wall.getMiddleX() + 30 && event.getX() > this.wall.getMiddleX() - 30 &&
                 event.getY() < this.wall.getMiddleY() + 30 && event.getY() > this.wall.getMiddleY() - 30);
     }
 
+    /**
+     * Finger next to wall boolean.
+     *
+     * @param event the event
+     * @return the boolean
+     */
     public boolean fingerNextToWall(MotionEvent event) {
         return (event.getX() < this.wall.getMiddleX() + 100 && event.getX() > this.wall.getMiddleX() - 100 &&
                 event.getY() < this.wall.getMiddleY() + 100 && event.getY() > this.wall.getMiddleY() - 100 && !fingerOnWall(event));
@@ -231,6 +252,11 @@ public class WallHandler extends Entity {
         }
     }
 
+    /**
+     * Sets can continue.
+     *
+     * @param canContinue the can continue
+     */
     public void setCanContinue(boolean canContinue) {
         this.canContinue = canContinue;
     }

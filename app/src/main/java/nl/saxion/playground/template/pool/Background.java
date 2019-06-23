@@ -6,20 +6,16 @@
 
 package nl.saxion.playground.template.pool;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
-
 import java.util.ArrayList;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 /**
- * The type Background.
+ * The Background.
+ * This is the background of the game.
+ * This is used to change the color in the madness mode.
+ * This is also used in the normal version to use it as a green background.
  */
 public class Background extends Entity {
     private static double a, r, g, b;
@@ -42,10 +38,10 @@ public class Background extends Entity {
      */
     public Background(Game game) {
         this.game = game;
-        this.a = 255;
-        this.r = 0;
-        this.g = 128;
-        this.b = 0;
+        a = 255;
+        r = 0;
+        g = 128;
+        b = 0;
 
         usedColors = new ArrayList<>();
         setRandomColorLimits();
@@ -56,6 +52,13 @@ public class Background extends Entity {
         return 0;
     }
 
+    /**
+     * Sets color.
+     *
+     * @param r1 the r 1
+     * @param g1 the g 1
+     * @param b1 the b 1
+     */
     public static void setColor(int r1, int g1, int b1) {
         r = r1;
         g = g1;
@@ -64,9 +67,9 @@ public class Background extends Entity {
 
     @Override
     public void draw(GameView gameView) {
-        if(this.game.gameMode == Game.GameMode.MADNESS) {
+        if (Game.gameMode == Game.GameMode.MADNESS) {
             cycleColors();
-            gameView.getCanvas().drawARGB((int)this.a, (int)this.r, (int)this.g, (int)this.b);
+            gameView.getCanvas().drawARGB((int) a, (int) r, (int) g, (int) b);
         } else {
             gameView.getCanvas().drawARGB(255, 0, 128, 0);
         }
@@ -76,48 +79,48 @@ public class Background extends Entity {
 
     private void cycleColors() {
         if(currentColorCycling == RED) {
-            if(this.r >= maxValueForColors[RED] || altRed) {
-                this.r -= speedStep;
-                if (this.r <= minValueForColors[RED]) {
+            if (r >= maxValueForColors[RED] || altRed) {
+                r -= speedStep;
+                if (r <= minValueForColors[RED]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altRed = false;
                 }
             } else {
-                this.r += speedStep;
-                if (this.r >= maxValueForColors[RED]) {
+                r += speedStep;
+                if (r >= maxValueForColors[RED]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altRed = true;
                 }
             }
         } else if(currentColorCycling == GREEN) {
-            if(this.g >= maxValueForColors[GREEN] || altGreen) {
-                this.g -= speedStep;
-                if (this.g <= minValueForColors[GREEN]) {
+            if (g >= maxValueForColors[GREEN] || altGreen) {
+                g -= speedStep;
+                if (g <= minValueForColors[GREEN]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altGreen = false;
                 }
             } else {
-                this.g += speedStep;
-                if (this.g >= maxValueForColors[GREEN]) {
+                g += speedStep;
+                if (g >= maxValueForColors[GREEN]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altGreen = true;
                 }
             }
         } else if(currentColorCycling == BLUE) {
-            if(this.b >= maxValueForColors[BLUE] || altBlue) {
-                this.b -= speedStep;
-                if (this.b <= minValueForColors[BLUE]) {
+            if (b >= maxValueForColors[BLUE] || altBlue) {
+                b -= speedStep;
+                if (b <= minValueForColors[BLUE]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altBlue = false;
                 }
             } else {
-                this.b += speedStep;
-                if (this.b >= maxValueForColors[BLUE]) {
+                b += speedStep;
+                if (b >= maxValueForColors[BLUE]) {
                     while(hasBeenUsed(currentColorCycling))
                         currentColorCycling = Utility.getRandIntInRange(0, 2);
                     altBlue = true;

@@ -7,7 +7,16 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 
+/**
+ * The type Shadow.
+ */
 public class Shadow extends Entity {
+    /**
+     * Instantiates a new Shadow.
+     *
+     * @param ball the ball
+     * @param game the game
+     */
     public Shadow(Ball ball, Game game) {
         this.ball = ball;
         this.offset = -(29.5 * (1000 / game.getWidth()));
@@ -39,7 +48,7 @@ public class Shadow extends Entity {
                 shadowBitmap,
                 x, y,
                 width, height
-                );
+        );
     }
 
     @Override

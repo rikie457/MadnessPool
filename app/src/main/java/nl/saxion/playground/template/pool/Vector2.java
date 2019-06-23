@@ -9,7 +9,9 @@ package nl.saxion.playground.template.pool;
 import java.io.Serializable;
 
 /**
- * The type Vector2.
+ * The Vector2.
+ * This allows to store the x y in a single point
+ * this is usefull if you want to calculate with 2 points or store them;
  */
 public class Vector2 implements Serializable {
     private double x, y;
@@ -25,6 +27,11 @@ public class Vector2 implements Serializable {
         this.y = y;
     }
 
+    /**
+     * Instantiates a new Vector 2.
+     *
+     * @param v2 the v 2
+     */
     public Vector2(Vector2 v2) {
         this.x = v2.getX();
         this.y = v2.getY();
@@ -60,7 +67,6 @@ public class Vector2 implements Serializable {
      *
      * @return the y
      */
-
     public double getY() {
         return this.y;
     }
@@ -75,24 +81,51 @@ public class Vector2 implements Serializable {
     }
 
 
+    /**
+     * Set.
+     *
+     * @param x the x
+     * @param y the y
+     */
     public void set(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Add x.
+     *
+     * @param x the x
+     */
     public void addX(double x) {
         this.x += x;
     }
 
+    /**
+     * Add y.
+     *
+     * @param y the y
+     */
     public void addY(double y) {
         this.y += y;
     }
 
+    /**
+     * Add.
+     *
+     * @param x the x
+     * @param y the y
+     */
     public void add(double x, double y) {
         this.x += x;
         this.y += y;
     }
 
+    /**
+     * Add.
+     *
+     * @param xy the xy
+     */
     public void add(double xy) {
         this.x += xy;
         this.y += xy;

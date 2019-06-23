@@ -12,6 +12,9 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Table top overlay.
+ */
 public class TableTopOverlay extends Entity {
 
     static private Bitmap bitmapNormal, bitmapMaddness, current;

@@ -9,6 +9,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Speed boost.
+ */
 public class SpeedBoost extends Powerup {
     private WhiteBall whiteBall;
     static private Bitmap bitmap;
@@ -17,6 +20,14 @@ public class SpeedBoost extends Powerup {
     private int currentturn, intialturn;
     private boolean speedBoost;
 
+    /**
+     * Instantiates a new Speed boost.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public SpeedBoost(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -36,13 +47,16 @@ public class SpeedBoost extends Powerup {
                 removeSpeedBoost();
             } else {
                 if (!this.speedBoost) {
-                        applySpeedBoost();
+                    applySpeedBoost();
                     this.speedBoost = true;
                 }
             }
         }
     }
 
+    /**
+     * Apply speed boost.
+     */
     public void applySpeedBoost(){
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -57,6 +71,9 @@ public class SpeedBoost extends Powerup {
         }
     }
 
+    /**
+     * Remove speed boost.
+     */
     public void removeSpeedBoost(){
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);

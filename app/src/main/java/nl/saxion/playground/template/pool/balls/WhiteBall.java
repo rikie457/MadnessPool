@@ -28,6 +28,18 @@ public class WhiteBall extends Ball {
     private Shadow shadow;
     private boolean visible = true;
 
+    /**
+     * Instantiates a new White ball.
+     *
+     * @param game      the game
+     * @param drawables the drawables
+     * @param x         the x
+     * @param y         the y
+     * @param width     the width
+     * @param height    the height
+     * @param type      the type
+     * @param line      the line
+     */
     public WhiteBall(Game game, int[] drawables, double x, double y, double width, double height, int type, ShootLine line) {
         super(game, drawables, x, y, width, height, type);
         this.line = line;
@@ -53,10 +65,20 @@ public class WhiteBall extends Ball {
         }
     }
 
+    /**
+     * Gets visible.
+     *
+     * @return the visible
+     */
     public boolean getVisible() {
         return visible;
     }
 
+    /**
+     * Sets visible.
+     *
+     * @param visible the visible
+     */
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
@@ -106,6 +128,8 @@ public class WhiteBall extends Ball {
     }
 
     /**
+     * Update end.
+     *
      * @param touch has all the information about the touch
      */
     public void updateEnd(GameModel.Touch touch) {
@@ -123,10 +147,20 @@ public class WhiteBall extends Ball {
         this.line.setColor(mag, 128 - mag / 2, 255 - mag);
     }
 
+    /**
+     * Is shot boolean.
+     *
+     * @return the boolean
+     */
     public boolean isShot() {
         return shot;
     }
 
+    /**
+     * Sets shot.
+     *
+     * @param shot the shot
+     */
     public void setShot(boolean shot) {
         this.shot = shot;
     }

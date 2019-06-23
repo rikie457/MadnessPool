@@ -37,10 +37,16 @@ public class Ball extends Entity {
      */
     private double speedX, speedY, mass, width, height, radius, bx, by, friction, energyloss;
     private boolean collision = true;
+    /**
+     * The Vector 2.
+     */
     protected Vector2 vector2;
     private float lastAngle = (float) (Math.random() * 360);
 
 
+    /**
+     * The Game.
+     */
     protected Game game;
     private static Bitmap[] bitmaps;
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
@@ -271,9 +277,6 @@ public class Ball extends Entity {
             Wall wall = game.getWalls().get(i);
             Vector2 closestpoint = Utility.getClosestPoint(wall, this);
 
-            if (this.id == 15) {
-                System.out.println(Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius + 10) <= this.radius);
-            }
             //collision
             if (Utility.getDistanceFromClosestPoint(closestpoint, this) - (this.radius + 10) <= this.radius) {
                 double x1 = wall.getVector2().getX();
@@ -311,8 +314,9 @@ public class Ball extends Entity {
 
     /**
      * Checks if there is collion with a wall.
-     * @param wall
-     * @return
+     *
+     * @param wall the wall
+     * @return boolean
      */
     public boolean collisionBallWall(Wall wall){
 
