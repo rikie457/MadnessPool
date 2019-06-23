@@ -37,5 +37,7 @@ public class Utility {
         return (Math.random() * (max - min + 1) + min);
     }
 
-
+    public static int getRandIntInRange(int left, int right) {
+        return (int) (left + (Math.random() * (right - left + 1)));
+    }
 }

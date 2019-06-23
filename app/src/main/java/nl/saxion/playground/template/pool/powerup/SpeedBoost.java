@@ -25,10 +25,6 @@ public class SpeedBoost extends Powerup {
         this.y = y;
         this.radius = 30f;
     }
-    @Override
-    public int getLayer() {
-        return 1;
-    }
 
     @Override
     public void tick() {

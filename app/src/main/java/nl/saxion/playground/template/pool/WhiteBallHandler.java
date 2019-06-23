@@ -79,6 +79,7 @@ public class WhiteBallHandler extends Entity {
 
         if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
             game.setCueBallInHand(true);
+            whiteBall.setVisible(true);
         }
 
         if (event.getAction() == MotionEvent.ACTION_UP) {

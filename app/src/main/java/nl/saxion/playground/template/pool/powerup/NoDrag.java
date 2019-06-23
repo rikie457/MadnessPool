@@ -43,12 +43,6 @@ public class NoDrag extends Powerup {
         }
     }
 
-
-    @Override
-    public int getLayer() {
-        return 1;
-    }
-
     public void applyDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
