@@ -419,7 +419,6 @@ public class Game extends GameModel {
                 addEntity(ball);
             }
         }
-        //this.ball_shadows = new Shadows(this, this.balls);
     }
 
     private void resetBalls() {

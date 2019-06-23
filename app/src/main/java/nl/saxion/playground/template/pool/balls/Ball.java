@@ -213,7 +213,7 @@ public class Ball extends Entity {
      */
     public void removeBall() {
         this.game.removeEntity(this);
-        if (shadow != null) this.game.removeEntity(shadow);
+        this.game.removeEntity(shadow);
     }
 
     /**
@@ -258,7 +258,7 @@ public class Ball extends Entity {
                 if (player.getBalltype() == -1) {
                     // The first pocket ball
                     player.setBalltype(this.type);
-                    game.getInactiveplayer().setBalltype(this.type == 1 ? 2 : 1);
+                    game.getInactiveplayer().setBalltype(((this.type == 1) ? 2 : 1));
                     player.getScoredballs().add(this);
                     game.setPlayerScored(true);
                     if (game.getMadness()) {
@@ -389,7 +389,7 @@ public class Ball extends Entity {
     public void tick() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
-        this.vector2.set(x += this.speedX, y += this.speedY);
+        this.vector2.add(this.speedX, this.speedY);
 
 
         this.moving = checkMovement();

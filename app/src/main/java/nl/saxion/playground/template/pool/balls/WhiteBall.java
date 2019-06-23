@@ -64,6 +64,12 @@ public class WhiteBall extends Ball {
         }
     }
 
+    @Override
+    public void removeBall() {
+        game.removeEntity(this);
+        game.removeEntity(shadow);
+    }
+
     /**
      * Gets visible.
      *
@@ -80,6 +86,13 @@ public class WhiteBall extends Ball {
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public Shadow getShadow() {
+        if(this.shadow == null) {
+            this.shadow = new Shadow(this, game);
+        }
+        return this.shadow;
     }
 
     @Override

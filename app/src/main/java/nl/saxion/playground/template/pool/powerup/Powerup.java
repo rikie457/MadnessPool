@@ -51,7 +51,7 @@ public abstract class Powerup extends Entity {
 
     private void checkCollisionWithBall() {
         if(!invisable) {
-            if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
+            if (!game.getCueBallScored() && Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), this.ball.getVector2().getX() + this.ball.getRadius(), this.ball.getVector2().getY() + this.ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
                 resolveColission();
             }
         }
@@ -85,6 +85,7 @@ public abstract class Powerup extends Entity {
      * Resolve colission.
      */
     protected void resolveColission() {
+
     }
 
     @Override
