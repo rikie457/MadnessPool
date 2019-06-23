@@ -793,7 +793,7 @@ public class Game extends GameModel {
     public enum GameMode {
         MADNESS,
         EIGHT_BALL
-    };
+    }
 }
 
 
