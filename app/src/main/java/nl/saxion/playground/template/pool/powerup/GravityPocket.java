@@ -25,7 +25,6 @@ public class GravityPocket extends Powerup {
     @Override
     public void tick() {
         super.tick();
-        System.out.println(this.currentturn + " " +  this.intialturn);
         this.currentturn = game.getTurns();
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {

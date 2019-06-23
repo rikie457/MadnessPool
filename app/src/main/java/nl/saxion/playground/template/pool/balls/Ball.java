@@ -300,7 +300,6 @@ public class Ball extends Entity {
         for (Hole hole : game.getHoles()) {
 
             double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 150, y + this.radius + 150, hole.getVector2().getX(), hole.getVector2().getY()));
-            if (distance > this.radius) { System.out.println("no collision"); } else {System.out.println("collision");}
             if (distance > this.radius) continue; // no collision
 
             // The ball is in a gravity field
