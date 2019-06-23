@@ -22,6 +22,7 @@ import nl.saxion.playground.template.pool.balls.WhiteBall;
 
 /**
  * The White ball handler.
+ * When de cue ball is scored in needs to be replaced on the table.
  */
 public class WhiteBallHandler extends Entity {
 
@@ -59,10 +60,12 @@ public class WhiteBallHandler extends Entity {
         super.tick();
         checkMovingBalls();
 
+        //Adds a delay after finishing placing so the cue ball doesn't get shot instantly.
         if (this.canContinue && this.timer < 10) {
             this.timer++;
         }
 
+        //Resets the class
         if (canContinue && timer == 10) {
             this.timer = 0;
             this.canContinue = false;
@@ -86,10 +89,7 @@ public class WhiteBallHandler extends Entity {
             whiteBall.setVisible(true);
         }
 
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            game.setCueBallInHand(false);
-        }
-
+        //Places the cue ball.
         if (!this.ballReplaced && game.getCueBallScored() && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_DOWN) {
             this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
             this.whiteBall.setSpeedX(0);
@@ -99,6 +99,7 @@ public class WhiteBallHandler extends Entity {
             game.addEntity(this.whiteBall);
         }
 
+        //Moving the cue ball
         if (this.ballReplaced && game.getCueBallScored() && fingerOnhWhiteBall(event) && isValidPosition(event) && event.getAction() == MotionEvent.ACTION_MOVE) {
             this.movingBall = true;
             this.fingerOnBall = true;
@@ -109,13 +110,16 @@ public class WhiteBallHandler extends Entity {
             this.whiteBall.getVector2().set(touch.x - this.whiteBall.getWidth() / 2, touch.y - this.whiteBall.getHeight() / 2);
         }
 
+        //Ends placing
         if (this.ballReplaced && !this.movingBall && !fingerOnhWhiteBall(event) && !game.getCueBallInHand() && event.getAction() == MotionEvent.ACTION_UP) {
             this.canContinue = true;
         }
 
+        //Resets some booleans when letting go of the screen.
         if (event.getAction() == MotionEvent.ACTION_UP) {
             this.movingBall = false;
             this.fingerOnBall = false;
+            game.setCueBallInHand(false);
         }
     }
 
@@ -129,6 +133,9 @@ public class WhiteBallHandler extends Entity {
         boolean isValid = true;
         double ballRadius;
 
+        /**
+         * Other balls
+         */
         for (int i = 0; i < this.balls.size(); i++) {
             Ball ball = this.balls.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
@@ -143,6 +150,9 @@ public class WhiteBallHandler extends Entity {
             }
         }
 
+        /**
+         * Holes
+         */
         for (int i = 0; i < this.holes.size(); i++) {
             Hole hole = this.holes.get(i);
             double distSqr = Utility.getDistanceNotSquared((event.getX() - this.whiteBall.getWidth()) + this.whiteBall.getRadius(),
@@ -180,16 +190,11 @@ public class WhiteBallHandler extends Entity {
             Wall wall = game.getWalls().get(i);
 
             double side1 = Math.sqrt(Math.pow(event.getX() - wall.getVector2().getX(), 2) + Math.pow(event.getY() - wall.getVector2().getY(), 2));
-
-
             double side2 = Math.sqrt(Math.pow(event.getX() - wall.getEndVector2().getX(), 2) + Math.pow(event.getY() - wall.getEndVector2().getY(), 2));
-
             double base = Math.sqrt(Math.pow(wall.getEndVector2().getX() - wall.getVector2().getX(), 2) + Math.pow(wall.getEndVector2().getY() - wall.getVector2().getY(), 2));
 
             if (this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2 > side1 || this.whiteBall.getRadius() + this.whiteBall.getWidth() / 2 > side2) return false;
-
             double angle1 = Math.atan2(wall.getEndVector2().getX() - wall.getVector2().getX(), wall.getEndVector2().getY() - wall.getVector2().getY()) - Math.atan2(event.getX() - wall.getVector2().getX(), event.getY() - wall.getVector2().getY());
-
             double angle2 = Math.atan2(wall.getVector2().getX() - wall.getEndVector2().getX(), wall.getVector2().getY() - wall.getEndVector2().getY()) - Math.atan2(event.getX() - wall.getEndVector2().getX(), event.getY() - wall.getEndVector2().getY());
 
             if (angle1 > Math.PI / 2 || angle2 > Math.PI / 2)
@@ -207,6 +212,11 @@ public class WhiteBallHandler extends Entity {
         return isValid;
     }
 
+    /**
+     * Checks if the player touches the ball on screen.
+     * @param event
+     * @return
+     */
     private boolean fingerOnhWhiteBall(MotionEvent event) {
         return event.getX() > this.whiteBall.getVector2().getX() - 30 && event.getX() < this.whiteBall.getVector2().getX() + this.whiteBall.getWidth() + 30 &&
                 event.getY() > this.whiteBall.getVector2().getY() - 30 && event.getY() < this.whiteBall.getVector2().getY() + this.whiteBall.getHeight() + 30;

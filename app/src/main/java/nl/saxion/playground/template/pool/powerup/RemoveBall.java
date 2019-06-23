@@ -58,7 +58,7 @@ public class RemoveBall extends Powerup {
     }
 
     /**
-     * Apply effect.
+     * Scores one of the balls
      */
     public void applyEffect() {
         this.balls = game.getBalls();
@@ -66,6 +66,7 @@ public class RemoveBall extends Powerup {
         boolean removed = false;
         int counter = 0;
 
+        //If there is no set ball type this will randomly set a ball type.
         if (player.getBalltype() == -1) {
             player.setBalltype((int) Math.floor(Math.random() * 2) + 1);
 
@@ -76,6 +77,7 @@ public class RemoveBall extends Powerup {
             }
         }
 
+        //Scores a ball if there is one available.
         if (this.balls.size() > 1) {
             while (!removed && counter < this.balls.size()) {
                 if (this.balls.get(counter).getType() == this.player.getBalltype() && !player.getScoredballs().contains(this.balls.get(counter))) {
@@ -86,6 +88,7 @@ public class RemoveBall extends Powerup {
                 }
                 counter++;
             }
+            //If all normal balls of a player are scored it will score the 8 ball.
             if (!removed) {
                 for (int i = 0; i < this.balls.size(); i++) {
                     if (this.balls.get(i).getType() == 3) {
