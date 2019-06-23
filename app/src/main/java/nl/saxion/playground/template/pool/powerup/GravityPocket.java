@@ -57,14 +57,16 @@ public class GravityPocket extends Powerup {
         }
     }
 
+    /**
+     * Sets the powerup to the right settings on collision
+     */
     @Override
     public void resolveColission() {
         this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
-
-
+    
     @Override
     public void createPowerUp() {
         GravityPocket gravityPocket = new GravityPocket(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);

@@ -299,21 +299,21 @@ public class Ball extends Entity {
 
         for (Hole hole : game.getHoles()) {
 
-            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 150, y + this.radius + 150, hole.getVector2().getX(), hole.getVector2().getY()));
-            if (distance > this.radius) continue; // no collision
+            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 75, y + this.radius + 75, hole.getVector2().getX(), hole.getVector2().getY()));
+            if (distance > this.radius + 75) continue; // no collision
 
             // The ball is in a gravity field
 
             if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
-                this.speedX += 0.01;
+                this.speedX += 0.02;
             } else {
-                this.speedX -= 0.01;
+                this.speedX -= 0.02;
             }
 
             if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
-                this.speedY += 0.01;
+                this.speedY += 0.02;
             } else {
-                this.speedY -= 0.01;
+                this.speedY -= 0.02;
             }
         }
     }
@@ -353,7 +353,7 @@ public class Ball extends Entity {
 
         if (game.getMadness()) {
             checkCollisionPlaceableWalls();
-            if (game.isPocketGravity()) {
+            if (game.isPocketGravity() && !game.getPlacingWall()) {
                 collisionPocketGravity();
             }
         }
