@@ -173,12 +173,12 @@ public class Ball extends Entity {
         /**
          * Walls above and below the screen.
          */
-        if (y - this.radius <= game.getHeight() * 0.07) {
+        if (y - this.radius <= game.getPlayHeight() * 0.07) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getHeight() * 0.07 + this.radius);
-        } else if (y + this.radius > game.getHeight() * 0.725) {
+            this.vector2.setY(game.getPlayHeight()  * 0.07 + this.radius);
+        } else if (y + this.radius > game.getPlayHeight() * 0.85) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getHeight() * 0.725 - this.radius);
+            this.vector2.setY(game.getPlayHeight() * 0.85 - this.radius);
             this.speedY *= this.energyloss;
         } else {
             this.vector2.setY(y += this.speedY);
