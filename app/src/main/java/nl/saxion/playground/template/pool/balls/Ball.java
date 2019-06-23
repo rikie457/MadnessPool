@@ -52,7 +52,6 @@ public class Ball extends Entity {
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
     private int id, type;
     private boolean moving;
-    private boolean collision = true;
     protected boolean visible = true;
     private int[] drawables;
     private double gravityPullsHad = 0;
