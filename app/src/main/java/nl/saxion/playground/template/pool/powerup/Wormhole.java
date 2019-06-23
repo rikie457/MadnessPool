@@ -1,7 +1,6 @@
 package nl.saxion.playground.template.pool.powerup;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
@@ -10,14 +9,29 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The Wormhole.
+ * Everytime a ball hits this object it will be teleported to another location on the table
+ */
 public class Wormhole extends Powerup {
 
+    /**
+     * The Bitmap.
+     */
     static Bitmap bitmap;
     private Game game;
     private WhiteBall whiteBall;
     private int currentturn, intialturn;
 
 
+    /**
+     * Instantiates a new Wormhole.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public Wormhole(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -29,20 +43,25 @@ public class Wormhole extends Powerup {
     public void tick() {
         super.tick();
         this.currentturn = game.getTurns();
+        //Check if lifetime is not max than 2 turns
         if (this.intialturn + 2 == this.currentturn) {
-            game.removeEntity(this);
+            removePowerup();
         } else {
+            //teleport ball if collected
             if (this.collected) {
                 teleport();
             }
         }
     }
 
+    /**
+     * Teleport.
+     */
     public void teleport() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
             if (Math.sqrt(Utility.getDistanceNotSquared(this.vector2.getX(), this.vector2.getY(), ball.getVector2().getX() + ball.getRadius(), ball.getVector2().getY() + ball.getRadius())) - (30) <= 0 && !game.getCueBallInHand()) {
-                ball.getVector2().set(Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100));
+                ball.getVector2().set(Utility.randomDoubleFromRange(100, game.getWidth() - 100), Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100));
             }
         }
     }
@@ -64,7 +83,7 @@ public class Wormhole extends Powerup {
 
     @Override
     public void createPowerUp() {
-        Wormhole wormhole = new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        Wormhole wormhole = new Wormhole(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(wormhole);
         game.addEntity(wormhole);
     }

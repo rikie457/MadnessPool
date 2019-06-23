@@ -6,16 +6,29 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 import nl.saxion.playground.template.pool.Utility;
-import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Gravity pocket.
+ */
 public class GravityPocket extends Powerup {
+    /**
+     * The Bitmap.
+     */
     static Bitmap bitmap;
     private Game game;
     private WhiteBall whiteBall;
     private int currentturn, intialturn;
     private boolean applied;
 
+    /**
+     * Instantiates a new Gravity pocket.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public GravityPocket(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
@@ -29,7 +42,7 @@ public class GravityPocket extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 removeEffect();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 if (!this.applied) {
                     applyEffect();
@@ -39,10 +52,16 @@ public class GravityPocket extends Powerup {
         }
     }
 
+    /**
+     * Apply effect.
+     */
     public void applyEffect() {
         game.setPocketGravity(true);
     }
 
+    /**
+     * Remove effect.
+     */
     public void removeEffect() {
         game.setPocketGravity(false);
     }
@@ -66,10 +85,10 @@ public class GravityPocket extends Powerup {
         this.invisable = true;
         this.collected = true;
     }
-    
+
     @Override
     public void createPowerUp() {
-        GravityPocket gravityPocket = new GravityPocket(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        GravityPocket gravityPocket = new GravityPocket(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(gravityPocket);
         game.addEntity(gravityPocket);
     }

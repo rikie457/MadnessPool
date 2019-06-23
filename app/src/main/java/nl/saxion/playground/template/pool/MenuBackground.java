@@ -13,7 +13,9 @@ import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
 /**
- * The type Menu background.
+ * The Menu background.
+ *
+ * This is the translucent background that comes with the menu
  */
 public class MenuBackground extends Entity {
 
@@ -48,6 +50,6 @@ public class MenuBackground extends Entity {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.menubackground);
         }
-        gv.drawBitmap(bitmap, 0, 0, game.getPlayWidth(), game.getPlayHeight(), aVal);
+        gv.drawBitmap(bitmap, 0, 0, game.getWidth(), game.getPlayHeight(), aVal);
     }
 }

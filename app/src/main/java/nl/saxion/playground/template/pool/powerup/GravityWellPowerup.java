@@ -9,6 +9,9 @@ import nl.saxion.playground.template.pool.GravityWell;
 import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Gravity well powerup.
+ */
 public class GravityWellPowerup extends Powerup {
     private WhiteBall whiteBall;
     static private Bitmap bitmap;
@@ -17,13 +20,21 @@ public class GravityWellPowerup extends Powerup {
     private int currentTurn, initialTurn;
     private boolean used;
 
+    /**
+     * Instantiates a new Gravity well powerup.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public GravityWellPowerup(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
@@ -39,8 +50,8 @@ public class GravityWellPowerup extends Powerup {
                 game.addEntity(gravityWell);
                 used = true;
             }
-        } else if (this.currentTurn + 2 == this.currentTurn) {
-            game.removeEntity(this);
+        } else if (this.initialTurn + 2 == this.currentTurn) {
+            removePowerup();
         }
     }
 
@@ -64,7 +75,7 @@ public class GravityWellPowerup extends Powerup {
     public void createPowerUp() {
         GravityWellPowerup gravityWellPowerup =
                 new GravityWellPowerup(game,
-                        (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100),
+                        (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100),
                         (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100),
                         this.whiteBall
                 );

@@ -33,7 +33,6 @@ public class Activity extends AppCompatActivity {
 
         // In this example, we're overlaying a TextView over our canvas. We could add
         // any Android Views this way.
-        //  setContentView(R.layout.activity_platformer);
         setContentView(R.layout.activity_main);
         gameView = findViewById(R.id.poolGame);
 

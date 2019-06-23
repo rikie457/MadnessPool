@@ -9,6 +9,9 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type No drag.
+ */
 public class NoDrag extends Powerup {
     private WhiteBall whiteBall;
     static private Bitmap bitmap;
@@ -17,13 +20,21 @@ public class NoDrag extends Powerup {
     private int currentturn, intialturn;
     private boolean applied;
 
+    /**
+     * Instantiates a new No drag.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public NoDrag(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
@@ -33,7 +44,7 @@ public class NoDrag extends Powerup {
         if (this.collected) {
             if (this.intialturn + 2 == this.currentturn) {
                 applyDrag();
-                game.removeEntity(this);
+                removePowerup();
             } else {
                 if (!this.applied) {
                     removeDrag();
@@ -43,6 +54,9 @@ public class NoDrag extends Powerup {
         }
     }
 
+    /**
+     * Apply drag.
+     */
     public void applyDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -51,6 +65,9 @@ public class NoDrag extends Powerup {
         }
     }
 
+    /**
+     * Remove drag.
+     */
     public void removeDrag() {
         for (int i = 0; i < game.getBalls().size(); i++) {
             Ball ball = game.getBalls().get(i);
@@ -75,7 +92,7 @@ public class NoDrag extends Powerup {
 
     @Override
     public void createPowerUp() {
-        NoDrag noDrag = new NoDrag(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        NoDrag noDrag = new NoDrag(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(noDrag);
         game.addEntity(noDrag);
     }

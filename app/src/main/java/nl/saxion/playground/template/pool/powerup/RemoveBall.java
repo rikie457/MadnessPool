@@ -12,30 +12,39 @@ import nl.saxion.playground.template.pool.Utility;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
 
+/**
+ * The type Remove ball.
+ */
 public class RemoveBall extends Powerup {
     private WhiteBall whiteBall;
     private Player player;
     static private Bitmap bitmap;
     private Game game;
     private double x, y, radius;
-    private int currentturn, intialturn;
     private boolean applied = false;
 
     private ArrayList<Ball> balls;
 
+    /**
+     * Instantiates a new Remove ball.
+     *
+     * @param game the game
+     * @param x    the x
+     * @param y    the y
+     * @param ball the ball
+     */
     public RemoveBall(Game game, double x, double y, WhiteBall ball) {
         super(game, x, y, ball);
         this.game = game;
         this.whiteBall = ball;
         this.x = x;
         this.y = y;
-        this.radius = 30f;
+        this.radius = game.getPowerupsize();
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.currentturn = game.getTurns();
         if (this.collected && !this.applied) {
             applyEffect();
             this.applied = true;
@@ -91,11 +100,10 @@ public class RemoveBall extends Powerup {
             }
         }
         this.applied = false;
-        game.removeEntity(this);
+        removePowerup();
     }
 
     public void resolveColission() {
-        this.intialturn = game.getTurns();
         this.invisable = true;
         this.collected = true;
     }
@@ -111,7 +119,7 @@ public class RemoveBall extends Powerup {
 
     @Override
     public void createPowerUp() {
-        RemoveBall removeBall = new RemoveBall(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        RemoveBall removeBall = new RemoveBall(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(removeBall);
         game.addEntity(removeBall);
     }

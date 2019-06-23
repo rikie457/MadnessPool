@@ -16,15 +16,12 @@ import nl.saxion.playground.template.lib.GameView;
 import nl.saxion.playground.template.pool.Game;
 
 /**
- * The type Madness button.
+ * The Madness button.
+ * If this button is clicked the madness 8 ball is started
  */
 public class MadnessButton extends Entity {
 
     static private Bitmap bitmap;
-    /**
-     * The A val.
-     */
-    float aVal;
     private Game game;
 
     /**
@@ -45,7 +42,7 @@ public class MadnessButton extends Entity {
         if (bitmap == null) {
             bitmap = gv.getBitmapFromResource(R.drawable.madnessbutton);
         }
-        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 50, 600, 300, aVal);
+        gv.drawBitmap(bitmap, game.getWidth() / 2 - 300, game.getHeight() / 2 - 50, 600, 300);
     }
 
     @Override

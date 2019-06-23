@@ -1,17 +1,22 @@
-package nl.saxion.playground.template.pool;
+package nl.saxion.playground.template.pool.handlers;
 
-import android.graphics.Bitmap;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
-import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
-import nl.saxion.playground.template.lib.GameView;
+import nl.saxion.playground.template.pool.Game;
+import nl.saxion.playground.template.pool.Hole;
+import nl.saxion.playground.template.pool.Utility;
+import nl.saxion.playground.template.pool.Wall;
+import nl.saxion.playground.template.pool.WallPlacementTimer;
 import nl.saxion.playground.template.pool.balls.Ball;
+import nl.saxion.playground.template.pool.messages.PlaceWallMessage;
 
+/**
+ * The Wall handler.
+ */
 public class WallHandler extends Entity {
     private boolean overWallLimit = true;
     private boolean wallPlaced = false;
@@ -31,17 +36,26 @@ public class WallHandler extends Entity {
     private PlaceWallMessage placeWallMessage;
     private WallPlacementTimer wallPlacementTimer;
 
+    /**
+     * The Balls.
+     */
     ArrayList<Ball> balls;
+    /**
+     * The Holes.
+     */
     ArrayList<Hole> holes;
+    /**
+     * The Walls.
+     */
     ArrayList<Wall> walls;
 
     /**
      * Instantiates a new WallHandler.
-     * When a wall needs to be placed this class becomes active.
-     * @param balls
-     * @param holes
-     * @param walls
-     * @param game
+     *
+     * @param balls the balls
+     * @param holes the holes
+     * @param walls the walls
+     * @param game  the game
      */
     public WallHandler(ArrayList<Ball> balls, ArrayList<Hole> holes, ArrayList<Wall> walls, Game game) {
         this.balls = balls;
@@ -54,12 +68,11 @@ public class WallHandler extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
         checkMovingBalls();
 
         //Checks if a wall has been created
         if (!this.wallMade) {
-            Wall newWall = new Wall();
+            Wall newWall = new Wall(game);
             this.wall = newWall;
             this.wallMade = true;
         }
@@ -160,8 +173,9 @@ public class WallHandler extends Entity {
 
     /**
      * checks if the place where the player wants to place the wall is a valid position.
-     * @param event
-     * @return
+     *
+     * @param event the event
+     * @return boolean
      */
     public boolean isValidPosition(MotionEvent event) {
         boolean isValid = true;
@@ -199,9 +213,9 @@ public class WallHandler extends Entity {
          *Muren links en rechts
          */
 
-        if (event.getX() - this.wall.getRadius() < game.getPlayWidth() * 0.07) {
+        if (event.getX() - this.wall.getRadius() < game.getWidth() * 0.07) {
             isValid = false;
-        } else if (event.getX() + this.wall.getRadius() > game.getPlayWidth() * 0.93) {
+        } else if (event.getX() + this.wall.getRadius() > game.getWidth() * 0.93) {
             isValid = false;
         }
 
@@ -220,8 +234,9 @@ public class WallHandler extends Entity {
 
     /**
      * Checks if the player holds the wall.
-     * @param event
-     * @return
+     *
+     * @param event the event
+     * @return boolean
      */
     public boolean fingerOnWall(MotionEvent event) {
         return (event.getX() < this.wall.getMiddleX() + 30 && event.getX() > this.wall.getMiddleX() - 30 &&
@@ -229,9 +244,10 @@ public class WallHandler extends Entity {
     }
 
     /**
-     * Checks if the player is touching the screen next to the wall.
-     * @param event
-     * @return
+     * Finger next to wall boolean.
+     *
+     * @param event the event
+     * @return the boolean
      */
     public boolean fingerNextToWall(MotionEvent event) {
         return (event.getX() < this.wall.getMiddleX() + 100 && event.getX() > this.wall.getMiddleX() - 100 &&
@@ -247,6 +263,11 @@ public class WallHandler extends Entity {
         }
     }
 
+    /**
+     * Sets can continue.
+     *
+     * @param canContinue the can continue
+     */
     public void setCanContinue(boolean canContinue) {
         this.canContinue = canContinue;
     }

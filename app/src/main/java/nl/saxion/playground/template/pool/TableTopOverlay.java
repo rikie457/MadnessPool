@@ -12,6 +12,9 @@ import nl.saxion.playground.template.R;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameView;
 
+/**
+ * The type Table top overlay.
+ */
 public class TableTopOverlay extends Entity {
 
     static private Bitmap bitmapNormal, bitmapMaddness, current;
@@ -40,7 +43,7 @@ public class TableTopOverlay extends Entity {
             bitmapMaddness = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_madness);
         }
 
-        if(game.gameMode == Game.GameMode.MADNESS) {
+        if (game.getMadness()) {
             current = bitmapMaddness;
         } else {
             current = bitmapNormal;
@@ -50,7 +53,7 @@ public class TableTopOverlay extends Entity {
                 current,
                 0,
                 0,
-                game.getPlayWidth(),
+                game.getWidth(),
                 game.getPlayHeight()
         );
     }
