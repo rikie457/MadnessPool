@@ -368,7 +368,7 @@ public class Ball extends Entity {
         float y = (float) this.vector2.getY();
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, getNewRandomAngle());
+        gv.drawBitmap(bitmaps[this.id], x, y, (float) this.width, (float) this.height, (Game.gameMode == Game.GameMode.MADNESS) ? getNewRandomAngle() : 0);
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
