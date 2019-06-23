@@ -69,7 +69,7 @@ public class GravityPocket extends Powerup {
     
     @Override
     public void createPowerUp() {
-        GravityPocket gravityPocket = new GravityPocket(game, (float) Utility.randomDoubleFromRange(100, game.getPlayWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
+        GravityPocket gravityPocket = new GravityPocket(game, (float) Utility.randomDoubleFromRange(100, game.getWidth() - 100), (float) Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100), this.whiteBall);
         game.getPowerups().add(gravityPocket);
         game.addEntity(gravityPocket);
     }

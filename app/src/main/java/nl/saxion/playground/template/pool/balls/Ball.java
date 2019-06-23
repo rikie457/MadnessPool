@@ -140,18 +140,17 @@ public class Ball extends Entity {
     private void checkCollisionWall() {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
-
         this.vector2.set(x += this.speedX, y += this.speedY);
 
         /**
-         * muren rechts en links
+         * Walls right and left of the screen.
          */
         if (x - this.radius <= game.getWidth() * 0.056) {
             this.vector2.setX(game.getWidth() * 0.056 + this.radius);
             this.speedX = -this.speedX;
-        } else if (x + this.radius >= game.getWidth() * 0.93) {
+        } else if (x + this.radius >= game.getWidth() * 0.915) {
             this.speedX = -this.speedX;
-            this.vector2.setX(game.getWidth() * 0.93 - this.radius);
+            this.vector2.setX(game.getWidth() * 0.915 - this.radius);
             this.speedX *= this.energyloss;
         } else {
             this.vector2.setX(x += this.speedX);
@@ -160,15 +159,16 @@ public class Ball extends Entity {
                 this.speedX = 0;
             }
         }
+
         /**
-         * muuren boven en onder
+         * Walls above and below the screen.
          */
-        if (y - this.radius <= game.getWidth() * 0.04) {
+        if (y - this.radius <= game.getHeight() * 0.07) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getWidth() * 0.04 + this.radius);
-        } else if (y + this.radius > game.getPlayHeight() * 0.85) {
+            this.vector2.setY(game.getHeight()  * 0.07 + this.radius);
+        } else if (y + this.radius > game.getHeight() * 0.725) {
             this.speedY = -this.speedY;
-            this.vector2.setY(game.getPlayHeight() * 0.85 - this.radius);
+            this.vector2.setY(game.getHeight() * 0.725 - this.radius);
             this.speedY *= this.energyloss;
         } else {
             this.vector2.setY(y += this.speedY);
