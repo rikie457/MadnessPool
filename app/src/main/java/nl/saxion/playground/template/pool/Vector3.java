@@ -24,19 +24,16 @@ public class Vector3 extends Entity {
                 initialTouchPosition.setY(touch.y);
             }
 
-            timer++;
+            if(game.getMadness()) timer++;
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             if(Math.sqrt(Utility.getDistanceNotSquared(this.initialTouchPosition.getX(), this.initialTouchPosition.getY(), touch.x, touch.y)) < 30f) {
                 timer = 0;
             }
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-
         }
 
         if(timer >= 10) {
             timer = 0;
             game.crucialCode(31415);
-            game.removeEntity(this);
         }
     }
 }

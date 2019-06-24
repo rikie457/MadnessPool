@@ -786,7 +786,7 @@ public class Game extends GameModel {
 
     public void crucialCode(int a) {
         if(a == 31415) {
-            this.cc = true;
+            this.cc = !this.cc;
         }
     }
 

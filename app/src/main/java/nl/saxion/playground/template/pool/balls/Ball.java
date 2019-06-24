@@ -438,17 +438,20 @@ public class Ball extends Entity {
         if(game.crucialCode() && crucial_bitmap == null) {
             crucial_bitmap = gv.getBitmapFromResource(R.drawable.ee);
         }
+        if(!game.getMadness()) {
+            crucial_bitmap = null;
+        }
 
         if (bitmaps[this.id] == null)
             bitmaps[this.id] = gv.getBitmapFromResource(this.drawables[this.id]);
-        gv.drawBitmap(((crucial_bitmap == null) ? bitmaps[this.id] : crucial_bitmap), x, y, (float) this.width, (float) this.height, (game.getMadness()) ? getNewRandomAngle() : 0);
+        gv.drawBitmap(((crucial_bitmap == null || !game.crucialCode() || (this instanceof WhiteBall)) ? bitmaps[this.id] : crucial_bitmap), x, y, (float) this.width, (float) this.height, (game.getMadness()) ? getNewRandomAngle() : 0);
 
         if (ball_inner_shadow == null)
             ball_inner_shadow = gv.getBitmapFromResource(R.drawable.ball_inner_shadow);
         if (ball_inner_shadow_madness == null)
             ball_inner_shadow_madness = gv.getBitmapFromResource(R.drawable.ball_inner_shadow_madness);
 
-        if (game.getMadness() && !game.crucialCode())
+        if (game.getMadness() && (!game.crucialCode() || (this instanceof WhiteBall)))
             gv.drawBitmap(ball_inner_shadow_madness, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
         else
             gv.drawBitmap(ball_inner_shadow, (float) (x / 1.0005), (float) (y / 1.0005), (float) (width * 1.03), (float) (height * 1.03));
