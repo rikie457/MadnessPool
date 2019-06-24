@@ -4,8 +4,8 @@ import android.view.MotionEvent;
 
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.lib.GameModel;
-import android.util.Log;
 
+//As you can see not really the Vector3 Class ;)
 public class Vector3 extends Entity {
     Game game = null;
     private int timer = 0;
