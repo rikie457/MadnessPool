@@ -49,7 +49,12 @@ public class Wall extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        gv.getCanvas().drawLine((float) vector2.getX(), (float) vector2.getY(), (float) endVector2.getX(), (float) endVector2.getY(), Game.grayPaint);
+        gv.getCanvas().drawLine(
+                (float) vector2.getX(),
+                (float) vector2.getY(),
+                (float) endVector2.getX(),
+                (float) endVector2.getY(),
+                Game.grayPaint);
     }
 
     /**

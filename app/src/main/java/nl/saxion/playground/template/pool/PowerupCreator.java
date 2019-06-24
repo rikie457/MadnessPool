@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import nl.saxion.playground.template.lib.Entity;
 import nl.saxion.playground.template.pool.balls.Ball;
 import nl.saxion.playground.template.pool.balls.WhiteBall;
+import nl.saxion.playground.template.pool.powerup.AddBallFromShelf;
 import nl.saxion.playground.template.pool.powerup.Powerup;
 
 /**
@@ -19,6 +20,7 @@ public class PowerupCreator extends Entity {
     private ArrayList<Powerup> powerups = new ArrayList<>();
     private WhiteBall whiteball;
     private int tickCount;
+    private ArrayList<Player> players = null;
 
     /**
      * Instantiates a new Powerup creator.
@@ -43,12 +45,31 @@ public class PowerupCreator extends Entity {
             //50% chance of spawning
             if (random == 2) {
                 //Random picking a powerup to spawn
-                int poweruptype = (int) Utility.randomDoubleFromRange(0, this.powerups.size() - 1);
+                int poweruptype = getRandomPowerupType();
+
+                if(players == null) {
+                    players = game.getPlayers();
+                }
+                // change the powerup to spawn to another random powerup
+                // IF the powerup is AddBallFromShelf, because this one powerup
+                // shouldn't spawn if the players don't have any balls
+                // on their shelves yet
+                if (players.get(0).getScoredballs().size() == 0 && players.get(1).getScoredballs().size() == 0) {
+                    // get any other powerup than the AddBallFromShelf powerup
+                    while(this.getPowerups().get(poweruptype) instanceof AddBallFromShelf) {
+                        poweruptype = getRandomPowerupType();
+                    }
+                }
+
                 Powerup powerup = this.powerups.get(poweruptype);
                 powerup.createPowerUp();
             }
 
         }
+    }
+
+    private int getRandomPowerupType() {
+        return (int) Utility.randomDoubleFromRange(0, this.powerups.size() - 1);
     }
 
     /**

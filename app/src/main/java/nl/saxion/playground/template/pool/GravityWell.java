@@ -33,8 +33,8 @@ public class GravityWell extends Entity {
      */
     public GravityWell(Game game, ArrayList<Ball> balls) {
         this.location = new Vector2(
-                Utility.randomDoubleFromRange(100, game.getWidth() - 100),
-                Utility.randomDoubleFromRange(100, game.getPlayHeight() - 100)
+                100 + Utility.randomDoubleFromRange(100, game.getWidth() - 200),
+                100 + Utility.randomDoubleFromRange(100, game.getPlayHeight() - 200)
         );
         this.game = game;
         this.balls = balls;
