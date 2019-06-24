@@ -49,8 +49,8 @@ public class Ball extends Entity {
     protected Game game;
     private static Bitmap[] bitmaps;
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness;
-    private int id, type;
-    private boolean moving;
+    private int id, type, gravityTimer, currentTurn;
+    private boolean moving, currentTurnSet;
     protected boolean visible = true;
     private int[] drawables;
     private double gravityPullsHad = 0;
@@ -84,6 +84,8 @@ public class Ball extends Entity {
         this.type = type;
         this.vector2 = new Vector2(x, y);
         this.drawables = drawables;
+        this.gravityTimer = 0;
+        this.currentTurnSet = false;
 
         if (bitmaps == null) {
             bitmaps = new Bitmap[16];
@@ -338,23 +340,35 @@ public class Ball extends Entity {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
 
+        if (!this.currentTurnSet) {
+            this.currentTurn = game.getTurns();
+        }
+
+        if (this.currentTurn < game.getTurns() && this.currentTurnSet) {
+            this.gravityTimer = 0;
+            this.currentTurnSet = false;
+        }
+
         for (Hole hole : game.getHoles()) {
 
-            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 75, y + this.radius + 75, hole.getVector2().getX(), hole.getVector2().getY()));
-            if (distance > this.radius + 75) continue; // no collision
+            double distance = Math.sqrt(Utility.getDistanceNotSquared(x + this.radius + 40, y + this.radius + 40, hole.getVector2().getX(), hole.getVector2().getY()));
+            if (distance > this.radius + 40) continue; // no collision
 
             // The ball is in a gravity field
 
-            if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
-                this.speedX += 0.01;
-            } else {
-                this.speedX -= 0.01;
-            }
+            if (this.gravityTimer < 1000) {
+                if (this.vector2.getX() + this.radius < hole.getVector2().getX() + hole.getRadiusHole()) {
+                    this.speedX += 0.01;
+                } else {
+                    this.speedX -= 0.01;
+                }
 
-            if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
-                this.speedY += 0.01;
-            } else {
-                this.speedY -= 0.01;
+                if (this.vector2.getY() + this.radius < hole.getVector2().getY() + hole.getRadiusHole()) {
+                    this.speedY += 0.01;
+                } else {
+                    this.speedY -= 0.01;
+                }
+                this.gravityTimer++;
             }
         }
     }
@@ -403,7 +417,6 @@ public class Ball extends Entity {
         double x = this.vector2.getX();
         double y = this.vector2.getY();
         this.vector2.add(this.speedX, this.speedY);
-
 
         this.moving = checkMovement();
         checkCollisionWall();
