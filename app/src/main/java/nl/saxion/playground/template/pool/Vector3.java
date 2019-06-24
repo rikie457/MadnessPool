@@ -26,7 +26,7 @@ public class Vector3 extends Entity {
 
             if(game.getMadness()) timer++;
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            if(Math.sqrt(Utility.getDistanceNotSquared(this.initialTouchPosition.getX(), this.initialTouchPosition.getY(), touch.x, touch.y)) < 120) {
+            if(Math.sqrt(Utility.getDistanceNotSquared(this.initialTouchPosition.getX(), this.initialTouchPosition.getY(), touch.x, touch.y)) > 40) {
                 timer = 0;
             }
         }
