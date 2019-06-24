@@ -429,6 +429,10 @@ public class Game extends GameModel {
         return this.drawables;
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
     private void resetBalls() {
         for (int i = 0; i < this.balls.size(); i++) {
             this.balls.remove(i);
