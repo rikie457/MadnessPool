@@ -26,11 +26,13 @@ import nl.saxion.playground.template.pool.Wall;
  * Also the graphics are defined here.
  */
 public class Ball extends Entity {
+
     /**
      * The constant lastisertedid.
      * This is the auto increment for the ID
      */
     public static int lastisertedid = 0;
+
 
     /**
      * All the required data for the collisions
@@ -51,10 +53,13 @@ public class Ball extends Entity {
     private static Bitmap ball_inner_shadow, ball_inner_shadow_madness, crucial_bitmap;
     private int id, type;
     private boolean moving;
-    protected boolean visible = true;
+    boolean visible = true;
     private int[] drawables;
     private double gravityPullsHad = 0;
     private Shadow shadow;
+    private int gravityTimer;
+    private boolean currentTurnSet;
+    private int currentTurn;
 
     /**
      * Instantiates a new Ball.
