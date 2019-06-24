@@ -85,11 +85,13 @@ public class Game extends GameModel {
     private boolean placingWall = false;
     private boolean pocketGravity = false;
     private float guiHeight = 75f;
+    private Vector3 vector3;
     private float left = 0, top = getHeight(), right = getWidth(), bottom = getHeight() + guiHeight;
     private float ballsize = 30f;
     private float holesize = 20f;
     private float powerupsize = 30f;
     private int turns;
+    private boolean cc = false;
 
     // Top Overlay pool table
     private TableTopOverlay table_top_overlay;
@@ -218,6 +220,8 @@ public class Game extends GameModel {
         return (float) (actualHeight / (double) actualWidth * getWidth());
     }
 
+    public ArrayList<Player> getPlayers() { return this.players; }
+
     /**
      * Gets powerups.
      *
@@ -285,6 +289,10 @@ public class Game extends GameModel {
             addEntity(hole5);
             addEntity(hole6);
             addEntity(gui);
+
+            this.vector3 = new Vector3(this);
+
+            addEntity(vector3);
         }
         runs++;
     }
@@ -774,6 +782,16 @@ public class Game extends GameModel {
         this.setWinMessage(new WinMessage(this, winnerId));
         addEntity(menuBackground);
         addEntity(this.winMessage);
+    }
+
+    public boolean crucialCode() {
+        return this.cc;
+    }
+
+    public void crucialCode(int a) {
+        if(a == 31415) {
+            this.cc = !this.cc;
+        }
     }
 
     /**
