@@ -21,12 +21,14 @@ import nl.saxion.playground.template.pool.buttons.MadnessButton;
 import nl.saxion.playground.template.pool.handlers.WallHandler;
 import nl.saxion.playground.template.pool.handlers.WhiteBallHandler;
 import nl.saxion.playground.template.pool.messages.WinMessage;
+import nl.saxion.playground.template.pool.powerup.AddBallFromShelf;
 import nl.saxion.playground.template.pool.powerup.AddWall;
 import nl.saxion.playground.template.pool.powerup.GravityPocket;
 import nl.saxion.playground.template.pool.powerup.GravityWellPowerup;
 import nl.saxion.playground.template.pool.powerup.MoreDrag;
 import nl.saxion.playground.template.pool.powerup.NoDrag;
 import nl.saxion.playground.template.pool.powerup.Powerup;
+import nl.saxion.playground.template.pool.powerup.RandomOther;
 import nl.saxion.playground.template.pool.powerup.RemoveBall;
 import nl.saxion.playground.template.pool.powerup.SpeedBoost;
 import nl.saxion.playground.template.pool.powerup.Wormhole;
@@ -225,6 +227,8 @@ public class Game extends GameModel {
         return powerups;
     }
 
+    public ArrayList<Powerup> getPowerupCreatorPowerups() { return this.powerupCreator.getPowerups(); }
+
 
     @Override
     public void start() {
@@ -421,6 +425,10 @@ public class Game extends GameModel {
         }
     }
 
+    public int[] getDrawables() {
+        return this.drawables;
+    }
+
     private void resetBalls() {
         for (int i = 0; i < this.balls.size(); i++) {
             this.balls.remove(i);
@@ -491,6 +499,8 @@ public class Game extends GameModel {
                 powerupCreator.getPowerups().add(new GravityPocket(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new RemoveBall(this, 250, 250, whiteball));
                 powerupCreator.getPowerups().add(new GravityWellPowerup(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new RandomOther(this, 250, 250, whiteball));
+                powerupCreator.getPowerups().add(new AddBallFromShelf(this, 250, 250, whiteball));
 
                 this.whiteBallHandler.setWhiteBall(whiteball);
             }
@@ -834,7 +844,6 @@ public class Game extends GameModel {
         Ball.lastisertedid = 0;
         start();
     }
-
 }
 
 

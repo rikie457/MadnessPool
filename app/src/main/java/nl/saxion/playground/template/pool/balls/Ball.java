@@ -43,7 +43,6 @@ public class Ball extends Entity {
     protected Vector2 vector2;
     private float lastAngle = (float) (Math.random() * 360);
 
-
     /**
      * The Game.
      */
@@ -56,7 +55,6 @@ public class Ball extends Entity {
     private int[] drawables;
     private double gravityPullsHad = 0;
     private Shadow shadow;
-
 
     /**
      * Instantiates a new Ball.
@@ -197,6 +195,12 @@ public class Ball extends Entity {
      */
     public boolean stopGravitiy(int maxPulls) {
         return this.gravityPullsHad > maxPulls;
+    }
+
+    public void resetShadow() {
+        this.shadow = new Shadow(this, game);
+        game.addEntity(shadow)
+        ;
     }
 
     /**
@@ -382,7 +386,16 @@ public class Ball extends Entity {
 
     @Override
     public String toString() {
-        return "ID: " + this.id + ", TYPE: " + this.type + ", XY: " + this.vector2.getX() + ", " + this.vector2.getY() + ", MOVING: " + this.moving;
+        return
+                "ID: " + this.id
+                + ", TYPE: " + this.type
+                + ", XY: " + this.vector2.getX() + ", "
+                + this.vector2.getY()
+                + ", MOVING: " + this.moving
+                + ", XYSPEEDS: " + this.speedX + ", "
+                + this.speedY
+                + ", collision: "
+                + this.collision;
     }
 
     @Override
@@ -405,13 +418,16 @@ public class Ball extends Entity {
 
     }
 
-
     private float getNewRandomAngle() {
         if (moving) {
             float angleSpeed = ((float) (((Math.abs(this.speedX) + Math.abs(this.speedY)) * 50)) % 360);
             this.lastAngle += ((this.speedX < 0) ? -angleSpeed : angleSpeed);
             return this.lastAngle;
         } else return this.lastAngle;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

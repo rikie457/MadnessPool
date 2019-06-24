@@ -17,7 +17,7 @@ import nl.saxion.playground.template.lib.GameView;
  */
 public class TableTopOverlay extends Entity {
 
-    static private Bitmap bitmapNormal, bitmapMaddness, current;
+    static private Bitmap bitmapNormal, bitmapMadness, current;
     private Game game;
 
     /**
@@ -36,15 +36,19 @@ public class TableTopOverlay extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        if (bitmapNormal == null) {
+        if (bitmapNormal == null && !game.getMadness()) {
             bitmapNormal = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_normal);
+            bitmapMadness = null;
         }
-        if(bitmapMaddness == null) {
-            bitmapMaddness = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_madness);
+        if(bitmapMadness == null && game.getMadness()) {
+            if(Math.random() > 0.5) {
+                bitmapMadness = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_madness);
+            } else {
+                bitmapMadness = gv.getBitmapFromResource(R.drawable.pooltafel_topview_overlay_madness_alt);
+            }
         }
-
         if (game.getMadness()) {
-            current = bitmapMaddness;
+            current = bitmapMadness;
         } else {
             current = bitmapNormal;
         }
