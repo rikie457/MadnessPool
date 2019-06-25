@@ -20,11 +20,8 @@ import nl.saxion.playground.template.pool.Game;
  */
 public class WinMessage extends Entity {
 
-    static private Bitmap bitmap;
-    /**
-     * The A val.
-     */
-    float aVal;
+    static private Bitmap bitmap1;
+    static private Bitmap bitmap2;
     private Game game;
     private int winnerId;
 
@@ -50,14 +47,18 @@ public class WinMessage extends Entity {
 
     @Override
     public void draw(GameView gv) {
-        if (bitmap == null) {
-            if (winnerId == 1) {
-                bitmap = gv.getBitmapFromResource(R.drawable.playeronewin);
-            } else {
-                bitmap = gv.getBitmapFromResource(R.drawable.playertwowin);
-            }
+        if (bitmap1 == null) {
+            bitmap1 = gv.getBitmapFromResource(R.drawable.playeronewin);
         }
-        gv.drawBitmap(bitmap, 1000 / 2 - 300, 1000 / 2 - 450, 600, 300, aVal);
+        if (bitmap2 == null) {
+            bitmap2 = gv.getBitmapFromResource(R.drawable.playertwowin);
+        }
+
+        if (winnerId == 1) {
+            gv.drawBitmap(bitmap1, 1000 / 2 - 300, 1000 / 2 - 450, 600, 300);
+        } else {
+            gv.drawBitmap(bitmap2, 1000 / 2 - 300, 1000 / 2 - 450, 600, 300);
+        }
     }
 
     @Override
